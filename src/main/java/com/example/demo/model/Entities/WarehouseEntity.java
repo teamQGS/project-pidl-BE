@@ -23,7 +23,7 @@ public class WarehouseEntity {
     private int totalByes;
 
     //get id from product
-    @OneToMany(mappedBy="warehouse")
-    private Set<ProductEntity> products;
+//    @OneToMany(mappedBy="warehouse")
+//    private Set<ProductEntity> products;
 
 }

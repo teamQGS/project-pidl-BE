@@ -17,16 +17,20 @@ public class UserEntity {
 
     private String username;
 
-    private String firstName;
+    private String email;
 
-    private String lastName;
+    private String password;
 
-    private Boolean isAdult;
-
-    private String image; //Now it is a link to image. TODO create image variable
-    //get id from Contact
-    @ManyToOne
-    private ContactEntity contact;
-    @ManyToOne
-    private AddressEntity address;
+//    private String firstName;
+//
+//    private String lastName;
+//
+//    private Boolean isAdult;
+//
+//    private String image; //Now it is a link to image. TODO create image variable
+//    //get id from Contact
+//    @ManyToOne
+//    private ContactEntity contact;
+//    @ManyToOne
+//    private AddressEntity address;
 }

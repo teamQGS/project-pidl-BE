@@ -23,10 +23,10 @@ public class ContactEntity {
 
     //It isn't good idea (get information about User or Staff) for SQL, but for MongoDB it's fine.
     //get id from User
-    @OneToMany(mappedBy = "contact")
-    private Set<UserEntity> users;
-
-    //get id from Staff
-    @OneToMany(mappedBy = "contact")
-    private Set<StaffEntity> staff;
+//    @OneToMany(mappedBy = "contact")
+//    private Set<UserEntity> users;
+//
+//    //get id from Staff
+//    @OneToMany(mappedBy = "contact")
+//    private Set<StaffEntity> staff;
 }

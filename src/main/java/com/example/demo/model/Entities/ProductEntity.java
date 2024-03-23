@@ -25,8 +25,8 @@ public class ProductEntity {
     private double price;
 
     private String illustration; //Now it is a link to illustration. TODO create image variable
-
-    @ManyToOne
-    private WarehouseEntity warehouse;
+//
+//    @ManyToOne
+//    private WarehouseEntity warehouse;
 
 }

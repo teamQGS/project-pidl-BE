@@ -9,10 +9,12 @@ import lombok.Data;
 public class UserDTO {
     Long id;
     String username;
-    String firstName;
-    String lastName;
-    Boolean isAdult;
-    String image;
-    ContactDTO contact;
-    AddressDTO address;
+    String email;
+    String password;
+//    String firstName;
+//    String lastName;
+//    Boolean isAdult;
+//    String image;
+//    ContactDTO contact;
+//    AddressDTO address;
 }

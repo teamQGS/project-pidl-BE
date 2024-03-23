@@ -22,10 +22,10 @@ public class AddressEntity {
 
     //It isn't good idea (get information about User or Staff) for SQL, but for mongoDB is fine.
     //get id from User
-    @OneToMany(mappedBy = "address")
-    private Set<UserEntity> users;
-
-    //get id from Staff
-    @OneToMany(mappedBy = "address")
-    private Set<StaffEntity> staff;
+//    @OneToMany(mappedBy = "address")
+//    private Set<UserEntity> users;
+//
+//    //get id from Staff
+//    @OneToMany(mappedBy = "address")
+//    private Set<StaffEntity> staff;
 }

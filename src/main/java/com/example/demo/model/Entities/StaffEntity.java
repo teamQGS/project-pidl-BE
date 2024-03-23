@@ -27,8 +27,8 @@ public class StaffEntity {
     private String image; //Now it is a link to image. TODO create image variable
 
     //get id from Contact
-    @ManyToOne
-    private ContactEntity contact;
-    @ManyToOne
-    private AddressEntity address;
+//    @ManyToOne
+//    private ContactEntity contact;
+//    @ManyToOne
+//    private AddressEntity address;
 }
