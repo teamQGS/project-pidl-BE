@@ -1,36 +1,34 @@
 package com.example.demo.model.Entities;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Document(collection = "Users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Users")
 public class UserEntity {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     private String username;
 
-    private String email;
-
     private String password;
 
-//    private String firstName;
-//
-//    private String lastName;
-//
-//    private Boolean isAdult;
-//
-//    private String image; //Now it is a link to image. TODO create image variable
-//    //get id from Contact
-//    @ManyToOne
-//    private ContactEntity contact;
-//    @ManyToOne
-//    private AddressEntity address;
+    private String firstName;
+
+    private String lastName;
+
+    private int age;
+
+    //private Boolean isAdult;
+
+    //private String image; Now it is a link to image. TODO create image variable
+
+    //private String contactId;
+
+    //private String addressId;
 }
