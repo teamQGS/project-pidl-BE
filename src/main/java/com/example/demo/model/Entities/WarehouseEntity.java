@@ -1,29 +1,20 @@
 package com.example.demo.model.Entities;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Set;
-
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "Warehouse")
+@Document(collection = "Warehouse")
 public class WarehouseEntity {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
-    private int count;
+    private Integer count;
 
-    private int totalByes;
+    private Integer totalByes;
 
     //get id from product
-//    @OneToMany(mappedBy="warehouse")
-//    private Set<ProductEntity> products;
+    //private Set<String> products;
 
+    //getters and setters
 }
