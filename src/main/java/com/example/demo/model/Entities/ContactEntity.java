@@ -1,32 +1,29 @@
 package com.example.demo.model.Entities;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+// import java.util.Set;
 
-@Entity
+@Document(collection = "Contacts")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Contacts")
 public class ContactEntity {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     private String email;
 
     private String phoneNumber;
 
-    //It isn't good idea (get information about User or Staff) for SQL, but for MongoDB it's fine.
-    //get id from User
-//    @OneToMany(mappedBy = "contact")
-//    private Set<UserEntity> users;
-//
-//    //get id from Staff
-//    @OneToMany(mappedBy = "contact")
-//    private Set<StaffEntity> staff;
+    // It isn't good idea (get information about User or Staff) for SQL, but for MongoDB it's fine.
+    // get id from User
+    // private Set<String> userIds;
+
+    // get id from Staff
+    // private Set<String> staffIds;
 }

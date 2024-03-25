@@ -24,11 +24,11 @@ public class UserEntity {
 
     private int age;
 
-    //private Boolean isAdult;
+    private Boolean isAdult;
 
-    //private String image; Now it is a link to image. TODO create image variable
+    private String image; // Now it is a link to image. TODO create image variable
 
-    //private String contactId;
+    // private String contactId;
 
-    //private String addressId;
+    // private String addressId;
 }

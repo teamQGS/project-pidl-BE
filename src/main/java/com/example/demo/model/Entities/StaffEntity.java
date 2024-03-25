@@ -1,20 +1,19 @@
 package com.example.demo.model.Entities;
 
 import com.example.demo.model.Entities.Enums.Role;
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Document(collection = "Staff")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Staff")
 public class StaffEntity {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     private String firstName;
 
@@ -24,11 +23,9 @@ public class StaffEntity {
 
     private Boolean isAviable;
 
-    private String image; //Now it is a link to image. TODO create image variable
+    private String image; // Now it is a link to image. TODO create image variable
 
-    //get id from Contact
-//    @ManyToOne
-//    private ContactEntity contact;
-//    @ManyToOne
-//    private AddressEntity address;
+    // get id from Contact
+    // private String contactId;
+    // private String addressId;
 }

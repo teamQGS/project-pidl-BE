@@ -1,22 +1,19 @@
 package com.example.demo.model.Entities;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.awt.image.BufferedImage;
-
-@Entity
+@Document(collection = "Products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Products")
 public class ProductEntity {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -24,9 +21,8 @@ public class ProductEntity {
 
     private double price;
 
-    private String illustration; //Now it is a link to illustration. TODO create image variable
-//
-//    @ManyToOne
-//    private WarehouseEntity warehouse;
+    private String illustration; // Now it is a link to illustration. TODO create image variable
 
+    // get id from Warehouse
+    // private String warehouseId;
 }
