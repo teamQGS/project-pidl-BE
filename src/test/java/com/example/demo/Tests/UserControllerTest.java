@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Tests;
 
 import com.example.demo.Controllers.UserController;
 import com.example.demo.DTOS.UserDTO;
