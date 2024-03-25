@@ -1,20 +1,21 @@
 package com.example.demo.DTOS;
 
-import com.example.demo.model.Entities.Enums.Status;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
+import com.example.demo.Model.Entities.Enums.Status;
+
 @Data
 public class OrderDTO {
-    Long id;
+    String id;
     Date date;
-    Long userID; //or UserDTO userDTO, because we can get id from userDTO
-    Long StaffID; //or StaffDTO staffDTO
-    List<Long> productIds;
+    String userID; //or UserDTO userDTO, because we can get id from userDTO
+    String StaffID; //or StaffDTO staffDTO
+    List<String> productIds;
     List<Integer> count;
     double totalSum;
-    Long addressId;
+    String addressId;
     Status status;
 }

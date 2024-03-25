@@ -1,13 +1,10 @@
 package com.example.demo.DTOS;
 
-import com.example.demo.model.Entities.AddressEntity;
-import com.example.demo.model.Entities.ContactEntity;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
 public class UserDTO {
-    Long id;
+    String id;
     String username;
     String email;
     String password;
@@ -15,6 +12,6 @@ public class UserDTO {
 //    String lastName;
 //    Boolean isAdult;
 //    String image;
-//    ContactDTO contact;
-//    AddressDTO address;
+//    String contactId;
+//    String addressId;
 }

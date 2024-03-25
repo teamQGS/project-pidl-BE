@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class ContactDTO {
-    private Long id;
+    private String id;
     private String email;
     private String phoneNumber;
-    UserDTO userDTO;
-    StaffDTO staffDTO;
+    private String userId;
+    private String staffId;
 }
