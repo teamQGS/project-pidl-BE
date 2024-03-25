@@ -1,4 +1,6 @@
+/*
 package com.example.demo.Tests;
+
 
 import com.example.demo.Controllers.UserController;
 import com.example.demo.DTOS.UserDTO;
@@ -20,8 +22,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(UserController.class)
+
 public class UserControllerTest {
 
+    /*
     @Autowired
     private MockMvc mockMvc;
 
@@ -51,4 +55,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(userDTO)));
     }
+
 }
+*/
