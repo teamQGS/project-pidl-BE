@@ -16,15 +16,15 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping
-    public Long registerUser(@RequestBody UserDTO userDTO) {
+    public String registerUser(@RequestBody UserDTO userDTO) {
         logger.info("Registering user {}", userDTO);
-        Long info = userService.createUser(userDTO);
+        String info = userService.createUser(userDTO);
         logger.info("User was created with ID: {}", info);
         return info;
     }
 
     @DeleteMapping("/delete/{id}")
-    public UserDTO deleteUser(@PathVariable Long id) {
+    public UserDTO deleteUser(@PathVariable String id) {
         return userService.deleteUser(id);
     }
 }
