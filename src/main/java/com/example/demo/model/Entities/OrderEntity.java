@@ -1,6 +1,6 @@
-package com.example.demo.model.Entities;
+package com.example.demo.Model.Entities;
 
-import com.example.demo.model.Entities.Enums.Status;
+import com.example.demo.Model.Entities.Enums.Status;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;

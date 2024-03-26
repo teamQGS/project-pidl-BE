@@ -1,4 +1,4 @@
-package com.example.demo.model.Entities.Enums;
+package com.example.demo.Model.Entities.Enums;
 
 public enum Role {
     // TODO add roles

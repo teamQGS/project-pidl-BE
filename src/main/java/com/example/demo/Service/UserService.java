@@ -1,8 +1,8 @@
 package com.example.demo.Service;
 
 import com.example.demo.DTOS.UserDTO;
-import com.example.demo.model.Entities.UserEntity;
-import com.example.demo.model.Repositories.UserRepository;
+import com.example.demo.Model.Entities.UserEntity;
+import com.example.demo.Model.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package com.example.demo.model.Repositories;
+package com.example.demo.Model.Repositories;
 
-import com.example.demo.model.Entities.StaffEntity;
+import com.example.demo.Model.Entities.StaffEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
