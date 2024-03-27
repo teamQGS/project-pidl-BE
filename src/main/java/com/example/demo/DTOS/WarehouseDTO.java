@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class WarehouseDTO {
-    Long id;
+    String id;
     int count;
     int totalByes;
     ProductDTO productDTO;

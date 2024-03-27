@@ -1,19 +1,19 @@
 package com.example.demo.model.Entities;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Users")
+@Document(collection = "users")
 public class UserEntity {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     private String username;
 
@@ -21,12 +21,7 @@ public class UserEntity {
 
     private String lastName;
 
-    private Boolean isAdult;
+    private int age;
 
     private String image; //Now it is a link to image. TODO create image variable
-    //get id from Contact
-    @ManyToOne
-    private ContactEntity contact;
-    @ManyToOne
-    private AddressEntity address;
 }

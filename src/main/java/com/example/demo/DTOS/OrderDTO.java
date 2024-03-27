@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class OrderDTO {
-    Long id;
+    String id;
     Date date;
     Long userID; //or UserDTO userDTO, because we can get id from userDTO
     Long StaffID; //or StaffDTO staffDTO

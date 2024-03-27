@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class StaffDTO {
-    Long id;
+    String id;
     String firstName;
     String lastName;
     Role role;

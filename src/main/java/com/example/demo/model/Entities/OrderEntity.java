@@ -1,42 +1,41 @@
 package com.example.demo.model.Entities;
 
 import com.example.demo.model.Entities.Enums.Status;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
 import java.util.List;
 
-@Entity
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Orders")
+@Document(collection = "orders")
 public class OrderEntity {
 
-    //Ešte nie som istý, aká má byť štkruktúra.
-
     @Id
-    @GeneratedValue
-    private Long id;
+    private ObjectId id;
 
     private Date date;
+    @DocumentReference
+    private StaffEntity staffId;
+    @DocumentReference
+    private UserEntity userId;
 
-    private Long staffId;
-
-    private Long userId;
-
-    @ElementCollection
-    private List<Long> productIds;
-
-    @ElementCollection
-    private List<Integer> count;
+    @DocumentReference
+    private List<ProductEntity> productIds;
+    @DocumentReference
+    private List<ProductEntity> count;
 
     private double totalSum;
-
-    private Long addressId;
+    @DocumentReference
+    private AddressEntity addressId;
 
     private Status status;
 }
