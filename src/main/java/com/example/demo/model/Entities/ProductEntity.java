@@ -23,7 +23,7 @@ public class ProductEntity {
 
     private String description;
 
-    private double price;
+    private int price;
 
     private String illustration; //Now it is a link to illustration. TODO create image variable
     @DocumentReference

@@ -1,12 +1,13 @@
 package com.example.demo.DTOS;
 
 import lombok.Data;
+import org.bson.types.ObjectId;
 
 @Data
 public class ContactDTO {
-    private String id;
+    private ObjectId id;
+    private UserDTO userId;
+    private StaffDTO staffId;
     private String email;
-    private String phoneNumber;
-    UserDTO userDTO;
-    StaffDTO staffDTO;
+    private String phone;
 }

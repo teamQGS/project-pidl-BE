@@ -30,10 +30,10 @@ public class OrderEntity {
 
     @DocumentReference
     private List<ProductEntity> productIds;
-    @DocumentReference
+    @DocumentReference()
     private List<ProductEntity> count;
 
-    private double totalSum;
+    private int totalSum;
     @DocumentReference
     private AddressEntity addressId;
 
