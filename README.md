@@ -1,2 +1,2 @@
-# project-pidl-BE EXAMPLE
+# project-pidl-BE
 ## Back-End part of Pidl project

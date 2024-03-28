@@ -28,8 +28,10 @@ public class StaffEntity {
 
     private String image; //Now it is a link to image. TODO create image variable
 
+
     @DocumentReference
     private ContactEntity contact;
     @DocumentReference
     private AddressEntity address;
+
 }

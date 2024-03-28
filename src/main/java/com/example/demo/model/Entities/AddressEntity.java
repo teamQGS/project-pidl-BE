@@ -15,10 +15,12 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 @Document(collection = "address")
 public class AddressEntity {
     @Id
+
     private ObjectId id;
     @DocumentReference
     private UserEntity userId;
     @DocumentReference
     private StaffEntity staffId;
     private Object location;
+
 }

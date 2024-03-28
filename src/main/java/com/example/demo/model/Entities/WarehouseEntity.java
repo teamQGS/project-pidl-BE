@@ -23,6 +23,8 @@ public class WarehouseEntity {
     private int totalByes;
 
     //get id from product
+
     private ObjectId productId;
+
 
 }
