@@ -51,6 +51,7 @@ public class ProductService {
         warehouseEntity.setProductId(savedProduct.getId());
         warehouseRepository.save(warehouseEntity);
         return modelMapper.map(savedProduct, ProductDTO.class);
+
     }
 
     public ProductDTO updateProduct(ObjectId id, ProductDTO updatedProduct){
