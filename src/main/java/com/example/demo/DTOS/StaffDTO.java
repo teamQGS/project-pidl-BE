@@ -2,15 +2,16 @@ package com.example.demo.DTOS;
 
 import com.example.demo.model.Entities.Enums.Role;
 import lombok.Data;
+import org.bson.types.ObjectId;
 
 @Data
 public class StaffDTO {
-    Long id;
-    String firstName;
-    String lastName;
-    Role role;
-    Boolean isAviable;
-    String image;
+    private ObjectId id;
+    private String firstName;
+    private String lastName;
+    private Role role;
+    private Boolean isAviable;
+    private String image;
     ContactDTO contact;
     AddressDTO address;
 }
