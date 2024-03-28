@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.model.Entities.UserEntity;
+import com.example.demo.DTOS.UserDTO;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +19,11 @@ public class UserController {
     @Autowired
     private UserService service;
     @GetMapping
-    public ResponseEntity<List<UserEntity>> getAllUsers(){
+    public ResponseEntity<List<UserDTO>> getAllUsers(){
         return new ResponseEntity<>(service.getAllUsers(), HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UserEntity>> getUserById(@PathVariable int id){
+    public ResponseEntity<Optional<UserDTO>> getUserById(@PathVariable int id){
         return new ResponseEntity<>(service.getUserById(id), HttpStatus.OK);
     }
 }
