@@ -8,6 +8,9 @@ import com.example.demo.model.Repositories.WarehouseRepository;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +25,8 @@ public class ProductService {
     WarehouseRepository warehouseRepository;
     @Autowired
      ModelMapper modelMapper;
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public List<ProductDTO> getAllProducts(){
         List<ProductEntity> productEntities = productRepository.findAll();
@@ -41,7 +46,9 @@ public class ProductService {
             System.out.println("Product with ID: " + id + " was deleted!");
         });
 
-        return optionalProductEntity.map(ProductEntity-> modelMapper.map(optionalProductEntity, ProductDTO.class));
+        mongoTemplate.remove(Query.query(Criteria.where("productId").is(id)), WarehouseEntity.class);
+
+        return optionalProductEntity.map(productEntity -> modelMapper.map(productEntity, ProductDTO.class));
     }
     public ProductDTO createProduct(ProductDTO productDTO, int quantity){
         ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
@@ -51,7 +58,6 @@ public class ProductService {
         warehouseEntity.setProductId(savedProduct.getId());
         warehouseRepository.save(warehouseEntity);
         return modelMapper.map(savedProduct, ProductDTO.class);
-
     }
 
     public ProductDTO updateProduct(ObjectId id, ProductDTO updatedProduct){
