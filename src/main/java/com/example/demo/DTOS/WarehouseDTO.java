@@ -8,5 +8,5 @@ public class WarehouseDTO {
     private ObjectId id;
     private int count;
     private int totalByes;
-    private ProductDTO productDTO;
+    private ObjectId productId;
 }

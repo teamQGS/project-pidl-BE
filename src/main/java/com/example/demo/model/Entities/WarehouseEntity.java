@@ -23,7 +23,6 @@ public class WarehouseEntity {
     private int totalByes;
 
     //get id from product
-    @DocumentReference
-    private ProductEntity product;
+    private ObjectId productId;
 
 }
