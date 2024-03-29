@@ -24,7 +24,7 @@ public class ProductService {
     @Autowired
     WarehouseRepository warehouseRepository;
     @Autowired
-     ModelMapper modelMapper;
+    ModelMapper modelMapper;
     @Autowired
     MongoTemplate mongoTemplate;
 
@@ -60,13 +60,16 @@ public class ProductService {
         return modelMapper.map(savedProduct, ProductDTO.class);
     }
 
-    public ProductDTO updateProduct(ObjectId id, ProductDTO updatedProduct){
+    public ProductEntity updateProduct(ObjectId id, ProductDTO updatedProduct){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
         if(optionalProductEntity.isPresent()){
             ProductEntity productEntity = optionalProductEntity.get();
-            modelMapper.map(updatedProduct, productEntity);
-            ProductEntity savedProduct = productRepository.save(productEntity);
-            return modelMapper.map(savedProduct, ProductDTO.class);
+            productEntity.setName(updatedProduct.getName());
+            productEntity.setPrice(updatedProduct.getPrice());
+            productEntity.setDescription(updatedProduct.getDescription());
+            productEntity.setIllustration(updatedProduct.getIllustration());
+
+            return productRepository.save(productEntity);
         }else{
             System.out.println("There is no product with ID: " + id);
             return null;
