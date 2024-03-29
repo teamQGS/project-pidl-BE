@@ -35,8 +35,8 @@ public class ProductController {
         return new ResponseEntity<>(Optional.ofNullable(service.createProduct(productDTO, quantity)), HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable ObjectId id, @RequestBody ProductDTO productDTO){
-        ProductDTO updatedProduct = service.updateProduct(id, productDTO);
+    public ResponseEntity<ProductEntity> updateProduct(@PathVariable ObjectId id, @RequestBody ProductDTO productDTO){
+        ProductEntity updatedProduct = service.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProduct);
     }
 }
