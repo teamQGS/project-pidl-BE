@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "https://pidl.onrender.com")
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired

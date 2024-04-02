@@ -9,6 +9,7 @@ public class UserDTO {
     private String username;
     private String firstName;
     private String lastName;
+    private int age;
     private Boolean isAdult;
     private String image;
 }

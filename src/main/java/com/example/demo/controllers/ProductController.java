@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "https://pidl.onrender.com")
 @RequestMapping("/api/products")
 public class ProductController {
     @Autowired
