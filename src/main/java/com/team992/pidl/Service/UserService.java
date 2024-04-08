@@ -27,6 +27,7 @@ public class UserService {
     }
 
     public String createUser(UserDTO userDTO){
+        logger.info("Creating user with username: {}", userDTO.getUsername());
         UserEntity entity = new UserEntity();
         entity.setUsername(userDTO.getUsername());
         entity.setPassword(userDTO.getPassword());
@@ -38,33 +39,40 @@ public class UserService {
     }
 
     public UserDTO deleteUser(String id){
+        logger.info("Deleting user with ID: {}", id);
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No user found with id: " + id));
         UserDTO dto = toUserDTO(userEntity);
         contactRepository.delete(userEntity.getContact());
+        logger.info("Deleted contact with email: {}", userEntity.getContact().getEmail());
         userRepository.deleteById(id);
         logger.info("User with id: {} was deleted.", id);
         return dto;
     }
 
     public UserDTO getUser(String id){
+        logger.info("Retrieving user with ID: {}", id);
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No user found with id: " + id));
         return toUserDTO(userEntity);
     }
 
     public UserDTO updateUser(String id, UserDTO userDTO){
+        logger.info("Updating user with ID: {}", id);
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No user found with id: " + id));
         userEntity.setUsername(userDTO.getUsername());
         userEntity.setPassword(userDTO.getPassword());
         ContactEntity contactEntity = userEntity.getContact();
         if (!contactEntity.getEmail().equals(userDTO.getEmail())) {
+            logger.info("Updating contact email from {} to {}", contactEntity.getEmail(), userDTO.getEmail());
             contactEntity.setEmail(userDTO.getEmail());
             contactRepository.save(contactEntity);
         }
         userRepository.save(userEntity);
+        logger.info("User with ID: {} was updated.", id);
         return toUserDTO(userEntity);
     }
 
     public List<UserDTO> getAllUsers() {
+        logger.info("Retrieving all users");
         return userRepository.findAll().stream().map(this::toUserDTO).collect(Collectors.toList());
     }
 
@@ -78,9 +86,11 @@ public class UserService {
     }
 
     private ContactEntity createOrGetContact(String email) {
+        logger.info("Creating or retrieving contact with email: {}", email);
         return contactRepository.findByEmail(email).orElseGet(() -> {
             ContactEntity newContact = new ContactEntity();
             newContact.setEmail(email);
+            logger.info("Created new contact with email: {}", email);
             return contactRepository.save(newContact);
         });
     }
