@@ -30,25 +30,20 @@ public class UserService {
         UserEntity entity = new UserEntity();
         entity.setUsername(userDTO.getUsername());
         entity.setPassword(userDTO.getPassword());
-        entity.setContact(createOrGetContact(userDTO.getEmail())); // Create or get the contact entity associated with the user's email
-        userRepository.save(entity); // Save the user entity to the repository
-        logger.info("User was created with ID: {}", entity.getId()); // Log the creation of the user
-        return entity.getId(); // Return the ID of the created user
+        entity.setContact(createOrGetContact(userDTO.getEmail()));
+        userRepository.save(entity);
+        String id = entity.getId();
+        logger.info("User was created with ID: {}", id);
+        return id;
     }
 
     public UserDTO deleteUser(String id){
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No user found with id: " + id)); // Find the user entity by ID or throw an exception if not found
-    
-        UserDTO dto = new UserDTO();
-        dto.setId(userEntity.getId());
-        dto.setUsername(userEntity.getUsername());
-        dto.setEmail(userEntity.getContact().getEmail());
-        dto.setPassword(userEntity.getPassword());
-    
-        userRepository.deleteById(id); // Delete the user entity from the repository
-        logger.info("User with id: {} was deleted.", id); // Log the deletion of the user
-    
-        return dto; // Return the DTO of the deleted user
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No user found with id: " + id));
+        UserDTO dto = toUserDTO(userEntity);
+        contactRepository.delete(userEntity.getContact());
+        userRepository.deleteById(id);
+        logger.info("User with id: {} was deleted.", id);
+        return dto;
     }
 
     public UserDTO getUser(String id){
@@ -60,7 +55,11 @@ public class UserService {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No user found with id: " + id));
         userEntity.setUsername(userDTO.getUsername());
         userEntity.setPassword(userDTO.getPassword());
-        userEntity.setContact(createOrGetContact(userDTO.getEmail()));
+        ContactEntity contactEntity = userEntity.getContact();
+        if (!contactEntity.getEmail().equals(userDTO.getEmail())) {
+            contactEntity.setEmail(userDTO.getEmail());
+            contactRepository.save(contactEntity);
+        }
         userRepository.save(userEntity);
         return toUserDTO(userEntity);
     }
@@ -79,10 +78,10 @@ public class UserService {
     }
 
     private ContactEntity createOrGetContact(String email) {
-        return contactRepository.findByEmail(email).orElseGet(() -> { // Find the contact entity by email or create a new one if not found
+        return contactRepository.findByEmail(email).orElseGet(() -> {
             ContactEntity newContact = new ContactEntity();
             newContact.setEmail(email);
-            return contactRepository.save(newContact); // Save the new contact entity to the repository
+            return contactRepository.save(newContact);
         });
     }
 }
