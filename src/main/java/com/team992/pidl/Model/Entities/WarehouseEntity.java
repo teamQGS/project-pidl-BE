@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "Warehouse")
+@Document(collection = "warehouse")
 @Data
 @NoArgsConstructor
 public class WarehouseEntity {

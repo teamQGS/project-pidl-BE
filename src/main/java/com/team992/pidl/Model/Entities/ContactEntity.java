@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 // import java.util.Set;
 
-@Document(collection = "Contacts")
+@Document(collection = "contacts")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
