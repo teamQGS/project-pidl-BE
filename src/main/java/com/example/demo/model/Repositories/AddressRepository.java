@@ -1,10 +1,11 @@
 package com.example.demo.model.Repositories;
 
 import com.example.demo.model.Entities.AddressEntity;
-import org.springframework.data.repository.CrudRepository;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AddressRepository extends CrudRepository<AddressEntity, Long> {
+public interface AddressRepository extends MongoRepository<AddressEntity, ObjectId> {
 
 }

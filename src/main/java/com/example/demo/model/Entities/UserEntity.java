@@ -1,36 +1,30 @@
 package com.example.demo.model.Entities;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
-@Entity
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Users")
 public class UserEntity {
     @Id
-    @GeneratedValue
-    private Long id;
+    private ObjectId id;
+
+    private int _numericalId;
 
     private String username;
 
-    private String email;
+    private String firstName;
 
-    private String password;
+    private String lastName;
 
-//    private String firstName;
-//
-//    private String lastName;
-//
-//    private Boolean isAdult;
-//
-//    private String image; //Now it is a link to image. TODO create image variable
-//    //get id from Contact
-//    @ManyToOne
-//    private ContactEntity contact;
-//    @ManyToOne
-//    private AddressEntity address;
+    private int age;
+
+    private Boolean isAdult;
+
+    private String image; //Now it is a link to image. TODO create image variable
 }

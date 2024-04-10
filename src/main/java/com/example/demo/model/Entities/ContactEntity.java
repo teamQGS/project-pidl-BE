@@ -1,32 +1,24 @@
 package com.example.demo.model.Entities;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import java.util.Set;
-
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Contacts")
+@Document(collection = "contacts")
 public class ContactEntity {
     @Id
-    @GeneratedValue
-    private Long id;
-
+    private ObjectId id;
+    @DocumentReference
+    private UserEntity userId;
+    @DocumentReference
+    private StaffEntity staffId;
     private String email;
-
-    private String phoneNumber;
-
-    //It isn't good idea (get information about User or Staff) for SQL, but for MongoDB it's fine.
-    //get id from User
-//    @OneToMany(mappedBy = "contact")
-//    private Set<UserEntity> users;
-//
-//    //get id from Staff
-//    @OneToMany(mappedBy = "contact")
-//    private Set<StaffEntity> staff;
+    private String phone;
 }
