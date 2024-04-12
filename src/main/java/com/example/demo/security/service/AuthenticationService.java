@@ -1,35 +1,90 @@
 package com.example.demo.security.service;
 
-import com.example.demo.security.persistance.AuthUser;
-import com.example.demo.security.persistance.AuthUserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.example.demo.model.Entities.UserEntity;
+import com.example.demo.model.Repositories.UserRepository;
+import com.example.demo.security.persistence.RoleEntity;
+import com.example.demo.security.persistence.TokenEntity;
+import com.example.demo.security.persistence.TokenRepository;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
-public class AuthenticationService implements UserDetailsService {
+public class AuthenticationService {
+    private static final int TOKEN_VALIDITY_IN_MINUTES = 15;
+    private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
+    private final PasswordEncoder passwordEncoder;
+    // https://bcrypt-generator.com/, round 1
 
-    @Autowired
-    private AuthUserRepository userRepository;
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AuthUser> authUser = userRepository.findByUsername(username.toLowerCase());
-        if(authUser.isEmpty()){
-            throw new UsernameNotFoundException(username);
-        }else{
-            return User.builder()
-                    .username(authUser.get().getUsername())
-                    .password(authUser.get().getPassword())
-                    .disabled(!authUser.get().isActive)
-                    .build();
+
+    public AuthenticationService(UserRepository userRepository, TokenRepository tokenRepository) {
+        this.userRepository = userRepository;
+        this.tokenRepository = tokenRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
+    @Transactional
+    public String authenticate(String username, String password) {
+        Optional<UserEntity> optionalUser = userRepository.findByUsername(username);
+
+        if (optionalUser.isEmpty()) {
+            throw new AuthenticationCredentialsNotFoundException("Username and/or password do not match!");
+        }
+
+        if (!passwordEncoder.matches(password, optionalUser.get().getPasswordHash())) {
+            throw new AuthenticationCredentialsNotFoundException("Username and/or password do not match!");
+        }
+
+        TokenEntity token = new TokenEntity();
+        String randomString = UUID.randomUUID().toString();
+        token.setToken(randomString);
+        token.setUser(optionalUser.get());
+        token.setCreatedAt(LocalDateTime.now());
+        tokenRepository.save(token);
+
+        return token.getToken();
+    }
+
+    @Transactional
+    public UserRolesDto authenticate(String token) {
+        Optional<TokenEntity> optionalToken = tokenRepository.findByToken(token);
+
+        if (optionalToken.isEmpty()) {
+            throw new AuthenticationCredentialsNotFoundException("Authentication failed!");
+        }
+
+        validateTokenExpiration(optionalToken.get());
+
+        Set<RoleEntity> roles = optionalToken.get().getUser().getRoles();
+        Set<String> roleNames = roles.stream()
+                                     .map( entry -> entry.getRoleName())
+                                     .collect(Collectors.toSet());
+
+        return new UserRolesDto(optionalToken.get().getUser().getUsername(), roleNames);
+    }
+
+    private void validateTokenExpiration(TokenEntity token) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tokenExpiration = token.getCreatedAt().plus(TOKEN_VALIDITY_IN_MINUTES, ChronoUnit.MINUTES);
+
+        if (now.isAfter(tokenExpiration)) {
+            throw new AuthenticationCredentialsNotFoundException("Authentication failed!");
         }
     }
+
+    @Transactional
+    public void tokenRemove(String token) {
+        tokenRepository.deleteByToken(token);
+    }
+
 }

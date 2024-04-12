@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends MongoRepository<UserEntity, ObjectId> {
     Optional<UserEntity> findBy_numericalId(int numericalId);
+    Optional<UserEntity> findByUsername(String username);
 }

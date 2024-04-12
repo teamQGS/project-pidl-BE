@@ -1,38 +1,53 @@
 package com.example.demo.security.controller;
 
-import com.example.demo.security.persistance.AuthUser;
-import com.example.demo.security.persistance.AuthUserRepository;
-import lombok.AllArgsConstructor;
+import com.example.demo.security.service.AuthenticationService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/api/users")
-@AllArgsConstructor
 public class AuthenticationController {
 
-    @Autowired
-    private AuthUserRepository userRepository;
-    @Autowired
-    private  PasswordEncoder passwordEncoder;
+    private final String AUTHORIZATION_HEADER = "Authorization";
 
-    @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody AuthUser user){
-        try {
-            if(userRepository.findByUsername(user.getUsername()).isPresent()){
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("User with this username already exist");
-            }
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            AuthUser saved = userRepository.save(user);
-            return new ResponseEntity<AuthUser>(HttpStatus.CREATED);
-        }catch (Exception e){
-            return ResponseEntity.internalServerError().body(e.getMessage());
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @PostMapping("/api/authentication")
+    public void login(@RequestHeader(value = AUTHORIZATION_HEADER, required = false) Optional<String> authentication,
+                      HttpServletResponse response) {
+        if (authentication.isEmpty()) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return;
         }
+
+        String[] credentials = credentialsDecode(authentication.get());
+        String token = authenticationService.authenticate(credentials[0], credentials[1]);
+
+        response.setStatus(HttpStatus.OK.value());
+        response.addHeader(AUTHORIZATION_HEADER, "Bearer " + token);
     }
+
+    private static String[] credentialsDecode(String authorization) {
+        String base64Credentials = authorization.substring("Basic".length()).trim();
+        byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
+        String credentials = new String(credDecoded, StandardCharsets.UTF_8);
+        return  credentials.split(":", 2);
+    }
+
+    @DeleteMapping("/api/authentication")
+    public void logoff(@RequestHeader(value = AUTHORIZATION_HEADER, required = true) Optional<String> authentication) {
+        String token = authentication.get().substring("Bearer".length()).trim();
+        authenticationService.tokenRemove(token);
+    }
+
 }
