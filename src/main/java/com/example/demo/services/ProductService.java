@@ -31,13 +31,18 @@ public class ProductService {
     public List<ProductDTO> getAllProducts(){
         List<ProductEntity> productEntities = productRepository.findAll();
         return productEntities.stream()
-                .map(ProductEntity -> modelMapper.map(productEntities, ProductDTO.class))
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+    public ProductDTO convertToDTO(ProductEntity productEntity){
+        return modelMapper.map(productEntity, ProductDTO.class);
     }
     public Optional<ProductDTO> getProductById(ObjectId id){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
         return optionalProductEntity.map(ProductEntity -> modelMapper.map(optionalProductEntity, ProductDTO.class));
     }
+
+
     public Optional<ProductDTO> deleteProductById(ObjectId id){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
 
