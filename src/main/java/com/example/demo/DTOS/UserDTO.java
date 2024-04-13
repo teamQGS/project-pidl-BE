@@ -1,15 +1,20 @@
 package com.example.demo.DTOS;
 
-import lombok.Data;
+import lombok.*;
+import org.bson.types.ObjectId;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
-    private int _numericalId ;
+    private ObjectId id;
     private String username;
+    private String password;
     private String firstName;
     private String lastName;
     private int age;
-    private Boolean isAdult;
     private String image;
+    private String token;
 }

@@ -23,8 +23,7 @@ public class OrderEntity {
     private ObjectId id;
 
     private Date date;
-    @DocumentReference
-    private StaffEntity staffId;
+
     @DocumentReference
     private UserEntity userId;
 

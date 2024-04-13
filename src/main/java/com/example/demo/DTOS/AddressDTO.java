@@ -7,5 +7,5 @@ public class AddressDTO {
     private String id;
     private String street;
     UserDTO userDTO;
-    StaffDTO staffDTO;
+
 }

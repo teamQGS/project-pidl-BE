@@ -12,7 +12,6 @@ public class OrderDTO {
     private ObjectId id;
     private Date date;
     private UserDTO userID;
-    private StaffDTO staffId;
     private List<ProductDTO> productIds;
     private List<ProductDTO> count;
     private int totalSum;

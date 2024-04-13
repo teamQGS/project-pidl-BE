@@ -19,8 +19,7 @@ public class AddressEntity {
     private ObjectId id;
     @DocumentReference
     private UserEntity userId;
-    @DocumentReference
-    private StaffEntity staffId;
+
     private Object location;
 
 }

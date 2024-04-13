@@ -7,7 +7,6 @@ import org.bson.types.ObjectId;
 public class ContactDTO {
     private ObjectId id;
     private UserDTO userId;
-    private StaffDTO staffId;
     private String email;
     private String phone;
 }

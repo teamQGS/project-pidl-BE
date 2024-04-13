@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -17,13 +18,14 @@ import java.time.LocalDateTime;
 public class TokenEntity {
 
     @Id
-
     private ObjectId id;
 
     private String token;
 
+    @DBRef
     private UserEntity user;
 
     private LocalDateTime createdAt;
 
+    private boolean loggedOut;
 }

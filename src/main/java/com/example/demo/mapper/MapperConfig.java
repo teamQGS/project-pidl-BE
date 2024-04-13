@@ -1,8 +1,6 @@
 package com.example.demo.mapper;
 
-import com.example.demo.DTOS.ProductDTO;
-import com.example.demo.DTOS.UserDTO;
-import com.example.demo.DTOS.WarehouseDTO;
+import com.example.demo.DTOS.*;
 import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Entities.UserEntity;
 import com.example.demo.model.Entities.WarehouseEntity;
@@ -22,7 +20,8 @@ public class MapperConfig {
         modelMapper.createTypeMap(ProductEntity.class, ProductDTO.class);
         modelMapper.createTypeMap(UserEntity.class, UserDTO.class);
         modelMapper.createTypeMap(WarehouseEntity.class, WarehouseDTO.class);
-
+        modelMapper.createTypeMap(UserEntity.class, LoginDTO.class);
+        modelMapper.createTypeMap(UserEntity.class, SignUpDTO.class);
         return modelMapper;
     }
 }

@@ -17,8 +17,6 @@ public class ContactEntity {
     private ObjectId id;
     @DocumentReference
     private UserEntity userId;
-    @DocumentReference
-    private StaffEntity staffId;
     private String email;
     private String phone;
 }

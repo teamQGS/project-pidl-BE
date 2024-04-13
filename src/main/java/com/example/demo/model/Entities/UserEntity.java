@@ -1,11 +1,13 @@
 package com.example.demo.model.Entities;
 
 import com.example.demo.security.persistence.RoleEntity;
+import com.example.demo.security.persistence.TokenEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
@@ -20,17 +22,20 @@ public class UserEntity {
     @Id
     private ObjectId id;
 
-    private int _numericalId;
-
     private String username;
 
-    private String passwordHash;
+    private String password;
 
     private Set<RoleEntity> roles = new HashSet<>();
 
     private String firstName;
 
     private String lastName;
+
+    @DBRef
+    private TokenEntity tokenEntity;
+
+    private String token;
 
     private int age;
 
