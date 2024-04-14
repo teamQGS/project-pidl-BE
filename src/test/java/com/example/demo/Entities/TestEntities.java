@@ -50,7 +50,11 @@ public class TestEntities {
         AddressEntity address = new AddressEntity();
         address.setId(new ObjectId());
         address.setUserId(createUser());
-        address.setLocation("testLocation");
+        address.setCity("testCity");
+        address.setStreet("testStreet");
+        address.setHouse("testHouse");
+        address.setFlat("testFlat");
+        address.setPostcode("testPostcode");
         return address;
     }
 

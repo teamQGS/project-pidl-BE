@@ -20,6 +20,10 @@ public class AddressEntity {
     @DocumentReference
     private UserEntity userId;
 
-    private Object location;
+    private String city;
+    private String street;
+    private String house;
+    private String flat;
+    private String postcode;
 
 }
