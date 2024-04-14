@@ -29,8 +29,7 @@ public class OrderEntity {
 
     @DocumentReference
     private List<ProductEntity> productIds;
-    @DocumentReference()
-    private List<ProductEntity> count;
+    private List<Integer> count;
 
     private int totalSum;
     @DocumentReference
