@@ -12,6 +12,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 // TODO: Fix org.springframework.dao.DataIntegrityViolationException caused by the old staff fields in database
+// WAITING FOR THE FIX
 @DataMongoTest
 public class OrderRepositoryTest {
 
