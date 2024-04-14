@@ -34,4 +34,8 @@ public class OrderService {
             throw new IllegalArgumentException("Order Not Found: " + id);
         }
     }
+
+    public OrderEntity saveOrder(OrderEntity order) {
+        return orderRepository.save(order);
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,24 @@ public class OrderController {
         }
     }
 
+    // Method to create an order
+    @PostMapping
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO, @RequestHeader(value = "Authorization", required = false) String authentication) {
+        if (authentication != null) {
+            String[] authArray = authentication.split(" ");
+            Authentication auth = userAuthProvider.validateToken(authArray[1]);
+            UserDTO userDTO = (UserDTO) auth.getPrincipal();
+            orderDTO.setUserID(userDTO); // Set the user who created the order
+
+            OrderEntity orderEntity = modelMapper.map(orderDTO, OrderEntity.class);
+            OrderEntity savedOrderEntity = orderService.saveOrder(orderEntity);
+            OrderDTO savedOrderDTO = convertToDTO(savedOrderEntity);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedOrderDTO);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     public OrderDTO convertToDTO(OrderEntity orderEntity){
     OrderDTO orderDTO = modelMapper.map(orderEntity, OrderDTO.class);
 
@@ -96,5 +115,5 @@ public class OrderController {
     orderDTO.setProductIds(productDTOs);
 
     return orderDTO;
-    }
+    }  
 }
