@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.DTOS.LoginDTO;
 import com.example.demo.DTOS.SignUpDTO;
 import com.example.demo.DTOS.UserDTO;
+import com.example.demo.model.Entities.Enums.Role;
 import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -68,5 +69,21 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
     }
-}
 
+    @GetMapping("/admin")
+    public ResponseEntity<String> getAdminPage(@RequestHeader(value = "Authorization", required = false) String authentication) {
+        if (authentication != null) {
+            String[] authArray = authentication.split(" ");
+            Authentication auth = userAuthProvider.validateToken(authArray[1]);
+            UserDTO userDTO = (UserDTO) auth.getPrincipal();
+            if (service.userHasRole(userDTO.getUsername(), Role.ADMIN)) {
+                return ResponseEntity.ok("Welcome, admin!");
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not an admin!");
+            }
+        } else {
+            System.out.println("NO HEADER AUTH"); //
+            return ResponseEntity.badRequest().build();
+        }
+    }
+}

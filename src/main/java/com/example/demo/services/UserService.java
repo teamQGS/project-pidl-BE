@@ -4,6 +4,7 @@ import com.example.demo.DTOS.LoginDTO;
 import com.example.demo.DTOS.SignUpDTO;
 import com.example.demo.DTOS.UserDTO;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.Entities.Enums.Role;
 import com.example.demo.model.Entities.UserEntity;
 import com.example.demo.model.Repositories.UserRepository;
 import com.example.demo.security.config.AppException;
@@ -39,9 +40,11 @@ public class UserService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
     public UserDTO convertToDTO(UserEntity userEntity){
         return modelMapper.map(userEntity, UserDTO.class);
     }
+
     public Optional<UserDTO> getUserById(ObjectId id){
         Optional<UserEntity> userEntity = repository.findById(id);
         return userEntity.map(UserEntity-> modelMapper.map(userEntity, UserDTO.class));
@@ -88,4 +91,8 @@ public class UserService {
         }
     }
 
+    public boolean userHasRole(String username, Role role) {
+        Optional<UserEntity> user = repository.findByUsername(username);
+        return user.isPresent() && user.get().getRoles().contains(role);
+    }
 }
