@@ -23,4 +23,14 @@ public class RoleController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admins can assign roles");
         }
     }
+
+    @DeleteMapping("/remove/{username}")
+    public ResponseEntity<?> removeRole(@PathVariable String username, @RequestBody Role role) {
+        if (userService.userHasRole(username, Role.ADMIN)) {
+            userService.removeRole(username, role);
+            return ResponseEntity.ok("Role removed successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admins can remove roles");
+        }
+    }
 }

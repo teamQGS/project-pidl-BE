@@ -116,4 +116,19 @@ public class UserService {
     
         repository.save(user);
     }
+
+    // This method removes a role from a user
+    public void removeRole(String username, Role role) {
+        UserEntity user = repository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+    
+        RoleEntity roleEntity = user.getRoles().stream()
+            .filter(r -> r.getRoleName().equals(role.name()))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Role Not Found: " + role));
+    
+        user.getRoles().remove(roleEntity);
+    
+        repository.save(user);
+    }
 }
