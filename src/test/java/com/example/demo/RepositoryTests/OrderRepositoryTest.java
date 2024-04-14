@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.RepositoryTests;
 
 import com.example.demo.model.Entities.OrderEntity;
 import com.example.demo.model.Repositories.OrderRepository;
