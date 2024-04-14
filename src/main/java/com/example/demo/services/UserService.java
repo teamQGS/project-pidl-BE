@@ -9,6 +9,7 @@ import com.example.demo.model.Entities.UserEntity;
 import com.example.demo.model.Repositories.UserRepository;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
+import com.example.demo.security.persistence.RoleEntity;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,12 +67,17 @@ public class UserService {
 
     public UserDTO register(SignUpDTO signUpDTO){
         Optional<UserEntity> user = repository.findByUsername(signUpDTO.username());
-
+    
         if(user.isPresent()) {
-            throw new AppException("Email exists", HttpStatus.BAD_REQUEST);
+            throw new AppException("Username exists", HttpStatus.BAD_REQUEST);
         }
         UserEntity userEntity = userMapper.signUpToUser(signUpDTO);
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
+        
+        RoleEntity customerRole = new RoleEntity();
+        customerRole.setRoleName(Role.CUSTOMER.toString());
+        userEntity.getRoles().add(customerRole);
+        
         String token = userAuthProvider.createToken(userEntity);
         userEntity.setToken(token);
         UserEntity saved = repository.save(userEntity);
