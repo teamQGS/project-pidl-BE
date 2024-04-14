@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.nio.CharBuffer;
 import java.util.List;
@@ -74,8 +75,9 @@ public class UserService {
         UserEntity userEntity = userMapper.signUpToUser(signUpDTO);
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
         
+        // Assign the role of CUSTOMER to the user
         RoleEntity customerRole = new RoleEntity();
-        customerRole.setRoleName(Role.CUSTOMER.toString());
+        customerRole.setRoleName(Role.CUSTOMER.toString()); // Set the role name to CUSTOMER
         userEntity.getRoles().add(customerRole);
         
         String token = userAuthProvider.createToken(userEntity);
@@ -97,8 +99,21 @@ public class UserService {
         }
     }
 
+    // This method checks if a user has a role
     public boolean userHasRole(String username, Role role) {
         Optional<UserEntity> user = repository.findByUsername(username);
         return user.isPresent() && user.get().getRoles().contains(role);
+    }
+
+    // This method assigns a role to a user
+    public void assignRole(String username, Role role) {
+        UserEntity user = repository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+    
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setRoleName(role.name());
+        user.getRoles().add(roleEntity);
+    
+        repository.save(user);
     }
 }
