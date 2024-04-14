@@ -70,6 +70,7 @@ public class UserController {
         }
     }
 
+    // This method is used to assign a role to a user
     @GetMapping("/admin")
     public ResponseEntity<String> getAdminPage(@RequestHeader(value = "Authorization", required = false) String authentication) {
         if (authentication != null) {

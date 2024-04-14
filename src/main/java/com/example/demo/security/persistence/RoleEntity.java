@@ -17,5 +17,5 @@ public class RoleEntity {
     private ObjectId id;
 
     private String roleName;
-
+    
 }
