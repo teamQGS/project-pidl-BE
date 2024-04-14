@@ -2,12 +2,14 @@ package com.example.demo.services;
 
 import com.example.demo.DTOS.*;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.Entities.Enums.Role;
 import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Entities.UserEntity;
 import com.example.demo.model.Entities.WarehouseEntity;
 import com.example.demo.model.Repositories.UserRepository;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
+import com.example.demo.security.persistence.RoleEntity;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +78,11 @@ public class UserService {
         }
         UserEntity userEntity = userMapper.signUpToUser(signUpDTO);
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
+
+        RoleEntity customerRole = new RoleEntity();
+        customerRole.setRoleName(Role.CUSTOMER.toString());
+        userEntity.getRoles().add(customerRole);
+
         String token = userAuthProvider.createToken(userEntity);
         userEntity.setToken(token);
         UserEntity saved = repository.save(userEntity);
@@ -114,5 +122,37 @@ public class UserService {
         user.setAddress(updateUserDTO.address());
         UserEntity saved = repository.save(user);
         return userMapper.toUserDTO(saved);
+    }
+
+    public boolean userHasRole(String username, Role role) {
+        Optional<UserEntity> user = repository.findByUsername(username);
+        return user.isPresent() && user.get().getRoles().contains(role);
+    }
+
+    // This method assigns a role to a user
+    public void assignRole(String username, Role role) {
+        UserEntity user = repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setRoleName(role.name());
+        user.getRoles().add(roleEntity);
+
+        repository.save(user);
+    }
+
+    // This method removes a role from a user
+    public void removeRole(String username, Role role) {
+        UserEntity user = repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+
+        RoleEntity roleEntity = user.getRoles().stream()
+                .filter(r -> r.getRoleName().equals(role.name()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Role Not Found: " + role));
+
+        user.getRoles().remove(roleEntity);
+
+        repository.save(user);
     }
 }
