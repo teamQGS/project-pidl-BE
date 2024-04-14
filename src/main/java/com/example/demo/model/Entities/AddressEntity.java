@@ -20,6 +20,9 @@ public class AddressEntity {
     @DocumentReference
     private UserEntity userId;
 
+    // private Object location;
+
+    // below are not tested
     private String city;
     private String street;
     private String house;
