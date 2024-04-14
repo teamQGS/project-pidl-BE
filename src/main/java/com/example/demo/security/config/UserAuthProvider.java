@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
@@ -51,7 +52,7 @@ public class UserAuthProvider {
                 .username(parts[1])
                 .password(decodedJWT.getClaim("password").asString())
                 .build();
-
+        System.out.println(user);
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 }

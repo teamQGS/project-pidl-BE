@@ -1,22 +1,22 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOS.LoginDTO;
-import com.example.demo.DTOS.SignUpDTO;
-import com.example.demo.DTOS.UserDTO;
+import com.example.demo.DTOS.*;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.model.Entities.Enums.Role;
+import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Entities.UserEntity;
+import com.example.demo.model.Entities.WarehouseEntity;
 import com.example.demo.model.Repositories.UserRepository;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
-import com.example.demo.security.persistence.RoleEntity;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.nio.CharBuffer;
 import java.util.List;
@@ -35,6 +35,8 @@ public class UserService {
     UserMapper userMapper;
     @Autowired
     private UserAuthProvider userAuthProvider;
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public List<UserDTO> getAllUsers(){
         List<UserEntity> userEntities = repository.findAll();
@@ -42,7 +44,6 @@ public class UserService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
     public UserDTO convertToDTO(UserEntity userEntity){
         return modelMapper.map(userEntity, UserDTO.class);
     }
@@ -68,18 +69,12 @@ public class UserService {
 
     public UserDTO register(SignUpDTO signUpDTO){
         Optional<UserEntity> user = repository.findByUsername(signUpDTO.username());
-    
+
         if(user.isPresent()) {
-            throw new AppException("Username exists", HttpStatus.BAD_REQUEST);
+            throw new AppException("Email exists", HttpStatus.BAD_REQUEST);
         }
         UserEntity userEntity = userMapper.signUpToUser(signUpDTO);
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
-        
-        // Assign the role of CUSTOMER to the user
-        RoleEntity customerRole = new RoleEntity();
-        customerRole.setRoleName(Role.CUSTOMER.toString()); // Set the role name to CUSTOMER
-        userEntity.getRoles().add(customerRole);
-        
         String token = userAuthProvider.createToken(userEntity);
         userEntity.setToken(token);
         UserEntity saved = repository.save(userEntity);
@@ -99,36 +94,25 @@ public class UserService {
         }
     }
 
-    // This method checks if a user has a role
-    public boolean userHasRole(String username, Role role) {
+    public Optional<UserDTO> deleteUserByUsername(String username){
         Optional<UserEntity> user = repository.findByUsername(username);
-        return user.isPresent() && user.get().getRoles().contains(role);
+        user.ifPresent(userEntity -> {
+            repository.deleteByUsername(username);
+            System.out.println("User with username: " + username + " was deleted!");
+        });
+        mongoTemplate.remove(Query.query(Criteria.where("username").is(username)), UserEntity.class);
+
+        return user.map(userEntity -> modelMapper.map(userEntity, UserDTO.class));
     }
 
-    // This method assigns a role to a user
-    public void assignRole(String username, Role role) {
-        UserEntity user = repository.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-    
-        RoleEntity roleEntity = new RoleEntity();
-        roleEntity.setRoleName(role.name());
-        user.getRoles().add(roleEntity);
-    
-        repository.save(user);
-    }
-
-    // This method removes a role from a user
-    public void removeRole(String username, Role role) {
-        UserEntity user = repository.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-    
-        RoleEntity roleEntity = user.getRoles().stream()
-            .filter(r -> r.getRoleName().equals(role.name()))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Role Not Found: " + role));
-    
-        user.getRoles().remove(roleEntity);
-    
-        repository.save(user);
+    public UserDTO updateUser (UpdateUserDTO updateUserDTO){
+        UserEntity user = repository.findByUsername(updateUserDTO.username())
+                .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
+        user.setFirstName(updateUserDTO.firstName());
+        user.setLastName(updateUserDTO.lastName());
+        user.setEmail(updateUserDTO.email());
+        user.setAddress(updateUserDTO.address());
+        UserEntity saved = repository.save(user);
+        return userMapper.toUserDTO(saved);
     }
 }
