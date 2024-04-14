@@ -21,25 +21,16 @@ import java.util.Set;
 public class UserEntity {
     @Id
     private ObjectId id;
-
     private String username;
-
     private String password;
-
     private Set<RoleEntity> roles = new HashSet<>();
-
     private String firstName;
-
     private String lastName;
 
     @DBRef
     private TokenEntity tokenEntity;
-
     private String token;
-
     private int age;
-
     private Boolean isAdult;
-
     private String image; //Now it is a link to image. TODO create image variable
 }
