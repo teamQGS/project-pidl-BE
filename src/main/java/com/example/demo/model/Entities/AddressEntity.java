@@ -20,13 +20,12 @@ public class AddressEntity {
     @DocumentReference
     private UserEntity userId;
 
-    // private Object location;
+    // private Object location; // TODO: delete
 
     // below are not tested
     private String city;
     private String street;
     private String house;
-    private String flat;
     private String postcode;
-
+    private String countrycode;
 }
