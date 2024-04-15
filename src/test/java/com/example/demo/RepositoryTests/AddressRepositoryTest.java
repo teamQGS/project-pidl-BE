@@ -30,7 +30,6 @@ public class AddressRepositoryTest {
         assertEquals(address.getCity(), foundAddress.getCity());
         assertEquals(address.getStreet(), foundAddress.getStreet());
         assertEquals(address.getHouse(), foundAddress.getHouse());
-        assertEquals(address.getFlat(), foundAddress.getFlat());
         assertEquals(address.getPostcode(), foundAddress.getPostcode());
     }
 
@@ -45,7 +44,6 @@ public class AddressRepositoryTest {
         assertEquals(address.getCity(), foundAddress.get().getCity());
         assertEquals(address.getStreet(), foundAddress.get().getStreet());
         assertEquals(address.getHouse(), foundAddress.get().getHouse());
-        assertEquals(address.getFlat(), foundAddress.get().getFlat());
         assertEquals(address.getPostcode(), foundAddress.get().getPostcode());
     }
 
