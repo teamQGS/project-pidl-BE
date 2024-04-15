@@ -31,6 +31,7 @@ public class AddressRepositoryTest {
         assertEquals(address.getStreet(), foundAddress.getStreet());
         assertEquals(address.getHouse(), foundAddress.getHouse());
         assertEquals(address.getPostcode(), foundAddress.getPostcode());
+        assertEquals(address.getCountrycode(), foundAddress.getCountrycode());
     }
 
     @Test

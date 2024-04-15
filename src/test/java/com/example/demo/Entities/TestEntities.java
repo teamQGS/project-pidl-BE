@@ -53,8 +53,8 @@ public class TestEntities {
         address.setCity("testCity");
         address.setStreet("testStreet");
         address.setHouse("testHouse");
-        address.setFlat("testFlat");
         address.setPostcode("testPostcode");
+        address.setCountrycode("testCountrycode");
         return address;
     }
 
