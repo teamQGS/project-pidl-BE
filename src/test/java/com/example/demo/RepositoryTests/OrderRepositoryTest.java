@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import com.example.demo.Entities.TestEntities;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // TODO: Fix org.springframework.dao.DataIntegrityViolationException caused by the old staff fields in database
 // WAITING FOR THE FIX
 @DataMongoTest
+@TestPropertySource(locations = "classpath:application.test.properties")
 public class OrderRepositoryTest {
 
     @Autowired

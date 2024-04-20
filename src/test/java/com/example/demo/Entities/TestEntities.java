@@ -21,6 +21,7 @@ public class TestEntities {
         user.setLastName("testLastName");
         user.setToken("testToken");
         user.setAge(30);
+        user.setEmail("test@test.com");
         user.setIsAdult(true);
         user.setImage("testImage");
         return user;
@@ -53,8 +54,8 @@ public class TestEntities {
         address.setCity("testCity");
         address.setStreet("testStreet");
         address.setHouse("testHouse");
-        address.setFlat("testFlat");
         address.setPostcode("testPostcode");
+        address.setCountrycode("testCountrycode");
         return address;
     }
 

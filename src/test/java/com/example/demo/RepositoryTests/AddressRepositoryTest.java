@@ -6,6 +6,7 @@ import com.example.demo.model.Repositories.AddressRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // TODO: Fix org.springframework.dao.DataIntegrityViolationException caused by the old staff and location fields in database
 // WAITING FOR THE FIX
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application.test.properties")
 public class AddressRepositoryTest {
 
     @Autowired
