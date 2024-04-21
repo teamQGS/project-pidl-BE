@@ -32,6 +32,7 @@ public class TestEntities {
         user.setLastName("testLastName");
         user.setToken("testToken");
         user.setAge(30);
+        user.setEmail("test@test.com");
         user.setIsAdult(true);
         user.setImage("testImage");
         return user;

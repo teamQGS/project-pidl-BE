@@ -13,6 +13,7 @@ import com.example.demo.model.Repositories.AddressRepository;
 import com.example.demo.model.Repositories.ProductRepository;
 import com.example.demo.model.Repositories.UserRepository;
 import com.example.demo.model.Entities.UserEntity;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // TODO: Fix org.springframework.dao.DataIntegrityViolationException caused by the old staff fields in database
 // WAITING FOR THE FIX
 @DataMongoTest
+@TestPropertySource(locations = "classpath:application.test.properties")
 public class OrderRepositoryTest {
 
     @Autowired
