@@ -3,13 +3,24 @@ package com.example.demo.Entities;
 import com.example.demo.model.Entities.*;
 import com.example.demo.model.Entities.Enums.Status;
 import org.bson.types.ObjectId;
+import org.mapstruct.control.MappingControl.Use;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 
-// This class is used to create entities for testing purposes
 public class TestEntities {
+    private static UserEntity testUser = createUser();
+    private static AddressEntity testAddress = createAddress(testUser);
+    private static ProductEntity testProduct = createProduct();
+    private static WarehouseEntity testWarehouse = createWarehouse();
+
+    // Ensure that all entities are initialized only once and then reused
+    static {
+        testWarehouse.setProductId(testProduct.getId());
+        testProduct.setWarehouse(testWarehouse);
+        testAddress.setUserId(testUser);
+    }
 
     public static UserEntity createUser() {
         UserEntity user = new UserEntity();
@@ -27,29 +38,17 @@ public class TestEntities {
     }
 
     public static ProductEntity createProduct() {
-        ProductEntity product = new ProductEntity();
-        product.setId(new ObjectId());
-        product.setName("testProductName");
-        product.setDescription("testDescription");
-        product.setPrice(100);
-        product.setIllustration("testIllustration");
-        product.setWarehouse(createWarehouse());
-        return product;
+        return new ProductEntity(new ObjectId(), "testProductName", "testDescription", 100, "testIllustration", null);
     }
 
     public static WarehouseEntity createWarehouse() {
-        WarehouseEntity warehouse = new WarehouseEntity();
-        warehouse.setId(new ObjectId());
-        warehouse.setCount(100);
-        warehouse.setTotalByes(1000);
-        warehouse.setProductId(new ObjectId());
-        return warehouse;
+        return new WarehouseEntity(new ObjectId(), 100, 1000, null);
     }
 
-    public static AddressEntity createAddress() {
+    public static AddressEntity createAddress(UserEntity user) {
         AddressEntity address = new AddressEntity();
         address.setId(new ObjectId());
-        address.setUserId(createUser());
+        address.setUserId(user);  // Устанавливаем userId после сохранения UserEntity
         address.setCity("testCity");
         address.setStreet("testStreet");
         address.setHouse("testHouse");
@@ -57,26 +56,13 @@ public class TestEntities {
         address.setCountrycode("testCountrycode");
         return address;
     }
+    
 
     public static OrderEntity createOrder() {
-        OrderEntity order = new OrderEntity();
-        order.setId(new ObjectId());
-        order.setDate(new Date());
-        order.setUserId(createUser());
-        order.setProductIds(Arrays.asList(createProduct()));
-        order.setCount(Arrays.asList(1)); // Здесь мы предполагаем, что у вас есть один продукт каждого типа в заказе
-        order.setTotalSum(100);
-        order.setAddressId(createAddress());
-        order.setStatus(Status.PAID);
-        return order;
+        return new OrderEntity(new ObjectId(), new Date(), testUser, Arrays.asList(testProduct), Arrays.asList(1), 100, testAddress, Status.PAID);
     }
 
     public static ContactEntity createContact() {
-        ContactEntity contact = new ContactEntity();
-        contact.setId(new ObjectId());
-        contact.setUserId(createUser());
-        contact.setEmail("test@example.com");
-        contact.setPhone("1234567890");
-        return contact;
+        return new ContactEntity(new ObjectId(), testUser, "test@example.com", "1234567890");
     }
 }
