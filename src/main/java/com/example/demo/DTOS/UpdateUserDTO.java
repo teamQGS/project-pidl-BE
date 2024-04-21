@@ -4,7 +4,6 @@ import lombok.Data;
 
 
 public record UpdateUserDTO (
-    String username,
     String firstName,
     String lastName,
     String email,
