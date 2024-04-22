@@ -8,7 +8,7 @@ public class ProductDTO {
     private ObjectId id;
     private String name;
     private String description;
-    private int price;
+    private double price;
     private String illustration;
     private WarehouseDTO warehouse;
 }
