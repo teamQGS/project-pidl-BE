@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -59,6 +60,7 @@ public class UserService {
     public UserDTO login(LoginDTO loginDTO){
         UserEntity user = repository.findByUsername(loginDTO.username())
                 .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
+
 
         if (passwordEncoder.matches(CharBuffer.wrap(loginDTO.password()), user.getPassword())) {
             System.out.println("login successful " + loginDTO.username());
@@ -114,13 +116,24 @@ public class UserService {
         return user.map(userEntity -> modelMapper.map(userEntity, UserDTO.class));
     }
 
-    public UserDTO updateUser (UpdateUserDTO updateUserDTO){
-        UserEntity user = repository.findByUsername(updateUserDTO.username())
+    public UserDTO updateUser (UpdateUserDTO updateUserDTO, String username){
+        UserEntity user = repository.findByUsername(username)
                 .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
-        user.setFirstName(updateUserDTO.firstName());
-        user.setLastName(updateUserDTO.lastName());
-        user.setEmail(updateUserDTO.email());
-        user.setAddress(updateUserDTO.address());
+        if (!Objects.equals(updateUserDTO.firstName(), "")) {
+            user.setFirstName(updateUserDTO.firstName());
+        }
+        if (!Objects.equals(updateUserDTO.lastName(), "")) {
+            user.setLastName(updateUserDTO.lastName());
+        }
+        if (!Objects.equals(updateUserDTO.email(), "")) {
+            user.setEmail(updateUserDTO.email());
+        }
+        if (!Objects.equals(updateUserDTO.address(), "")) {
+            user.setAddress(updateUserDTO.address());
+        }
+        if (!Objects.equals(updateUserDTO.phoneNumber(), "")) {
+            user.setPhoneNumber(updateUserDTO.phoneNumber());
+        }
         UserEntity saved = repository.save(user);
         return userMapper.toUserDTO(saved);
     }

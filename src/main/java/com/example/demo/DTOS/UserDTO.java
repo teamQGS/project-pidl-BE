@@ -12,13 +12,15 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserDTO {
 
-    private ObjectId id;
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private Set<RoleEntity> roles;
-    private int age;
-    private String image;
-    private String token;
+    ObjectId id;
+    String username;
+    String password;
+    String firstName;
+    String lastName;
+    int age;
+    String image;
+    String token;
+    String phoneNumber;
+    Set<RoleEntity> roles;
+
 }

@@ -2,7 +2,9 @@ package com.example.demo.RepositoryTests;
 
 import com.example.demo.Entities.TestEntities;
 import com.example.demo.model.Entities.AddressEntity;
+import com.example.demo.model.Entities.UserEntity;
 import com.example.demo.model.Repositories.AddressRepository;
+import com.example.demo.model.Repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,18 +15,20 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// TODO: Fix org.springframework.dao.DataIntegrityViolationException caused by the old staff and location fields in database
-// WAITING FOR THE FIX
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application.test.properties")
 public class AddressRepositoryTest {
 
     @Autowired
     private AddressRepository addressRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void testSaveAddress() {
-        AddressEntity address = TestEntities.createAddress();
+        UserEntity user = userRepository.save(TestEntities.createUser()); // Save user first
+        AddressEntity address = TestEntities.createAddress(user);
 
         addressRepository.save(address);
 
@@ -33,11 +37,13 @@ public class AddressRepositoryTest {
         assertEquals(address.getStreet(), foundAddress.getStreet());
         assertEquals(address.getHouse(), foundAddress.getHouse());
         assertEquals(address.getPostcode(), foundAddress.getPostcode());
+        assertEquals(address.getCountrycode(), foundAddress.getCountrycode());
     }
 
     @Test
     public void testFindAddressById() {
-        AddressEntity address = TestEntities.createAddress();
+        UserEntity user = userRepository.save(TestEntities.createUser());
+        AddressEntity address = TestEntities.createAddress(user);
 
         addressRepository.save(address);
 
@@ -51,7 +57,8 @@ public class AddressRepositoryTest {
 
     @Test
     public void testDeleteAddress() {
-        AddressEntity address = TestEntities.createAddress();
+        UserEntity user = userRepository.save(TestEntities.createUser());
+        AddressEntity address = TestEntities.createAddress(user);
 
         addressRepository.save(address);
         addressRepository.delete(address);

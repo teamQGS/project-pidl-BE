@@ -74,8 +74,8 @@ public class UserController {
     }
 
     @PutMapping("/update/{username}")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO){
-        return new ResponseEntity<>(service.updateUser(updateUserDTO), HttpStatus.OK);
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO, @PathVariable String username){
+        return new ResponseEntity<>(service.updateUser(updateUserDTO, username), HttpStatus.OK);
     }
 
     @GetMapping("/admin")
