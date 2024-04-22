@@ -55,11 +55,10 @@ public class ProductService {
 
         return optionalProductEntity.map(productEntity -> modelMapper.map(productEntity, ProductDTO.class));
     }
-    public ProductDTO createProduct(ProductDTO productDTO, int quantity){
+    public ProductDTO createProduct(ProductDTO productDTO){
         ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
         ProductEntity savedProduct = productRepository.insert(productEntity);
         WarehouseEntity warehouseEntity = new WarehouseEntity();
-        warehouseEntity.setCount(quantity);
         warehouseEntity.setProductId(savedProduct.getId());
         warehouseRepository.save(warehouseEntity);
         return modelMapper.map(savedProduct, ProductDTO.class);

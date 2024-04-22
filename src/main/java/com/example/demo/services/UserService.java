@@ -74,6 +74,7 @@ public class UserService {
         Optional<UserEntity> user = repository.findByUsername(signUpDTO.username());
 
         if(user.isPresent()) {
+
             throw new AppException("Email exists", HttpStatus.BAD_REQUEST);
         }
         UserEntity userEntity = userMapper.signUpToUser(signUpDTO);

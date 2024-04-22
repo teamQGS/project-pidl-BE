@@ -30,8 +30,8 @@ public class ProductController {
         return new ResponseEntity<>(service.deleteProductById(id), HttpStatus.OK);
     }
     @PostMapping("/add")
-    public ResponseEntity<Optional<ProductDTO>> addProduct(@RequestBody ProductDTO productDTO, @RequestParam int quantity){
-        return new ResponseEntity<>(Optional.ofNullable(service.createProduct(productDTO, quantity)), HttpStatus.OK);
+    public ResponseEntity<Optional<ProductDTO>> addProduct(@RequestBody ProductDTO productDTO){
+        return new ResponseEntity<>(Optional.ofNullable(service.createProduct(productDTO)), HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<ProductEntity> updateProduct(@PathVariable ObjectId id, @RequestBody ProductDTO productDTO){
