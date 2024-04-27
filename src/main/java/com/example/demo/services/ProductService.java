@@ -37,13 +37,12 @@ public class ProductService {
     public ProductDTO convertToDTO(ProductEntity productEntity){
         return modelMapper.map(productEntity, ProductDTO.class);
     }
-    public Optional<ProductDTO> getProductById(ObjectId id){
+    public Optional<ProductDTO> getProductById(String id){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
         return optionalProductEntity.map(ProductEntity -> modelMapper.map(optionalProductEntity, ProductDTO.class));
     }
 
-
-    public Optional<ProductDTO> deleteProductById(ObjectId id){
+    public Optional<ProductDTO> deleteProductById(String id){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
 
         optionalProductEntity.ifPresent(productEntity -> {
@@ -58,13 +57,14 @@ public class ProductService {
     public ProductDTO createProduct(ProductDTO productDTO){
         ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
         ProductEntity savedProduct = productRepository.insert(productEntity);
-        WarehouseEntity warehouseEntity = new WarehouseEntity();
-        warehouseEntity.setProductId(savedProduct.getId());
-        warehouseRepository.save(warehouseEntity);
+//      WarehouseEntity warehouseEntity = new WarehouseEntity();
+//     warehouseEntity.setCount(quantity);
+//      warehouseEntity.setProductId(savedProduct.getId());
+//        warehouseRepository.save(warehouseEntity);
         return modelMapper.map(savedProduct, ProductDTO.class);
     }
 
-    public ProductEntity updateProduct(ObjectId id, ProductDTO updatedProduct){
+    public ProductEntity updateProduct(String id, ProductDTO updatedProduct){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
         if(optionalProductEntity.isPresent()){
             ProductEntity productEntity = optionalProductEntity.get();

@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 public class ProductEntity {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     private String name;
 
