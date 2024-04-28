@@ -140,10 +140,11 @@ public class UserService {
             System.out.println("Password changed successfully " + username);
             user.setPassword(passwordEncoder.encode(CharBuffer.wrap(updatePasswordDTO.newPassword())));
             UserEntity saved = repository.save(user);
-            return userMapper.toUserDTO(user);
+            return userMapper.toUserDTO(saved);
         }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
+
 
 //    public boolean userHasRole(String username, Role role) {
 //        Optional<UserEntity> user = repository.findByUsername(username);

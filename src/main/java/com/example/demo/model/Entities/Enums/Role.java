@@ -7,9 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-// This enum represents the different roles that a user can have
 @RequiredArgsConstructor
 @Getter
 public enum Role {
@@ -21,10 +18,10 @@ public enum Role {
     )
     ), // This is the only role that can create new roles and manage users
     MANAGER(Set.of(
-                    Permission.MANAGER_DELETE,
-                    Permission.MANAGER_CREATE,
-                    Permission.MANAGER_UPDATE,
-                    Permission.MANAGER_READ
+            Permission.MANAGER_DELETE,
+            Permission.MANAGER_CREATE,
+            Permission.MANAGER_UPDATE,
+            Permission.MANAGER_READ
     )
     ), // This role is for employees that can manage the products and orders
     CUSTOMER(Collections.emptySet()); // Just registered users with no special permissions
