@@ -4,13 +4,19 @@ import com.example.demo.DTOS.*;
 import com.example.demo.model.Entities.Enums.Role;
 import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +38,11 @@ public class UserController {
         return new ResponseEntity<>(service.getUserById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/find/{username}")
+    public ResponseEntity<Optional<UserDTO>> getUserByUsername(@PathVariable String username){
+        return new ResponseEntity<>(service.getUserByUsername(username), HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO){
         UserDTO user = service.login(loginDTO);
@@ -41,7 +52,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<UserDTO> register(@RequestBody SignUpDTO singUpDTO){
         UserDTO user = service.register(singUpDTO);
-        return ResponseEntity.created(URI.create("/users/" + user.get_id())).body(user);
+        return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
 
     @PostMapping("/logout")
@@ -70,6 +81,11 @@ public class UserController {
     @PutMapping("/update/{username}")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO, @PathVariable String username){
         return new ResponseEntity<>(service.updateUser(updateUserDTO, username), HttpStatus.OK);
+    }
+
+    @PutMapping("/changePassword/{username}")
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UpdatePasswordDTO updatePasswordDTO, @PathVariable String username){
+        return new ResponseEntity<>(service.changePassword(updatePasswordDTO, username), HttpStatus.OK);
     }
 
     @GetMapping("/admin")

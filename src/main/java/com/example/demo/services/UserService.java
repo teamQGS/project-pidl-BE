@@ -3,11 +3,14 @@ package com.example.demo.services;
 import com.example.demo.DTOS.*;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Entities.Enums.Role;
-import com.example.demo.model.Repositories.UserRepository;
+import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Entities.UserEntity;
+import com.example.demo.model.Entities.WarehouseEntity;
+import com.example.demo.model.Repositories.UserRepository;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.security.persistence.RoleEntity;
+import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -54,6 +57,11 @@ public class UserService {
         return userEntity.map(UserEntity-> modelMapper.map(userEntity, UserDTO.class));
     }
 
+    public Optional<UserDTO> getUserByUsername(String username){
+        Optional<UserEntity> userEntity = repository.findByUsername(username);
+        return userEntity.map(UserEntity-> modelMapper.map(userEntity, UserDTO.class));
+    }
+
     public UserDTO login(LoginDTO loginDTO){
         UserEntity user = repository.findByUsername(loginDTO.username())
                 .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
@@ -74,7 +82,7 @@ public class UserService {
 
         if(user.isPresent()) {
 
-            throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
+            throw new AppException("Email exists", HttpStatus.BAD_REQUEST);
         }
         UserEntity userEntity = userMapper.signUpToUser(signUpDTO);
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
@@ -133,6 +141,20 @@ public class UserService {
         }
         UserEntity saved = repository.save(user);
         return userMapper.toUserDTO(saved);
+    }
+
+    public UserDTO changePassword (UpdatePasswordDTO updatePasswordDTO, String username){
+        UserEntity user = repository.findByUsername(username)
+                .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
+        if (passwordEncoder.matches(CharBuffer.wrap(updatePasswordDTO.currentPassword()), user.getPassword())) {
+            System.out.println(updatePasswordDTO.currentPassword());
+            System.out.println(updatePasswordDTO.newPassword());
+            System.out.println("Password changed successfully " + username);
+            user.setPassword(passwordEncoder.encode(CharBuffer.wrap(updatePasswordDTO.newPassword())));
+            UserEntity saved = repository.save(user);
+            return userMapper.toUserDTO(user);
+        }
+        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
     public boolean userHasRole(String username, Role role) {
