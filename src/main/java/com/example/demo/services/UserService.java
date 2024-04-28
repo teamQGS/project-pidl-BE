@@ -74,7 +74,7 @@ public class UserService {
 
         if(user.isPresent()) {
 
-            throw new AppException("Email exists", HttpStatus.BAD_REQUEST);
+            throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
         }
         UserEntity userEntity = userMapper.signUpToUser(signUpDTO);
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
