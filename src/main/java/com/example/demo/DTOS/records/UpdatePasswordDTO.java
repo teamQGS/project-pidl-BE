@@ -1,3 +1,3 @@
-package com.example.demo.DTOS;
+package com.example.demo.DTOS.records;
 
 public record UpdatePasswordDTO(char[] currentPassword, char[] newPassword) {}

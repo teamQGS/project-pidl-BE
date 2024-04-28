@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 public class ProductEntity {
 
     @Id
-    private String _id;
+    private String id;
 
     private String name;
 
@@ -26,7 +26,6 @@ public class ProductEntity {
 
     private String illustration; //Now it is a link to illustration. TODO create image variable
 
-    @DocumentReference
-    private WarehouseEntity warehouse;
+    private int count;
 
 }

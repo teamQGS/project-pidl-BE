@@ -1,6 +1,6 @@
-package com.example.demo.mapper;
-import com.example.demo.DTOS.SignUpDTO;
-import com.example.demo.DTOS.UpdateUserDTO;
+package com.example.demo.mappers;
+import com.example.demo.DTOS.records.SignUpDTO;
+import com.example.demo.DTOS.records.UpdateUserDTO;
 import com.example.demo.DTOS.UserDTO;
 import com.example.demo.model.Entities.UserEntity;
 import org.mapstruct.Mapper;

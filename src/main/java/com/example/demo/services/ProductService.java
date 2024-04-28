@@ -2,9 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.DTOS.ProductDTO;
 import com.example.demo.model.Entities.ProductEntity;
-import com.example.demo.model.Entities.WarehouseEntity;
 import com.example.demo.model.Repositories.ProductRepository;
-import com.example.demo.model.Repositories.WarehouseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,8 +18,6 @@ import java.util.stream.Collectors;
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
-    @Autowired
-    WarehouseRepository warehouseRepository;
     @Autowired
      ModelMapper modelMapper;
     @Autowired
@@ -57,9 +53,6 @@ public class ProductService {
     public ProductDTO createProduct(ProductDTO productDTO){
         ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
         ProductEntity savedProduct = productRepository.insert(productEntity);
-        WarehouseEntity warehouseEntity = new WarehouseEntity();
-        warehouseEntity.setProductId(savedProduct.get_id());
-        warehouseRepository.save(warehouseEntity);
         return modelMapper.map(savedProduct, ProductDTO.class);
     }
 

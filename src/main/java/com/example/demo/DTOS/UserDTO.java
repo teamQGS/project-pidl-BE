@@ -1,6 +1,6 @@
 package com.example.demo.DTOS;
 
-import com.example.demo.security.persistence.RoleEntity;
+import com.example.demo.model.Entities.Enums.Role;
 import lombok.*;
 import org.bson.types.ObjectId;
 
@@ -23,6 +23,6 @@ public class UserDTO {
     String image;
     String token;
     String phoneNumber;
-    Set<RoleEntity> roles;
+    Role role;
 
 }

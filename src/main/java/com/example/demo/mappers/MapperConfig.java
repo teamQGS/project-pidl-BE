@@ -1,9 +1,10 @@
-package com.example.demo.mapper;
+package com.example.demo.mappers;
 
 import com.example.demo.DTOS.*;
+import com.example.demo.DTOS.records.LoginDTO;
+import com.example.demo.DTOS.records.SignUpDTO;
 import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Entities.UserEntity;
-import com.example.demo.model.Entities.WarehouseEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,6 @@ public class MapperConfig {
 
         modelMapper.createTypeMap(ProductEntity.class, ProductDTO.class);
         modelMapper.createTypeMap(UserEntity.class, UserDTO.class);
-        modelMapper.createTypeMap(WarehouseEntity.class, WarehouseDTO.class);
         modelMapper.createTypeMap(UserEntity.class, LoginDTO.class);
         modelMapper.createTypeMap(UserEntity.class, SignUpDTO.class);
         return modelMapper;

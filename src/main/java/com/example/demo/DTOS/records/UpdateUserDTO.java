@@ -1,4 +1,4 @@
-package com.example.demo.DTOS;
+package com.example.demo.DTOS.records;
 
 import lombok.Data;
 
