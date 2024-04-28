@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 public class OrderDTO {
-    private ObjectId id;
+    private String _id;
     private Date date;
     private UserDTO userID;
     private List<ProductDTO> productIds;

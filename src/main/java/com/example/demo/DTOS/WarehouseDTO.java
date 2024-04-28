@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 
 @Data
 public class WarehouseDTO {
-    private ObjectId id;
+    private String _id;
     private int count;
     private int totalByes;
     private ObjectId productId;

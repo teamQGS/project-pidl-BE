@@ -2,7 +2,6 @@ package com.example.demo.DTOS;
 
 import com.example.demo.security.persistence.RoleEntity;
 import lombok.*;
-import org.bson.types.ObjectId;
 
 import java.util.Set;
 
@@ -12,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserDTO {
 
-    ObjectId id;
+    String _id;
     String username;
     String password;
     String firstName;

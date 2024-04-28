@@ -20,8 +20,6 @@ import com.example.demo.model.Entities.Enums.Status;
 import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.services.OrderService;
 import com.example.demo.services.UserService;
-import org.bson.types.ObjectId;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,7 +65,7 @@ public class OrderController {
 
     // Method to get order by id
     @PutMapping("/{orderId}")
-    public ResponseEntity<OrderDTO> updateOrderStatus(@PathVariable ObjectId orderId, @RequestBody Status status, @RequestHeader(value = "Authorization", required = false) String authentication) {
+    public ResponseEntity<OrderDTO> updateOrderStatus(@PathVariable String orderId, @RequestBody Status status, @RequestHeader(value = "Authorization", required = false) String authentication) {
         if (authentication != null) {
             String[] authArray = authentication.split(" ");
             Authentication auth = userAuthProvider.validateToken(authArray[1]);

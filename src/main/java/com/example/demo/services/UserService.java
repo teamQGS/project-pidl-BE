@@ -3,14 +3,11 @@ package com.example.demo.services;
 import com.example.demo.DTOS.*;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Entities.Enums.Role;
-import com.example.demo.model.Entities.ProductEntity;
-import com.example.demo.model.Entities.UserEntity;
-import com.example.demo.model.Entities.WarehouseEntity;
 import com.example.demo.model.Repositories.UserRepository;
+import com.example.demo.model.Entities.UserEntity;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.security.persistence.RoleEntity;
-import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -52,7 +49,7 @@ public class UserService {
         return modelMapper.map(userEntity, UserDTO.class);
     }
 
-    public Optional<UserDTO> getUserById(ObjectId id){
+    public Optional<UserDTO> getUserById(String id){
         Optional<UserEntity> userEntity = repository.findById(id);
         return userEntity.map(UserEntity-> modelMapper.map(userEntity, UserDTO.class));
     }

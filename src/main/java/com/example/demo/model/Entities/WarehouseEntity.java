@@ -3,10 +3,8 @@ package com.example.demo.model.Entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 
 @Data
@@ -16,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 public class WarehouseEntity {
 
     @Id
-    private ObjectId id;
+    private String _id;
 
     private int count;
 
@@ -24,7 +22,7 @@ public class WarehouseEntity {
 
     //get id from product
 
-    private ObjectId productId;
+    private String productId;
 
 
 }

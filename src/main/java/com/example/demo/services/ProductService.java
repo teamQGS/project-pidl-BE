@@ -5,7 +5,6 @@ import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Entities.WarehouseEntity;
 import com.example.demo.model.Repositories.ProductRepository;
 import com.example.demo.model.Repositories.WarehouseRepository;
-import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -37,13 +36,13 @@ public class ProductService {
     public ProductDTO convertToDTO(ProductEntity productEntity){
         return modelMapper.map(productEntity, ProductDTO.class);
     }
-    public Optional<ProductDTO> getProductById(ObjectId id){
+    public Optional<ProductDTO> getProductById(String id){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
         return optionalProductEntity.map(ProductEntity -> modelMapper.map(optionalProductEntity, ProductDTO.class));
     }
 
 
-    public Optional<ProductDTO> deleteProductById(ObjectId id){
+    public Optional<ProductDTO> deleteProductById(String id){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
 
         optionalProductEntity.ifPresent(productEntity -> {
@@ -51,7 +50,7 @@ public class ProductService {
             System.out.println("Product with ID: " + id + " was deleted!");
         });
 
-        mongoTemplate.remove(Query.query(Criteria.where("productId").is(id)), WarehouseEntity.class);
+        mongoTemplate.remove(Query.query(Criteria.where("_id").is(id)), ProductEntity.class);
 
         return optionalProductEntity.map(productEntity -> modelMapper.map(productEntity, ProductDTO.class));
     }
@@ -59,12 +58,12 @@ public class ProductService {
         ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
         ProductEntity savedProduct = productRepository.insert(productEntity);
         WarehouseEntity warehouseEntity = new WarehouseEntity();
-        warehouseEntity.setProductId(savedProduct.getId());
+        warehouseEntity.setProductId(savedProduct.get_id());
         warehouseRepository.save(warehouseEntity);
         return modelMapper.map(savedProduct, ProductDTO.class);
     }
 
-    public ProductEntity updateProduct(ObjectId id, ProductDTO updatedProduct){
+    public ProductEntity updateProduct(String id, ProductDTO updatedProduct){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
         if(optionalProductEntity.isPresent()){
             ProductEntity productEntity = optionalProductEntity.get();

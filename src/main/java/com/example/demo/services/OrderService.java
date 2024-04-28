@@ -3,7 +3,6 @@ package com.example.demo.services;
 import com.example.demo.model.Entities.Enums.Status;
 import com.example.demo.model.Entities.OrderEntity;
 import com.example.demo.model.Repositories.OrderRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,11 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Optional<OrderEntity> getOrderById(ObjectId id) {
+    public Optional<OrderEntity> getOrderById(String id) {
         return orderRepository.findById(id);
     }
 
-    public OrderEntity updateOrderStatus(ObjectId id, Status status) {
+    public OrderEntity updateOrderStatus(String id, Status status) {
         Optional<OrderEntity> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isPresent()) {
             OrderEntity order = optionalOrder.get();

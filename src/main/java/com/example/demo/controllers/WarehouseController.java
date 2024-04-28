@@ -1,9 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.DTOS.WarehouseDTO;
-import com.example.demo.model.Entities.WarehouseEntity;
 import com.example.demo.services.WarehouseService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +26,7 @@ public class WarehouseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<WarehouseDTO>> getWarehouseInfoById(@PathVariable ObjectId id){
+    public ResponseEntity<Optional<WarehouseDTO>> getWarehouseInfoById(@PathVariable String id){
         return new ResponseEntity<>(service.getWarehouseById(id), HttpStatus.OK);
     }
 }
