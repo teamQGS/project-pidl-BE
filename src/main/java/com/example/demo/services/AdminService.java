@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOS.ProductDTO;
 import com.example.demo.DTOS.UserDTO;
 import com.example.demo.mappers.UserMapper;
 import com.example.demo.model.Entities.Enums.Role;
@@ -44,13 +43,10 @@ public class AdminService {
         return modelMapper.map(userEntity, UserDTO.class);
     }
     public UserDTO changeRole(String role, String username){
-        System.out.println(role);
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
         user.setRole(Role.valueOf(role));
-        System.out.println("Role set");
         UserEntity saved = userRepository.save(user);
-        System.out.println("User saved");
         return userMapper.toUserDTO(saved);
     }
 
