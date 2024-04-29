@@ -24,5 +24,6 @@ public class UserDTO {
     String token;
     String phoneNumber;
     Role role;
+    String illustration;
 
 }

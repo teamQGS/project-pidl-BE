@@ -5,6 +5,7 @@ import com.example.demo.DTOS.records.LoginDTO;
 import com.example.demo.DTOS.records.SignUpDTO;
 import com.example.demo.DTOS.records.UpdatePasswordDTO;
 import com.example.demo.DTOS.records.UpdateUserDTO;
+import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,10 @@ public class UserController {
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO){
         UserDTO user = service.login(loginDTO);
         return ResponseEntity.ok(user);
+    }
+    @ExceptionHandler(AppException.class)
+    public ResponseEntity<String> handleAppException(AppException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
     @PostMapping("/signup")

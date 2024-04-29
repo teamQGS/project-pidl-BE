@@ -55,7 +55,7 @@ public class UserService {
 
     public UserDTO login(LoginDTO loginDTO){
         UserEntity user = repository.findByUsername(loginDTO.username())
-                .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Invalid credentials", HttpStatus.NOT_FOUND));
 
 
         if (passwordEncoder.matches(CharBuffer.wrap(loginDTO.password()), user.getPassword())) {
@@ -65,7 +65,7 @@ public class UserService {
             UserEntity saved = repository.save(user);
             return userMapper.toUserDTO(user);
         }
-        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
+        throw new AppException("Invalid credentials", HttpStatus.BAD_REQUEST);
     }
 
     public UserDTO register(SignUpDTO signUpDTO){
