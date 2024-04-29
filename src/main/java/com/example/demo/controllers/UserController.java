@@ -41,17 +41,13 @@ public class UserController {
         UserDTO user = service.login(loginDTO);
         return ResponseEntity.ok(user);
     }
-    @ExceptionHandler(AppException.class)
-    public ResponseEntity<String> handleAppException(AppException exception){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
-    }
+
 
     @PostMapping("/signup")
     public ResponseEntity<UserDTO> register(@RequestBody SignUpDTO singUpDTO){
         UserDTO user = service.register(singUpDTO);
         return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
-
     @PostMapping("/logout")
     public ResponseEntity<UserDTO> logout(@RequestHeader(value = "Authorization", required = false) String authentication) {
         if (authentication != null) {
@@ -83,6 +79,10 @@ public class UserController {
     @PutMapping("/changePassword/{username}")
     public ResponseEntity<UserDTO> changePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO, @PathVariable String username){
         return new ResponseEntity<>(service.changePassword(updatePasswordDTO, username), HttpStatus.OK);
+    }
+    @ExceptionHandler(AppException.class)
+    public ResponseEntity<String> handleAppException(AppException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 }
 
