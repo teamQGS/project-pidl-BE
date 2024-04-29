@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,12 @@ public class AdminService {
     public UserDTO changeRole(String role, String username){
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
-        user.setRole(Role.valueOf(role));
+        if(Objects.equals(role, user.getRole().toString())){
+            throw new AppException("User already has this role", HttpStatus.CONFLICT);
+        }
+        else {
+            user.setRole(Role.valueOf(role));
+        }
         UserEntity saved = userRepository.save(user);
         return userMapper.toUserDTO(saved);
     }
