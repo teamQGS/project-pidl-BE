@@ -1,5 +1,6 @@
 package com.example.demo.DTOS;
 
+import com.example.demo.model.Entities.Enums.ProductsCategory;
 import lombok.Data;
 
 
@@ -11,4 +12,5 @@ public class ProductDTO {
     private double price;
     private String illustration;
     private int count;
+    private ProductsCategory productCategory;
 }

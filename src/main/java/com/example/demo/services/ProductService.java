@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.DTOS.ProductDTO;
+import com.example.demo.model.Entities.Enums.ProductsCategory;
 import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
@@ -69,5 +70,9 @@ public class ProductService {
             System.out.println("There is no product with ID: " + id);
             return null;
         }
+    }
+    public List<ProductDTO> findProductsByCategory(ProductsCategory productsCategory){
+        List<ProductEntity> productEntities = productRepository.findAllByProductCategory(productsCategory);
+        return productEntities.stream().map(this::convertToDTO).toList();
     }
 }

@@ -27,16 +27,6 @@ public class SecurityConfig {
                     .authorizeHttpRequests((requests) ->
                             requests.requestMatchers(HttpMethod.POST, "/api/users/login", "/api/users/signup").permitAll()
                                     .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
-//                                    .requestMatchers("/api/admin/**").hasRole(ADMIN.name())
-//                                    .requestMatchers("/api/manager/**").hasAnyRole(MANAGER.name(), ADMIN.name())
-//                                    .requestMatchers(HttpMethod.DELETE ,"/api/admin/**").hasAuthority(ADMIN_DELETE.name())
-//                                    .requestMatchers(HttpMethod.POST ,"/api/admin/**").hasAuthority(ADMIN_CREATE.name())
-//                                    .requestMatchers(HttpMethod.GET ,"/api/admin/**").hasAuthority(ADMIN_READ.name())
-//                                    .requestMatchers(HttpMethod.PUT ,"/api/admin/**").hasAuthority(ADMIN_UPDATE.name())
-//                                    .requestMatchers(HttpMethod.POST ,"/api/manager/**").hasAuthority(MANAGER_CREATE.name())
-//                                    .requestMatchers(HttpMethod.GET ,"/api/manager/**").hasAuthority(MANAGER_READ.name())
-//                                    .requestMatchers(HttpMethod.PUT ,"/api/manager/**").hasAuthority(MANAGER_UPDATE.name())
-//                                    .requestMatchers(HttpMethod.DELETE ,"/api/manager/**").hasAuthority(MANAGER_DELETE.name())
                                     .anyRequest().authenticated()
                     );
             return http.build();
