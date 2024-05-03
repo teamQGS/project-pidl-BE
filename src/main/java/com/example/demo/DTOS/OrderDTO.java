@@ -9,12 +9,12 @@ import java.util.List;
 
 @Data
 public class OrderDTO {
-    private String id;
-    private Date date;
-    private UserDTO userID;
-    private List<ProductDTO> productIds;
-    private List<ProductDTO> count;
-    private int totalSum;
-    private ObjectId addressId;
-    private Status status;
+     String id;
+     Date date;
+     UserDTO userID;
+     List<ProductDTO> productIds;
+     List<ProductDTO> count;
+     int totalSum;
+     ObjectId addressId;
+     Status status;
 }

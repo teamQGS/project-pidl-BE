@@ -6,8 +6,10 @@ import com.example.demo.DTOS.records.SignUpDTO;
 import com.example.demo.DTOS.records.UpdatePasswordDTO;
 import com.example.demo.DTOS.records.UpdateUserDTO;
 import com.example.demo.mappers.UserMapper;
+import com.example.demo.model.Entities.CartEntity;
 import com.example.demo.model.Entities.Enums.Role;
 import com.example.demo.model.Entities.UserEntity;
+import com.example.demo.model.Repositories.CartRepository;
 import com.example.demo.model.Repositories.UserRepository;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
@@ -27,7 +29,9 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    UserRepository repository;
+    UserRepository userRepository;
+    @Autowired
+    CartRepository cartRepository;
     @Autowired
     ModelMapper modelMapper;
     @Autowired
@@ -44,17 +48,17 @@ public class UserService {
     }
 
     public Optional<UserDTO> getUserById(String id){
-        Optional<UserEntity> userEntity = repository.findById(id);
+        Optional<UserEntity> userEntity = userRepository.findById(id);
         return userEntity.map(UserEntity-> modelMapper.map(userEntity, UserDTO.class));
     }
 
     public Optional<UserDTO> getUserByUsername(String username){
-        Optional<UserEntity> userEntity = repository.findByUsername(username);
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
         return userEntity.map(UserEntity-> modelMapper.map(userEntity, UserDTO.class));
     }
 
     public UserDTO login(LoginDTO loginDTO){
-        UserEntity user = repository.findByUsername(loginDTO.username())
+        UserEntity user = userRepository.findByUsername(loginDTO.username())
                 .orElseThrow(() -> new AppException("Invalid credentials", HttpStatus.NOT_FOUND));
 
 
@@ -62,14 +66,14 @@ public class UserService {
             System.out.println("login successful " + loginDTO.username());
             String token = userAuthProvider.createToken(user);
             user.setToken(token);
-            UserEntity saved = repository.save(user);
+            UserEntity saved = userRepository.save(user);
             return userMapper.toUserDTO(user);
         }
         throw new AppException("Invalid credentials", HttpStatus.BAD_REQUEST);
     }
 
     public UserDTO register(SignUpDTO signUpDTO){
-        Optional<UserEntity> user = repository.findByUsername(signUpDTO.username());
+        Optional<UserEntity> user = userRepository.findByUsername(signUpDTO.username());
 
         if(user.isPresent()) {
 
@@ -79,18 +83,23 @@ public class UserService {
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
         userEntity.setRole(Role.CUSTOMER);
 
+        CartEntity userCart = new CartEntity();
+        userCart.setUsername(userEntity.getUsername());
+        cartRepository.save(userCart);
+
+
         String token = userAuthProvider.createToken(userEntity);
         userEntity.setToken(token);
-        UserEntity saved = repository.save(userEntity);
+        UserEntity saved = userRepository.save(userEntity);
         return userMapper.toUserDTO(saved);
     }
 
     public UserDTO logout(UserDTO dto){
-        Optional<UserEntity> optionalUser = repository.findByUsername(dto.getUsername());
+        Optional<UserEntity> optionalUser = userRepository.findByUsername(dto.getUsername());
         if(optionalUser.isPresent()) {
             UserEntity user = optionalUser.get();
             user.setToken(null);
-            repository.save(user);
+            userRepository.save(user);
             System.out.println("User with username " + user.getUsername() + " logged out");
             return dto;
         } else {
@@ -99,9 +108,9 @@ public class UserService {
     }
 
     public Optional<UserDTO> deleteUserByUsername(String username){
-        Optional<UserEntity> user = repository.findByUsername(username);
+        Optional<UserEntity> user = userRepository.findByUsername(username);
         user.ifPresent(userEntity -> {
-            repository.deleteByUsername(username);
+            userRepository.deleteByUsername(username);
             System.out.println("User with username: " + username + " was deleted!");
         });
         mongoTemplate.remove(Query.query(Criteria.where("username").is(username)), UserEntity.class);
@@ -110,7 +119,7 @@ public class UserService {
     }
 
     public UserDTO updateUser (UpdateUserDTO updateUserDTO, String username){
-        UserEntity user = repository.findByUsername(username)
+        UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
         if (!Objects.equals(updateUserDTO.firstName(), "")) {
             user.setFirstName(updateUserDTO.firstName());
@@ -127,19 +136,19 @@ public class UserService {
         if (!Objects.equals(updateUserDTO.phoneNumber(), "")) {
             user.setPhoneNumber(updateUserDTO.phoneNumber());
         }
-        UserEntity saved = repository.save(user);
+        UserEntity saved = userRepository.save(user);
         return userMapper.toUserDTO(saved);
     }
 
     public UserDTO changePassword (UpdatePasswordDTO updatePasswordDTO, String username){
-        UserEntity user = repository.findByUsername(username)
+        UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException("Unknown User", HttpStatus.NOT_FOUND));
         if (passwordEncoder.matches(CharBuffer.wrap(updatePasswordDTO.currentPassword()), user.getPassword())) {
             System.out.println(updatePasswordDTO.currentPassword());
             System.out.println(updatePasswordDTO.newPassword());
             System.out.println("Password changed successfully " + username);
             user.setPassword(passwordEncoder.encode(CharBuffer.wrap(updatePasswordDTO.newPassword())));
-            UserEntity saved = repository.save(user);
+            UserEntity saved = userRepository.save(user);
             return userMapper.toUserDTO(saved);
         }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
