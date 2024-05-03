@@ -51,7 +51,6 @@ public class UserAuthProvider {
                 .username(parts[1])
                 .password(decodedJWT.getClaim("password").asString())
                 .build();
-        System.out.println(user);
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 }

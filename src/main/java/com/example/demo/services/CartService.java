@@ -7,6 +7,7 @@ import com.example.demo.model.Entities.CartEntity;
 import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Entities.UserEntity;
 import com.example.demo.model.Repositories.CartRepository;
+import com.example.demo.model.Repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 public class CartService {
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private ProductRepository productRepository;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
@@ -44,5 +48,53 @@ public class CartService {
         }
         return modelMapper.map(cart, CartDTO.class);
     }
-    //todo add to card and remove from cart clear cart;
+
+    public CartDTO addToCart(String productId, String username){
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
+
+        CartEntity cart = cartRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND));
+
+        List<ProductEntity> currentProducts = cart.getProducts();
+        if (currentProducts == null) {
+            currentProducts = new LinkedList<>();
+        }
+        currentProducts.add(product);
+
+        cart.setProducts(currentProducts);
+        cartRepository.save(cart);
+        return modelMapper.map(cart, CartDTO.class);
+    }
+
+    public CartDTO removeFromCart(String productId, String username){
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
+
+        CartEntity cart = cartRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND));
+
+        List<ProductEntity> currentProducts = cart.getProducts();
+
+        if (currentProducts == null) {
+            currentProducts = new LinkedList<>();
+        }
+
+        currentProducts.removeIf(p -> p.getId().equals(productId));
+
+        cart.setProducts(currentProducts);
+        cartRepository.save(cart);
+        return modelMapper.map(cart, CartDTO.class);
+    }
+
+    public CartDTO clearCart(String username){
+
+        CartEntity cart = cartRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND));
+
+        List<ProductEntity> currentProducts = currentProducts = new LinkedList<>();
+        cart.setProducts(currentProducts);
+        cartRepository.save(cart);
+        return modelMapper.map(cart, CartDTO.class);
+    }
 }
