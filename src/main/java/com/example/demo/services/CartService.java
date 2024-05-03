@@ -92,7 +92,7 @@ public class CartService {
         CartEntity cart = cartRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND));
 
-        List<ProductEntity> currentProducts = currentProducts = new LinkedList<>();
+        List<ProductEntity> currentProducts = new LinkedList<>();
         cart.setProducts(currentProducts);
         cartRepository.save(cart);
         return modelMapper.map(cart, CartDTO.class);
