@@ -57,15 +57,31 @@ public class CartService {
                 .orElseThrow(() -> new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND));
 
         List<ProductEntity> currentProducts = cart.getProducts();
+
         if (currentProducts == null) {
             currentProducts = new LinkedList<>();
         }
-        currentProducts.add(product);
+
+        boolean productExistsInCart = false;
+
+        for (ProductEntity p : currentProducts) {
+            if (p.getId().equals(productId)) {
+                p.setCount(p.getCount() + 1);
+                productExistsInCart = true;
+                break;
+            }
+        }
+
+        if (!productExistsInCart) {
+            product.setCount(1);
+            currentProducts.add(product);
+        }
 
         cart.setProducts(currentProducts);
         cartRepository.save(cart);
         return modelMapper.map(cart, CartDTO.class);
     }
+
 
     public CartDTO removeFromCart(String productId, String username){
         ProductEntity product = productRepository.findById(productId)
