@@ -1,11 +1,8 @@
 package com.example.demo.services;
 
 import com.example.demo.DTOS.CartDTO;
-import com.example.demo.DTOS.ProductDTO;
-import com.example.demo.DTOS.UserDTO;
 import com.example.demo.model.Entities.CartEntity;
 import com.example.demo.model.Entities.ProductEntity;
-import com.example.demo.model.Entities.UserEntity;
 import com.example.demo.model.Repositories.CartRepository;
 import com.example.demo.model.Repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
@@ -18,7 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class CartService {
@@ -31,25 +30,39 @@ public class CartService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<CartDTO> getAllCarts(){
+    private static final Logger logger = LoggerFactory.getLogger(CartService.class);
+
+    public List<CartDTO> getAllCarts() {
+        logger.info("Retrieving all carts from the database");
         List<CartEntity> cartEntities = cartRepository.findAll();
+        logger.info("Mapping all carts to DTOs");
         return cartEntities.stream()
                 .map(this::convertToDTO)
                 .toList();
     }
-    public CartDTO convertToDTO(CartEntity cartEntity){
+
+    public CartDTO convertToDTO(CartEntity cartEntity) {
+        logger.info("Converting CartEntity to CartDTO for cartId: {}", cartEntity.getId());
         return modelMapper.map(cartEntity, CartDTO.class);
     }
 
-    public CartDTO getCartByUsername(String username){
+    public CartDTO getCartByUsername(String username) {
+        if (username == null) {
+            logger.error("Attempted to retrieve cart with null username");
+            throw new AppException("Username must not be null", HttpStatus.BAD_REQUEST);
+        }
+        logger.info("Retrieving cart for username: {}", username);
         Optional<CartEntity> cart = cartRepository.findByUsername(username);
-        if(cart.isEmpty()){
+        if (cart.isEmpty()) {
+            logger.error("No cart found for username: {}", username);
             throw new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND);
         }
-        return modelMapper.map(cart, CartDTO.class);
+        logger.info("Cart found for username: {}, converting to DTO", username);
+        return modelMapper.map(cart.get(), CartDTO.class);
     }
+    
 
-    public CartDTO addToCart(String productId, String username){
+    public CartDTO addToCart(String productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 
@@ -82,8 +95,7 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
-
-    public CartDTO removeFromCart(String productId, String username){
+    public CartDTO removeFromCart(String productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 
@@ -103,7 +115,7 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
-    public CartDTO clearCart(String username){
+    public CartDTO clearCart(String username) {
 
         CartEntity cart = cartRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND));
