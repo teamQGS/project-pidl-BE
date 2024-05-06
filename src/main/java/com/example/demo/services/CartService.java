@@ -115,6 +115,60 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
+    public CartDTO decreaseCount(String productId, String username) {
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
+        
+        CartEntity cart = cartRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND));
+
+        List<ProductEntity> currentProducts = cart.getProducts();
+
+        if (currentProducts == null) {
+            currentProducts = new LinkedList<>();
+        }
+
+        for (ProductEntity p : currentProducts) {
+            if (p.getId().equals(productId)) {
+                if (p.getCount() > 1) {
+                    p.setCount(p.getCount() - 1);
+                } else {
+                    currentProducts.remove(p);
+                }
+                break;
+            }
+        }
+
+        cart.setProducts(currentProducts);
+        cartRepository.save(cart);
+        return modelMapper.map(cart, CartDTO.class);
+    }
+
+    public CartDTO increaseCount(String productId, String username) {
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
+
+        CartEntity cart = cartRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND));
+
+        List<ProductEntity> currentProducts = cart.getProducts();
+
+        if (currentProducts == null) {
+            currentProducts = new LinkedList<>();
+        }
+
+        for (ProductEntity p : currentProducts) {
+            if (p.getId().equals(productId)) {
+                p.setCount(p.getCount() + 1);
+                break;
+            }
+        }
+
+        cart.setProducts(currentProducts);
+        cartRepository.save(cart);
+        return modelMapper.map(cart, CartDTO.class);
+    }
+
     public CartDTO clearCart(String username) {
 
         CartEntity cart = cartRepository.findByUsername(username)
