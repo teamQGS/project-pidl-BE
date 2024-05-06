@@ -36,4 +36,16 @@ public class CartController {
         CartDTO updatedCart = cartService.clearCart(username);
         return ResponseEntity.ok(updatedCart);
     }
+
+    @PutMapping("/{username}/increase")
+    public ResponseEntity<CartDTO> increaseQuantity(@RequestBody String productId, @PathVariable String username) {
+        CartDTO updatedCart = cartService.increaseCount(productId, username);
+        return ResponseEntity.ok(updatedCart);
+    }
+
+    @PutMapping("/{username}/decrease")
+    public ResponseEntity<CartDTO> decreaseQuantity(@RequestBody String productId, @PathVariable String username) {
+        CartDTO updatedCart = cartService.decreaseCount(productId, username);
+        return ResponseEntity.ok(updatedCart);
+    }
 }
