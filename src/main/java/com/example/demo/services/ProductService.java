@@ -1,9 +1,9 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOS.ProductDTO;
-import com.example.demo.model.Entities.Enums.ProductsCategory;
-import com.example.demo.model.Entities.ProductEntity;
-import com.example.demo.model.Repositories.ProductRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -11,9 +11,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.example.demo.DTOS.ProductDTO;
+import com.example.demo.model.Entities.ProductEntity;
+import com.example.demo.model.Entities.Enums.ProductsCategory;
+import com.example.demo.model.Repositories.ProductRepository;
 
 @Service
 public class ProductService {
@@ -74,5 +75,15 @@ public class ProductService {
     public List<ProductDTO> findProductsByCategory(ProductsCategory productsCategory){
         List<ProductEntity> productEntities = productRepository.findAllByProductCategory(productsCategory);
         return productEntities.stream().map(this::convertToDTO).toList();
+    }
+
+    // FE: Reactive search
+    public List<ProductDTO> findProductByName (String name) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("name").regex(name, "i"));
+        List<ProductEntity> productEntities = mongoTemplate.find(query, ProductEntity.class);
+        return productEntities.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 }
