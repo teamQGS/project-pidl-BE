@@ -15,7 +15,5 @@ public enum ProductsCategory {
     CONDIMENTS,
     NUTS,
     SNACKS,
-    ALCOHOL,
-    ADULT,
-    MEET
+    ALCOHOLs
 }

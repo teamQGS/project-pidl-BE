@@ -6,19 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import com.example.demo.model.Entities.Enums.Role;
-import com.example.demo.model.Entities.Enums.Status;
-import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.services.OrderService;
-import com.example.demo.services.UserService;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import com.example.demo.model.Entities.OrderEntity;
-import com.example.demo.services.ProductService;
-import org.modelmapper.ModelMapper;
 
 @RestController
 @RequestMapping("/api/orders")

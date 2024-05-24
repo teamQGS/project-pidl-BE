@@ -2,9 +2,7 @@ package com.example.demo.controllers;
 
 
 import com.example.demo.DTOS.UserDTO;
-import com.example.demo.model.Entities.Enums.Role;
 import com.example.demo.services.AdminService;
-import org.mapstruct.control.MappingControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
