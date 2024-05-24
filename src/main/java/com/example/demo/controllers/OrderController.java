@@ -25,8 +25,8 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findOrderById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<OrderDTO> createOrder(@RequestParam String username, @RequestBody AddressDTO addressDTO) {
+    @PostMapping("/create/{username}")
+    public ResponseEntity<OrderDTO> createOrder(@PathVariable String username, @RequestBody AddressDTO addressDTO) {
         OrderDTO createdOrder = orderService.createOrder(username, addressDTO);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
