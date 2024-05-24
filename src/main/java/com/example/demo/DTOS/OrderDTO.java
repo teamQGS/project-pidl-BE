@@ -13,7 +13,8 @@ import java.util.List;
 public class OrderDTO {
      String id;
      Date date;
-     UserDTO userID;
+     String customerUsername;
+     String managerUsername;
      List<ProductDTO> products;
      double totalSum;
      AddressDTO addressDTO;

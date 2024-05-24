@@ -59,7 +59,7 @@ public class OrderService {
                 .collect(Collectors.toList());
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setDate(new Date());
-        orderEntity.setUsername(username);
+        orderEntity.setCustomerUsername(username);
         orderEntity.setProducts(productEntities);
         orderEntity.setTotalSum(calculateTotalSum(productEntities));
         orderEntity.setStatus(Status.IN_PROCESS);

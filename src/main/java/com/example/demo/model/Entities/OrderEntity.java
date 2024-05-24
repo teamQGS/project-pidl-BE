@@ -20,7 +20,8 @@ public class OrderEntity {
     @Id
     private String id;
     private Date date;
-    private String username;
+    private String customerUsername;
+    private String managerUsername;
     private List<ProductEntity> products;
     private double totalSum;
     private AddressEntity addressEntity;
