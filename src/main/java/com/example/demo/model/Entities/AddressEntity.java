@@ -17,6 +17,7 @@ public class AddressEntity {
     @Id
     private String id;
     private String username;
+    private String country;
     private String city;
     private String street;
     private String house;

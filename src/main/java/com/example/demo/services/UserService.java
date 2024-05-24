@@ -6,9 +6,11 @@ import com.example.demo.DTOS.records.SignUpDTO;
 import com.example.demo.DTOS.records.UpdatePasswordDTO;
 import com.example.demo.DTOS.records.UpdateUserDTO;
 import com.example.demo.mappers.UserMapper;
+import com.example.demo.model.Entities.AddressEntity;
 import com.example.demo.model.Entities.CartEntity;
 import com.example.demo.model.Entities.Enums.Role;
 import com.example.demo.model.Entities.UserEntity;
+import com.example.demo.model.Repositories.AddressRepository;
 import com.example.demo.model.Repositories.CartRepository;
 import com.example.demo.model.Repositories.UserRepository;
 import com.example.demo.security.config.AppException;
@@ -35,6 +37,8 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     CartRepository cartRepository;
+    @Autowired
+    AddressRepository addressRepository;
     @Autowired
     ModelMapper modelMapper;
     @Autowired
@@ -89,20 +93,23 @@ public class UserService {
             throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
         }
 
-        // Создание пользователя
         logger.info("Registering new user: {}", signUpDTO.username());
         UserEntity userEntity = userMapper.signUpToUser(signUpDTO);
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
         userEntity.setRole(Role.CUSTOMER);
 
-        // Сохранение пользователя
         UserEntity savedUser = userRepository.save(userEntity);
 
-        // Создание корзины для пользователя
         logger.info("User registered, creating cart: {}", savedUser.getUsername());
         CartEntity userCart = new CartEntity();
         userCart.setUsername(savedUser.getUsername());
         cartRepository.save(userCart);
+
+        // Создание адреса для пользователя
+        logger.info("User registered, creating address: {}", savedUser.getUsername());
+        AddressEntity userAddress = new AddressEntity();
+        userAddress.setUsername(savedUser.getUsername());
+        addressRepository.save(userAddress);
 
         // Создание токена и обновление пользователя с токеном
         String token = userAuthProvider.createToken(savedUser);
