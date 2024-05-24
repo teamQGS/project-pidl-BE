@@ -15,14 +15,8 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 @Document(collection = "address")
 public class AddressEntity {
     @Id
-
     private String id;
-    @DocumentReference
-    private UserEntity userId;
-
-    // private Object location; // TODO: delete
-
-    // below are not tested
+    private String username;
     private String city;
     private String street;
     private String house;

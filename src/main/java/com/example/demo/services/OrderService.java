@@ -1,40 +1,79 @@
 package com.example.demo.services;
 
+import com.example.demo.DTOS.AddressDTO;
+import com.example.demo.DTOS.CartDTO;
+import com.example.demo.DTOS.OrderDTO;
+import com.example.demo.model.Entities.AddressEntity;
+import com.example.demo.model.Entities.CartEntity;
 import com.example.demo.model.Entities.Enums.Status;
 import com.example.demo.model.Entities.OrderEntity;
+import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Repositories.OrderRepository;
+import com.example.demo.security.config.AppException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private CartService cartService;
 
-    public List<OrderEntity> getAllOrders() {
-        return orderRepository.findAll();
+    public OrderDTO convertToDTO(OrderEntity orderEntity) {
+        return modelMapper.map(orderEntity, OrderDTO.class);
     }
 
-    public Optional<OrderEntity> getOrderById(String id) {
-        return orderRepository.findById(id);
+    public List<OrderDTO> getAllOrders() {
+        List<OrderEntity> orderEntities = orderRepository.findAll();
+        return orderEntities.stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
-    public OrderEntity updateOrderStatus(String id, Status status) {
-        Optional<OrderEntity> optionalOrder = orderRepository.findById(id);
-        if (optionalOrder.isPresent()) {
-            OrderEntity order = optionalOrder.get();
-            order.setStatus(status);
-            return orderRepository.save(order);
-        } else {
-            throw new IllegalArgumentException("Order Not Found: " + id);
+    public OrderDTO findOrderById(String id){
+        Optional<OrderEntity> order = orderRepository.findById(id);
+        if (order.isEmpty()) {
+            throw new AppException("This order doesn't exist!", HttpStatus.NOT_FOUND);
         }
+        return modelMapper.map(order.get(), OrderDTO.class);
     }
 
-    public OrderEntity saveOrder(OrderEntity order) {
-        return orderRepository.save(order);
+    public OrderDTO createOrder(String username, AddressDTO addressDTO){
+        CartDTO cartDTO = cartService.getCartByUsername(username);
+        if (cartDTO.getProducts().isEmpty()) {
+            throw new AppException("Cart is empty for username: " + username, HttpStatus.BAD_REQUEST);
+        }
+        List<ProductEntity> productEntities = cartDTO.getProducts().stream()
+                .map(productDTO -> modelMapper.map(productDTO, ProductEntity.class))
+                .collect(Collectors.toList());
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setDate(new Date());
+        orderEntity.setUsername(username);
+        orderEntity.setProducts(productEntities);
+        orderEntity.setTotalSum(calculateTotalSum(productEntities));
+        orderEntity.setStatus(Status.IN_PROCESS);
+        orderEntity.setAddressEntity(modelMapper.map(addressDTO, AddressEntity.class));
+        OrderEntity savedOrder = orderRepository.save(orderEntity);
+        return modelMapper.map(savedOrder, OrderDTO.class);
     }
+
+    private double calculateTotalSum(List<ProductEntity> products) {
+        double totalSum = 0.0;
+        for (ProductEntity product : products) {
+            totalSum += product.getPrice();
+        }
+        return totalSum;
+    }
+
 }

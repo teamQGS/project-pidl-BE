@@ -4,8 +4,10 @@ import com.example.demo.model.Entities.Enums.ProductsCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Data
@@ -28,5 +30,7 @@ public class ProductEntity {
     private int count;
 
     private ProductsCategory productCategory;
+
+//    private Binary illustration;
 
 }

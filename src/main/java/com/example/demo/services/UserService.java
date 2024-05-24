@@ -156,10 +156,6 @@ public class UserService {
             user.setEmail(updateUserDTO.email());
             logger.info("Updated email to: {}", updateUserDTO.email());
         }
-        if (!Objects.equals(updateUserDTO.address(), "")) {
-            user.setAddress(updateUserDTO.address());
-            logger.info("Updated address to: {}", updateUserDTO.address());
-        }
         if (!Objects.equals(updateUserDTO.phoneNumber(), "")) {
             user.setPhoneNumber(updateUserDTO.phoneNumber());
             logger.info("Updated phone number to: {}", updateUserDTO.phoneNumber());

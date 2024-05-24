@@ -1,6 +1,8 @@
 package com.example.demo.DTOS;
 
+import com.example.demo.model.Entities.CartEntity;
 import com.example.demo.model.Entities.Enums.Status;
+import com.example.demo.model.Entities.ProductEntity;
 import lombok.Data;
 import org.bson.types.ObjectId;
 
@@ -12,9 +14,8 @@ public class OrderDTO {
      String id;
      Date date;
      UserDTO userID;
-     List<ProductDTO> productIds;
-     List<ProductDTO> count;
-     int totalSum;
-     ObjectId addressId;
+     List<ProductDTO> products;
+     double totalSum;
+     AddressDTO addressDTO;
      Status status;
 }

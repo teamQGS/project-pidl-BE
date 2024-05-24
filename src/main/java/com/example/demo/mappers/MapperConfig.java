@@ -3,9 +3,7 @@ package com.example.demo.mappers;
 import com.example.demo.DTOS.*;
 import com.example.demo.DTOS.records.LoginDTO;
 import com.example.demo.DTOS.records.SignUpDTO;
-import com.example.demo.model.Entities.CartEntity;
-import com.example.demo.model.Entities.ProductEntity;
-import com.example.demo.model.Entities.UserEntity;
+import com.example.demo.model.Entities.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +22,8 @@ public class MapperConfig {
         modelMapper.createTypeMap(UserEntity.class, LoginDTO.class);
         modelMapper.createTypeMap(UserEntity.class, SignUpDTO.class);
         modelMapper.createTypeMap(CartEntity.class, CartDTO.class);
+        modelMapper.createTypeMap(OrderEntity.class, OrderDTO.class);
+        modelMapper.createTypeMap(AddressEntity.class, AddressDTO.class);
         return modelMapper;
     }
 }
