@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -119,6 +116,13 @@ public class OrderService {
             totalSum += product.getPrice();
         }
         return totalSum;
+    }
+
+    public List<OrderDTO> getOrdersByUsername(String username){
+        List<OrderEntity> orders = orderRepository.findAllByCustomerUsername(username);
+        return orders.stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
 }

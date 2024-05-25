@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 
 import com.example.demo.DTOS.*;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,11 @@ public class OrderController {
     public ResponseEntity<OrderDTO> createOrder(@PathVariable String username, @RequestBody AddressDTO addressDTO) {
         OrderDTO createdOrder = orderService.createOrder(username, addressDTO);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/findAll/{username}")
+    public ResponseEntity<List<OrderDTO>> getOrdersByUsername(@PathVariable String username){
+        return new ResponseEntity<>(orderService.getOrdersByUsername(username), HttpStatus.OK);
     }
 
 
