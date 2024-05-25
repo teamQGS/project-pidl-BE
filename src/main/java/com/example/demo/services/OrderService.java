@@ -128,7 +128,8 @@ public class OrderService {
     }
 
     public List<OrderDTO> getOrdersByUsername(String username){
-        List<OrderEntity> orders = orderRepository.findAllByCustomerUsername(username);
+        List<Status> statuses = Arrays.asList(Status.COMPLETED, Status.IN_PROCESS, Status.CANCELED);
+        List<OrderEntity> orders = orderRepository.findAllByCustomerUsernameAndStatusIn(username, statuses);
         return orders.stream()
                 .map(this::convertToDTO)
                 .toList();
