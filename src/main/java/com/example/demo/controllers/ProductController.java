@@ -48,4 +48,10 @@ public class ProductController {
     public List<ProductDTO> searchProductByName(@RequestParam String name){
         return productService.findProductByName(name);
     }
+
+    // Get all categories
+    @GetMapping("/categories")
+    public ResponseEntity<ProductsCategory[]> getCategories(){
+        return new ResponseEntity<>(ProductsCategory.values(), HttpStatus.OK);
+    }
 }

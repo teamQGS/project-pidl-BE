@@ -86,4 +86,9 @@ public class ProductService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+    // Get all categories
+    public ProductsCategory[] getCategories(){
+        return ProductsCategory.values();
+    }
 }
