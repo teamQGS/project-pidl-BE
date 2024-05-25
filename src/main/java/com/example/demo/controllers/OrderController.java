@@ -21,6 +21,11 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findOrderById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/find/{username}")
+    public ResponseEntity<OrderDTO> findByCustomerUsername(@PathVariable String username){
+        return new ResponseEntity<>(orderService.findActiveOrderByCustomerUsername(username), HttpStatus.OK);
+    }
+
     @PostMapping("/create/{username}")
     public ResponseEntity<OrderDTO> createOrder(@PathVariable String username, @RequestBody AddressDTO addressDTO) {
         OrderDTO createdOrder = orderService.createOrder(username, addressDTO);

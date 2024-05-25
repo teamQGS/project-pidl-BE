@@ -66,6 +66,15 @@ public class OrderService {
         return modelMapper.map(order.get(), OrderDTO.class);
     }
 
+    public OrderDTO findActiveOrderByCustomerUsername(String username){
+        Optional<OrderEntity> order = orderRepository.findByCustomerUsernameAndStatus(username, Status.IN_PROCESS);
+        if (order.isEmpty()) {
+            throw new AppException("No active order in process for username: " + username, HttpStatus.NOT_FOUND);
+        }
+        return modelMapper.map(order.get(), OrderDTO.class);
+    }
+
+
     public OrderDTO createOrder(String username, AddressDTO addressDTO){
         Optional<OrderEntity> activeOrder = orderRepository.findByCustomerUsernameAndStatus(username, Status.IN_PROCESS);
         if (activeOrder.isPresent()) {
