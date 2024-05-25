@@ -141,6 +141,7 @@ public class UserService {
             logger.info("User with username: {} was deleted!", username);
         });
         mongoTemplate.remove(Query.query(Criteria.where("username").is(username)), UserEntity.class);
+        cartRepository.deleteCartEntityByUsername(username);
 
         return user.map(userEntity -> modelMapper.map(userEntity, UserDTO.class));
     }

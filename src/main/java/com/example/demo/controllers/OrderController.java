@@ -15,11 +15,7 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-    @GetMapping
-    public ResponseEntity<List<OrderDTO>> getAllOrders() {
-        List<OrderDTO> orders = orderService.getAllOrders();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
-    }
+
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable String id){
         return new ResponseEntity<>(orderService.findOrderById(id), HttpStatus.OK);
@@ -30,4 +26,6 @@ public class OrderController {
         OrderDTO createdOrder = orderService.createOrder(username, addressDTO);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
+
+
 }

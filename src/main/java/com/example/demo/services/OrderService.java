@@ -4,11 +4,10 @@ import com.example.demo.DTOS.AddressDTO;
 import com.example.demo.DTOS.CartDTO;
 import com.example.demo.DTOS.OrderDTO;
 import com.example.demo.DTOS.ProductDTO;
-import com.example.demo.model.Entities.AddressEntity;
-import com.example.demo.model.Entities.CartEntity;
+import com.example.demo.DTOS.UserDTO;
+import com.example.demo.model.Entities.*;
+import com.example.demo.model.Entities.Enums.Role;
 import com.example.demo.model.Entities.Enums.Status;
-import com.example.demo.model.Entities.OrderEntity;
-import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Repositories.OrderRepository;
 import com.example.demo.model.Repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,6 +43,19 @@ public class OrderService {
         return orderEntities.stream()
                 .map(this::convertToDTO)
                 .toList();
+    }
+
+    public OrderDTO changeStatus(String status, String orderId){
+        OrderEntity order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new AppException("Unknown order", HttpStatus.NOT_FOUND));
+        if(Objects.equals(status, order.getStatus().toString())){
+            throw new AppException("Order already has this status", HttpStatus.CONFLICT);
+        }
+        else {
+            order.setStatus(Status.valueOf(status));
+        }
+        OrderEntity saved = orderRepository.save(order);
+        return modelMapper.map(saved, OrderDTO.class);
     }
 
     public OrderDTO findOrderById(String id){
