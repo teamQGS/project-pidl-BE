@@ -3,12 +3,14 @@ package com.example.demo.services;
 import com.example.demo.DTOS.AddressDTO;
 import com.example.demo.DTOS.CartDTO;
 import com.example.demo.DTOS.OrderDTO;
+import com.example.demo.DTOS.ProductDTO;
 import com.example.demo.model.Entities.AddressEntity;
 import com.example.demo.model.Entities.CartEntity;
 import com.example.demo.model.Entities.Enums.Status;
 import com.example.demo.model.Entities.OrderEntity;
 import com.example.demo.model.Entities.ProductEntity;
 import com.example.demo.model.Repositories.OrderRepository;
+import com.example.demo.model.Repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ProductRepository productRepository;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
@@ -57,6 +61,17 @@ public class OrderService {
         List<ProductEntity> productEntities = cartDTO.getProducts().stream()
                 .map(productDTO -> modelMapper.map(productDTO, ProductEntity.class))
                 .collect(Collectors.toList());
+
+        for (ProductEntity product : productEntities) {
+            ProductEntity productEntity = productRepository.findById(product.getId())
+                    .orElseThrow(() -> new AppException("Product not found: " + product.getId(), HttpStatus.NOT_FOUND));
+            if (productEntity.getCount() < product.getCount()) {
+                throw new AppException("Not enough products in stock for: " + product.getName(), HttpStatus.BAD_REQUEST);
+            }
+            productEntity.setCount(productEntity.getCount() - product.getCount());
+            productRepository.save(productEntity);
+        }
+
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setDate(new Date());
         orderEntity.setCustomerUsername(username);
