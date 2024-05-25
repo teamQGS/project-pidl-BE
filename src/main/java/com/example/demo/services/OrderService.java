@@ -64,7 +64,8 @@ public class OrderService {
     }
 
     public OrderDTO findActiveOrderByCustomerUsername(String username){
-        Optional<OrderEntity> order = orderRepository.findByCustomerUsernameAndStatus(username, Status.IN_PROCESS);
+        List<Status> statuses = Arrays.asList(Status.CREATED, Status.IN_PROCESS);
+        Optional<OrderEntity> order = orderRepository.findByCustomerUsernameAndStatusIn(username, statuses);
         if (order.isEmpty()) {
             throw new AppException("No active order in process for username: " + username, HttpStatus.NOT_FOUND);
         }
@@ -73,7 +74,7 @@ public class OrderService {
 
 
     public OrderDTO createOrder(String username, AddressDTO addressDTO){
-        Optional<OrderEntity> activeOrder = orderRepository.findByCustomerUsernameAndStatus(username, Status.IN_PROCESS);
+        Optional<OrderEntity> activeOrder = orderRepository.findByCustomerUsernameAndStatus(username, Status.CREATED);
         if (activeOrder.isPresent()) {
             throw new AppException("You already have an active order in process", HttpStatus.BAD_REQUEST);
         }
@@ -101,7 +102,7 @@ public class OrderService {
         orderEntity.setCustomerUsername(username);
         orderEntity.setProducts(productEntities);
         orderEntity.setTotalSum(calculateTotalSum(productEntities));
-        orderEntity.setStatus(Status.IN_PROCESS);
+        orderEntity.setStatus(Status.CREATED);
         orderEntity.setAddressEntity(modelMapper.map(addressDTO, AddressEntity.class));
         OrderEntity savedOrder = orderRepository.save(orderEntity);
 
