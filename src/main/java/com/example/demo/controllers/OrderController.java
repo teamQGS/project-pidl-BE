@@ -38,5 +38,8 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrdersByUsername(username), HttpStatus.OK);
     }
 
-
+    @PutMapping("/changeStatus/{orderId}")
+    public ResponseEntity<OrderDTO> changeRole(@RequestBody String status, @PathVariable String orderId){
+        return new ResponseEntity<>(orderService.changeStatus(status, orderId), HttpStatus.OK);
+    }
 }
