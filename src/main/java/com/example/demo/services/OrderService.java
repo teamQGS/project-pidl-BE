@@ -54,6 +54,11 @@ public class OrderService {
     }
 
     public OrderDTO createOrder(String username, AddressDTO addressDTO){
+        Optional<OrderEntity> activeOrder = orderRepository.findByCustomerUsernameAndStatus(username, Status.IN_PROCESS);
+        if (activeOrder.isPresent()) {
+            throw new AppException("You already have an active order in process", HttpStatus.BAD_REQUEST);
+        }
+
         CartDTO cartDTO = cartService.getCartByUsername(username);
         if (cartDTO.getProducts().isEmpty()) {
             throw new AppException("Cart is empty for username: " + username, HttpStatus.BAD_REQUEST);
