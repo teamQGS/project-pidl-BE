@@ -18,7 +18,7 @@ public class ManagerController {
 
     @GetMapping("/orders")
     public ResponseEntity<List<OrderDTO>> getAllOrders() {
-        List<OrderDTO> orders = orderService.getAllOrders();
+        List<OrderDTO> orders = orderService.findAllOrders();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 

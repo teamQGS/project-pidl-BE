@@ -14,4 +14,5 @@ public interface OrderRepository extends MongoRepository<OrderEntity, String> {
     Optional<OrderEntity> findByCustomerUsernameAndStatusIn(String customerUsername, List<Status> statuses);
     Optional<OrderEntity> findByCustomerUsernameAndStatus(String customerUsername, Status statuses);
     List<OrderEntity> findAllByCustomerUsername(String username);
+    List<OrderEntity> findAllByStatusIn(List<Status> statuses);
 }

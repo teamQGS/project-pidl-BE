@@ -72,6 +72,14 @@ public class OrderService {
         return modelMapper.map(order.get(), OrderDTO.class);
     }
 
+    public List<OrderDTO> findAllOrders(){
+        List<Status> statuses = Arrays.asList(Status.CREATED, Status.IN_PROCESS);
+        List<OrderEntity> order = orderRepository.findAllByStatusIn(statuses);
+        return order.stream()
+                .map(this::convertToDTO)
+                .toList();
+    }
+
 
     public OrderDTO createOrder(String username, AddressDTO addressDTO){
         Optional<OrderEntity> activeOrder = orderRepository.findByCustomerUsernameAndStatus(username, Status.CREATED);
