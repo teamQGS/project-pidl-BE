@@ -85,6 +85,9 @@ public class OrderService {
         orderEntity.setStatus(Status.IN_PROCESS);
         orderEntity.setAddressEntity(modelMapper.map(addressDTO, AddressEntity.class));
         OrderEntity savedOrder = orderRepository.save(orderEntity);
+
+        cartService.clearCart(username);
+
         return modelMapper.map(savedOrder, OrderDTO.class);
     }
 
