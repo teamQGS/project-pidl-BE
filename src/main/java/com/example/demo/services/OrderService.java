@@ -45,15 +45,26 @@ public class OrderService {
     public OrderDTO changeStatus(String status, String orderId){
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException("Unknown order", HttpStatus.NOT_FOUND));
+
         if(Objects.equals(status, order.getStatus().toString())){
             throw new AppException("Order already has this status", HttpStatus.CONFLICT);
         }
-        else {
-            order.setStatus(Status.valueOf(status));
+
+        if (status.equals("CANCELED")) {
+            List<ProductEntity> productEntities = order.getProducts();
+            for (ProductEntity product : productEntities) {
+                ProductEntity productEntity = productRepository.findById(product.getId())
+                        .orElseThrow(() -> new AppException("Product not found: " + product.getId(), HttpStatus.NOT_FOUND));
+                productEntity.setCount(productEntity.getCount() + product.getCount());
+                productRepository.save(productEntity);
+            }
         }
+
+        order.setStatus(Status.valueOf(status));
         OrderEntity saved = orderRepository.save(order);
         return modelMapper.map(saved, OrderDTO.class);
     }
+
 
     public OrderDTO findOrderById(String id){
         Optional<OrderEntity> order = orderRepository.findById(id);
@@ -82,7 +93,11 @@ public class OrderService {
 
 
     public OrderDTO createOrder(String username, AddressDTO addressDTO){
-        Optional<OrderEntity> activeOrder = orderRepository.findByCustomerUsernameAndStatus(username, Status.CREATED);
+        Optional<OrderEntity> createdOrder = orderRepository.findByCustomerUsernameAndStatus(username, Status.CREATED);
+        if (createdOrder.isPresent()) {
+            throw new AppException("You already have an active order in process", HttpStatus.BAD_REQUEST);
+        }
+        Optional<OrderEntity> activeOrder = orderRepository.findByCustomerUsernameAndStatus(username, Status.IN_PROCESS);
         if (activeOrder.isPresent()) {
             throw new AppException("You already have an active order in process", HttpStatus.BAD_REQUEST);
         }
