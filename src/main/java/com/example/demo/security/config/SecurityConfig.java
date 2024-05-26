@@ -27,6 +27,8 @@ public class SecurityConfig {
                     .authorizeHttpRequests((requests) ->
                             requests.requestMatchers(HttpMethod.POST, "/api/users/login", "/api/users/signup").permitAll()
                                     .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/products/categories").permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/products/search").permitAll()
                                     .anyRequest().authenticated()
                     );
             return http.build();
