@@ -33,8 +33,14 @@ public class UserController {
 
     @GetMapping("/find/{username}")
     public ResponseEntity<Optional<UserDTO>> getUserByUsername(@PathVariable String username){
-        return new ResponseEntity<>(service.getUserByUsername(username), HttpStatus.OK);
+        Optional<UserDTO> user = service.getUserByUsername(username);
+        if (user.isPresent()) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO){
@@ -84,5 +90,7 @@ public class UserController {
     public ResponseEntity<String> handleAppException(AppException exception){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
+
+
 }
 
