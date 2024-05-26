@@ -18,11 +18,9 @@ public class UserDTO {
     String firstName;
     String lastName;
     String email;
-    int age;
-    String image;
+//    String image;
     String token;
     String phoneNumber;
     Role role;
-    String illustration;
 
 }

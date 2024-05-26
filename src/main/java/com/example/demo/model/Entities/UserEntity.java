@@ -29,10 +29,7 @@ public class UserEntity implements UserDetails {
     private String email;
     private String phoneNumber;
     private String token;
-    private int age;
-    private String illustration;
-    private Boolean isAdult;
-    private String image; //Now it is a link to image. TODO create image variable
+//    private String image; //Now it is a link to image. TODO create image variable
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
