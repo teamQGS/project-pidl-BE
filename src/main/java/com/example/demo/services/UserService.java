@@ -142,6 +142,7 @@ public class UserService {
         });
         mongoTemplate.remove(Query.query(Criteria.where("username").is(username)), UserEntity.class);
         cartRepository.deleteCartEntityByUsername(username);
+        addressRepository.deleteAddressEntityByUsername(username);
 
         return user.map(userEntity -> modelMapper.map(userEntity, UserDTO.class));
     }
