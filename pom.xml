@@ -108,14 +108,25 @@
 	</dependencies>
 	<profiles>
 		<profile>
-			<id>test</id>
+			<id>development</id>
 			<activation>
-				<property>
-					<name>test</name>
-				</property>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<spring.profiles.active>test</spring.profiles.active>
+				<!-- Define development-specific properties -->
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<!-- Define test-specific properties -->
+			</properties>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<!-- Define production-specific properties -->
+				<spring.profiles.active>production</spring.profiles.active>
 			</properties>
 			<build>
 				<plugins>
@@ -124,7 +135,7 @@
 						<artifactId>spring-boot-maven-plugin</artifactId>
 						<configuration>
 							<profiles>
-								<profile>test</profile>
+								<profile>production</profile>
 							</profiles>
 						</configuration>
 					</plugin>
