@@ -24,6 +24,7 @@ public class MapperConfig {
         modelMapper.createTypeMap(CartEntity.class, CartDTO.class);
         modelMapper.createTypeMap(OrderEntity.class, OrderDTO.class);
         modelMapper.createTypeMap(AddressEntity.class, AddressDTO.class);
+        modelMapper.createTypeMap(FeedbackEntity.class, FeedbackDTO.class);
         return modelMapper;
     }
 }
