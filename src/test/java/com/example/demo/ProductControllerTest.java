@@ -63,7 +63,7 @@ public class ProductControllerTest {
         productDTO.setPrice(100.0);
         productDTO.setIllustration("Test Illustration");
         productDTO.setCount(10);
-        productDTO.setProductCategory(ProductsCategory.ELECTRONICS);
+        productDTO.setProductCategory(ProductsCategory.ADULT);
 
         List<ProductDTO> productList = Collections.singletonList(productDTO);
 
@@ -78,7 +78,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$[0].price").value(100.0))
                 .andExpect(jsonPath("$[0].illustration").value("Test Illustration"))
                 .andExpect(jsonPath("$[0].count").value(10))
-                .andExpect(jsonPath("$[0].productCategory").value("ELECTRONICS"));
+                .andExpect(jsonPath("$[0].productCategory").value("ADULT"));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class ProductControllerTest {
         productDTO.setPrice(100.0);
         productDTO.setIllustration("Test Illustration");
         productDTO.setCount(10);
-        productDTO.setProductCategory(ProductsCategory.ELECTRONICS);
+        productDTO.setProductCategory(ProductsCategory.ADULT);
 
         when(productService.getProductById("1")).thenReturn(Optional.of(productDTO));
 
@@ -104,7 +104,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.price").value(100.0))
                 .andExpect(jsonPath("$.illustration").value("Test Illustration"))
                 .andExpect(jsonPath("$.count").value(10))
-                .andExpect(jsonPath("$.productCategory").value("ELECTRONICS"));
+                .andExpect(jsonPath("$.productCategory").value("ADULT"));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class ProductControllerTest {
         productDTO.setPrice(100.0);
         productDTO.setIllustration("Test Illustration");
         productDTO.setCount(10);
-        productDTO.setProductCategory(ProductsCategory.ELECTRONICS);
+        productDTO.setProductCategory(ProductsCategory.ADULT);
 
         when(productService.deleteProductById("1")).thenReturn(Optional.of(productDTO));
 
@@ -130,7 +130,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.price").value(100.0))
                 .andExpect(jsonPath("$.illustration").value("Test Illustration"))
                 .andExpect(jsonPath("$.count").value(10))
-                .andExpect(jsonPath("$.productCategory").value("ELECTRONICS"));
+                .andExpect(jsonPath("$.productCategory").value("ADULT"));
     }
 
     @Test
@@ -143,7 +143,7 @@ public class ProductControllerTest {
         productDTO.setPrice(100.0);
         productDTO.setIllustration("Test Illustration");
         productDTO.setCount(10);
-        productDTO.setProductCategory(ProductsCategory.ELECTRONICS);
+        productDTO.setProductCategory(ProductsCategory.ADULT);
 
         when(productService.createProduct(any(ProductDTO.class))).thenReturn(productDTO);
 
@@ -157,7 +157,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.price").value(100.0))
                 .andExpect(jsonPath("$.illustration").value("Test Illustration"))
                 .andExpect(jsonPath("$.count").value(10))
-                .andExpect(jsonPath("$.productCategory").value("ELECTRONICS"));
+                .andExpect(jsonPath("$.productCategory").value("ADULT"));
     }
 
     @Test
@@ -170,9 +170,9 @@ public class ProductControllerTest {
         productDTO.setPrice(150.0);
         productDTO.setIllustration("Updated Illustration");
         productDTO.setCount(20);
-        productDTO.setProductCategory(ProductsCategory.ELECTRONICS);
+        productDTO.setProductCategory(ProductsCategory.ADULT);
 
-        ProductEntity productEntity = new ProductEntity("1", "Updated Product", "Updated Description", 150.0, "Updated Illustration", 20, ProductsCategory.ELECTRONICS);
+        ProductEntity productEntity = new ProductEntity("1", "Updated Product", "Updated Description", 150.0, "Updated Illustration", 20, ProductsCategory.ADULT);
 
         when(productService.updateProduct(eq("1"), any(ProductDTO.class))).thenReturn(productEntity);
 
@@ -186,7 +186,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.price").value(150.0))
                 .andExpect(jsonPath("$.illustration").value("Updated Illustration"))
                 .andExpect(jsonPath("$.count").value(20))
-                .andExpect(jsonPath("$.productCategory").value("ELECTRONICS"));
+                .andExpect(jsonPath("$.productCategory").value("ADULT"));
     }
 
     @Test
@@ -199,13 +199,13 @@ public class ProductControllerTest {
         productDTO.setPrice(100.0);
         productDTO.setIllustration("Test Illustration");
         productDTO.setCount(10);
-        productDTO.setProductCategory(ProductsCategory.ELECTRONICS);
+        productDTO.setProductCategory(ProductsCategory.ADULT);
 
         List<ProductDTO> productList = Collections.singletonList(productDTO);
 
-        when(productService.findProductsByCategory(ProductsCategory.ELECTRONICS)).thenReturn(productList);
+        when(productService.findProductsByCategory(ProductsCategory.ADULT)).thenReturn(productList);
 
-        mockMvc.perform(get("/api/products/category/{category}", ProductsCategory.ELECTRONICS)
+        mockMvc.perform(get("/api/products/category/{category}", ProductsCategory.ADULT)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value("1"))
@@ -214,7 +214,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$[0].price").value(100.0))
                 .andExpect(jsonPath("$[0].illustration").value("Test Illustration"))
                 .andExpect(jsonPath("$[0].count").value(10))
-                .andExpect(jsonPath("$[0].productCategory").value("ELECTRONICS"));
+                .andExpect(jsonPath("$[0].productCategory").value("ADULT"));
     }
 
     @Test
@@ -227,7 +227,7 @@ public class ProductControllerTest {
         productDTO.setPrice(100.0);
         productDTO.setIllustration("Test Illustration");
         productDTO.setCount(10);
-        productDTO.setProductCategory(ProductsCategory.ELECTRONICS);
+        productDTO.setProductCategory(ProductsCategory.ADULT);
 
         List<ProductDTO> productList = Collections.singletonList(productDTO);
 
@@ -243,7 +243,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$[0].price").value(100.0))
                 .andExpect(jsonPath("$[0].illustration").value("Test Illustration"))
                 .andExpect(jsonPath("$[0].count").value(10))
-                .andExpect(jsonPath("$[0].productCategory").value("ELECTRONICS"));
+                .andExpect(jsonPath("$[0].productCategory").value("ADULT"));
     }
 
     @Test
