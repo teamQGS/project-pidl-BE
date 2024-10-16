@@ -1,11 +1,10 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOS.UserDTO;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.mappers.UserMapper;
-import com.example.demo.model.Entities.Enums.Role;
-import com.example.demo.model.Entities.ProductEntity;
-import com.example.demo.model.Entities.UserEntity;
-import com.example.demo.model.Repositories.UserRepository;
+import com.example.demo.model.entities.enums.Role;
+import com.example.demo.model.entities.UserEntity;
+import com.example.demo.model.repositories.UserRepository;
 import com.example.demo.security.config.AppException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

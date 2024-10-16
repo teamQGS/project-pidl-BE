@@ -1,8 +1,8 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTOS.ProductDTO;
-import com.example.demo.model.Entities.Enums.ProductsCategory;
-import com.example.demo.model.Entities.ProductEntity;
+import com.example.demo.dto.ProductDTO;
+import com.example.demo.model.entities.enums.ProductsCategory;
+import com.example.demo.model.entities.ProductEntity;
 import com.example.demo.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

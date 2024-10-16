@@ -1,6 +1,4 @@
-package com.example.demo.DTOS.records;
-
-import lombok.Data;
+package com.example.demo.dto.records;
 
 
 public record UpdateUserDTO (

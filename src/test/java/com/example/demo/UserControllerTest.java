@@ -1,10 +1,10 @@
 package com.example.demo;
 
-import com.example.demo.DTOS.UserDTO;
-import com.example.demo.DTOS.records.LoginDTO;
-import com.example.demo.DTOS.records.SignUpDTO;
-import com.example.demo.DTOS.records.UpdatePasswordDTO;
-import com.example.demo.DTOS.records.UpdateUserDTO;
+import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.records.LoginDTO;
+import com.example.demo.dto.records.SignUpDTO;
+import com.example.demo.dto.records.UpdatePasswordDTO;
+import com.example.demo.dto.records.UpdateUserDTO;
 import com.example.demo.controllers.UserController;
 import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.services.UserService;

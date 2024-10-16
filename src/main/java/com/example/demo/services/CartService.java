@@ -1,10 +1,10 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOS.CartDTO;
-import com.example.demo.model.Entities.CartEntity;
-import com.example.demo.model.Entities.ProductEntity;
-import com.example.demo.model.Repositories.CartRepository;
-import com.example.demo.model.Repositories.ProductRepository;
+import com.example.demo.dto.CartDTO;
+import com.example.demo.model.entities.CartEntity;
+import com.example.demo.model.entities.ProductEntity;
+import com.example.demo.model.repositories.CartRepository;
+import com.example.demo.model.repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

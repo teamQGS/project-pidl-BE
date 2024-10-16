@@ -1,11 +1,10 @@
-package com.example.demo.model.Entities;
+package com.example.demo.model.entities;
 
-import com.example.demo.model.Entities.Enums.ProductsCategory;
+import com.example.demo.model.entities.enums.ProductsCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Entity
@@ -17,7 +16,7 @@ public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private long id;
 
     private String name;
 
@@ -29,6 +28,7 @@ public class ProductEntity {
 
     private int count;
 
+    @Enumerated(EnumType.STRING)
     private ProductsCategory productCategory;
 
 //    private Binary illustration;
