@@ -1,9 +1,9 @@
 package com.example.demo.mappers;
 
-import com.example.demo.DTOS.*;
-import com.example.demo.DTOS.records.LoginDTO;
-import com.example.demo.DTOS.records.SignUpDTO;
-import com.example.demo.model.Entities.*;
+import com.example.demo.dto.*;
+import com.example.demo.dto.records.LoginDTO;
+import com.example.demo.dto.records.SignUpDTO;
+import com.example.demo.model.entities.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,7 @@
-package com.example.demo.DTOS;
+package com.example.demo.dto;
 
-import com.example.demo.model.Entities.Enums.ProductsCategory;
+import com.example.demo.model.entities.Enums.ProductsCategory;
 import lombok.Data;
-import org.bson.types.Binary;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Data

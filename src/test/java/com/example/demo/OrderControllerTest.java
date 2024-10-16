@@ -1,9 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.DTOS.AddressDTO;
-import com.example.demo.DTOS.OrderDTO;
-import com.example.demo.DTOS.ProductDTO;
-import com.example.demo.model.Entities.Enums.Status;
+import com.example.demo.dto.AddressDTO;
+import com.example.demo.dto.OrderDTO;
+import com.example.demo.model.entities.Enums.Status;
 import com.example.demo.controllers.OrderController;
 import com.example.demo.services.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,7 +22,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;

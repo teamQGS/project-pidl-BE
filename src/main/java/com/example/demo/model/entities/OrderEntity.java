@@ -1,6 +1,6 @@
-package com.example.demo.model.Entities;
+package com.example.demo.model.entities;
 
-import com.example.demo.model.Entities.Enums.Status;
+import com.example.demo.model.entities.Enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,7 @@
-package com.example.demo.DTOS;
+package com.example.demo.dto;
 
-import com.example.demo.model.Entities.CartEntity;
-import com.example.demo.model.Entities.Enums.Status;
-import com.example.demo.model.Entities.ProductEntity;
+import com.example.demo.model.entities.Enums.Status;
 import lombok.Data;
-import org.bson.types.ObjectId;
 
 import java.util.Date;
 import java.util.List;

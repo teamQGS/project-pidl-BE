@@ -11,10 +11,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.DTOS.ProductDTO;
-import com.example.demo.model.Entities.ProductEntity;
-import com.example.demo.model.Entities.Enums.ProductsCategory;
-import com.example.demo.model.Repositories.ProductRepository;
+import com.example.demo.dto.ProductDTO;
+import com.example.demo.model.entities.ProductEntity;
+import com.example.demo.model.entities.Enums.ProductsCategory;
+import com.example.demo.model.repositories.ProductRepository;
 
 @Service
 public class ProductService {

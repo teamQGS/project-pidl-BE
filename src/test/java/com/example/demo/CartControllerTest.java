@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.DTOS.CartDTO;
+import com.example.demo.dto.CartDTO;
 import com.example.demo.controllers.CartController;
 import com.example.demo.services.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;

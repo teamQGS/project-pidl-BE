@@ -1,10 +1,7 @@
-package com.example.demo.DTOS;
+package com.example.demo.dto;
 
-import com.example.demo.model.Entities.Enums.Role;
+import com.example.demo.model.entities.Enums.Role;
 import lombok.*;
-import org.bson.types.ObjectId;
-
-import java.util.Set;
 
 @Data
 @Builder

@@ -1,16 +1,13 @@
-package com.example.demo.model.Entities;
+package com.example.demo.model.entities;
 
-import com.example.demo.model.Entities.Enums.Role;
+import com.example.demo.model.entities.Enums.Role;
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Getter
@@ -21,6 +18,7 @@ import java.util.Set;
 public class UserEntity implements UserDetails {
     @Id
     private String id;
+    @Getter()
     private String username;
     private String password;
     private Role role;

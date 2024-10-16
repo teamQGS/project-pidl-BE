@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTOS.FeedbackDTO;
-import com.example.demo.DTOS.ProductDTO;
+import com.example.demo.dto.FeedbackDTO;
 import com.example.demo.services.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

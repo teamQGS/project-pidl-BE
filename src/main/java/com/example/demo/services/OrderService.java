@@ -1,15 +1,12 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOS.AddressDTO;
-import com.example.demo.DTOS.CartDTO;
-import com.example.demo.DTOS.OrderDTO;
-import com.example.demo.DTOS.ProductDTO;
-import com.example.demo.DTOS.UserDTO;
-import com.example.demo.model.Entities.*;
-import com.example.demo.model.Entities.Enums.Role;
-import com.example.demo.model.Entities.Enums.Status;
-import com.example.demo.model.Repositories.OrderRepository;
-import com.example.demo.model.Repositories.ProductRepository;
+import com.example.demo.dto.AddressDTO;
+import com.example.demo.dto.CartDTO;
+import com.example.demo.dto.OrderDTO;
+import com.example.demo.model.entities.*;
+import com.example.demo.model.entities.Enums.Status;
+import com.example.demo.model.repositories.OrderRepository;
+import com.example.demo.model.repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

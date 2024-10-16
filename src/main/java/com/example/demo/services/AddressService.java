@@ -1,11 +1,8 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOS.AddressDTO;
-import com.example.demo.DTOS.OrderDTO;
-import com.example.demo.model.Entities.AddressEntity;
-import com.example.demo.model.Entities.OrderEntity;
-import com.example.demo.model.Repositories.AddressRepository;
-import com.example.demo.model.Repositories.OrderRepository;
+import com.example.demo.dto.AddressDTO;
+import com.example.demo.model.entities.AddressEntity;
+import com.example.demo.model.repositories.AddressRepository;
 import com.example.demo.security.config.AppException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

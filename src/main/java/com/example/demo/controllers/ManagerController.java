@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTOS.OrderDTO;
+import com.example.demo.dto.OrderDTO;
 import com.example.demo.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

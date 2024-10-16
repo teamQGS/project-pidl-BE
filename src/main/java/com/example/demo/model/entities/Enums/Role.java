@@ -1,4 +1,4 @@
-package com.example.demo.model.Entities.Enums;
+package com.example.demo.model.entities.Enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
