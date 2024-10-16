@@ -1,15 +1,13 @@
 package com.example.demo.model.Entities;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
+@Entity
 @Table(name = "cart")
 @Data
 @AllArgsConstructor
@@ -17,7 +15,7 @@ import java.util.List;
 public class CartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
     private String username;
     private List<ProductEntity> products;
 }

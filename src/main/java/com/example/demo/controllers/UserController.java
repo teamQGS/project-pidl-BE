@@ -28,7 +28,7 @@ UserController {
     private UserAuthProvider userAuthProvider;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UserDTO>> getUserById(@PathVariable String id){
+    public ResponseEntity<Optional<UserDTO>> getUserById(@PathVariable long id){
         return new ResponseEntity<>(service.getUserById(id), HttpStatus.OK);
     }
 

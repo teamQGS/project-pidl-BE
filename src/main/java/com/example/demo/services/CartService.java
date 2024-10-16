@@ -8,7 +8,6 @@ import com.example.demo.model.Repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,6 @@ public class CartService {
     private ProductRepository productRepository;
     @Autowired
     private ModelMapper modelMapper;
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(CartService.class);
 
@@ -62,7 +59,7 @@ public class CartService {
     }
     
 
-    public CartDTO addToCart(String productId, String username) {
+    public CartDTO addToCart(Long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 
@@ -78,7 +75,7 @@ public class CartService {
         boolean productExistsInCart = false;
 
         for (ProductEntity p : currentProducts) {
-            if (p.getId().equals(productId)) {
+            if (p.getId() == productId) {
                 p.setCount(p.getCount() + 1);
                 productExistsInCart = true;
                 break;
@@ -95,7 +92,7 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
-    public CartDTO removeFromCart(String productId, String username) {
+    public CartDTO removeFromCart(Long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 
@@ -108,14 +105,14 @@ public class CartService {
             currentProducts = new LinkedList<>();
         }
 
-        currentProducts.removeIf(p -> p.getId().equals(productId));
+        currentProducts.removeIf(p -> p.getId() == productId);
 
         cart.setProducts(currentProducts);
         cartRepository.save(cart);
         return modelMapper.map(cart, CartDTO.class);
     }
 
-    public CartDTO decreaseCount(String productId, String username) {
+    public CartDTO decreaseCount(Long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
         
@@ -129,7 +126,7 @@ public class CartService {
         }
 
         for (ProductEntity p : currentProducts) {
-            if (p.getId().equals(productId)) {
+            if (p.getId() == productId) {
                 if (p.getCount() > 1) {
                     p.setCount(p.getCount() - 1);
                 } else {
@@ -144,7 +141,7 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
-    public CartDTO increaseCount(String productId, String username) {
+    public CartDTO increaseCount(Long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 
@@ -158,7 +155,7 @@ public class CartService {
         }
 
         for (ProductEntity p : currentProducts) {
-            if (p.getId().equals(productId)) {
+            if (p.getId() == productId) {
                 p.setCount(p.getCount() + 1);
                 break;
             }

@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface AddressRepository extends JpaRepository<AddressEntity, Long> {
     public Optional<AddressEntity> findByUsername(String username);
-    public Optional<AddressEntity> deleteAddressEntityByUsername(String username);
+    public void deleteAddressEntityByUsername(String username);
 }

@@ -42,7 +42,7 @@ public class OrderService {
                 .toList();
     }
 
-    public OrderDTO changeStatus(String status, String orderId){
+    public OrderDTO changeStatus(String status, long orderId){
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException("Unknown order", HttpStatus.NOT_FOUND));
 
@@ -66,7 +66,7 @@ public class OrderService {
     }
 
 
-    public OrderDTO findOrderById(String id){
+    public OrderDTO findOrderById(long id){
         Optional<OrderEntity> order = orderRepository.findById(id);
         if (order.isEmpty()) {
             throw new AppException("This order doesn't exist!", HttpStatus.NOT_FOUND);

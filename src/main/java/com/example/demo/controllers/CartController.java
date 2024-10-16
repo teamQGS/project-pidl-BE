@@ -19,13 +19,13 @@ public class CartController {
     }
 
     @PutMapping("/{username}/add")
-    public ResponseEntity<CartDTO> addToCart(@RequestBody String productId, @PathVariable String username) {
+    public ResponseEntity<CartDTO> addToCart(@RequestBody Long productId, @PathVariable String username) {
         CartDTO updatedCart = cartService.addToCart(productId, username);
         return ResponseEntity.ok(updatedCart);
     }
 
     @PutMapping("/{username}/remove")
-    public ResponseEntity<CartDTO> removeFromCart(@RequestBody String productId, @PathVariable String username) {
+    public ResponseEntity<CartDTO> removeFromCart(@RequestBody Long productId, @PathVariable String username) {
         CartDTO updatedCart = cartService.removeFromCart(productId, username);
         return ResponseEntity.ok(updatedCart);
     }
@@ -37,13 +37,13 @@ public class CartController {
     }
 
     @PutMapping("/{username}/increase")
-    public ResponseEntity<CartDTO> increaseQuantity(@RequestBody String productId, @PathVariable String username) {
+    public ResponseEntity<CartDTO> increaseQuantity(@RequestBody Long productId, @PathVariable String username) {
         CartDTO updatedCart = cartService.increaseCount(productId, username);
         return ResponseEntity.ok(updatedCart);
     }
 
     @PutMapping("/{username}/decrease")
-    public ResponseEntity<CartDTO> decreaseQuantity(@RequestBody String productId, @PathVariable String username) {
+    public ResponseEntity<CartDTO> decreaseQuantity(@RequestBody Long productId, @PathVariable String username) {
         CartDTO updatedCart = cartService.decreaseCount(productId, username);
         return ResponseEntity.ok(updatedCart);
     }

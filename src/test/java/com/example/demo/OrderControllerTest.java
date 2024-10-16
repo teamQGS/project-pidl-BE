@@ -58,7 +58,7 @@ public class OrderControllerTest {
     @Order(1)
     public void testGetOrderById() throws Exception {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId("1");
+        orderDTO.setId(1);
         orderDTO.setDate(new Date());
         orderDTO.setCustomerUsername("customer");
         orderDTO.setManagerUsername("manager");
@@ -67,12 +67,12 @@ public class OrderControllerTest {
         orderDTO.setAddressDTO(new AddressDTO());
         orderDTO.setStatus(Status.PENDING);
 
-        when(orderService.findOrderById("1")).thenReturn(orderDTO);
+        when(orderService.findOrderById(1)).thenReturn(orderDTO);
 
-        mockMvc.perform(get("/api/orders/{id}", "1")
+        mockMvc.perform(get("/api/orders/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.customerUsername").value("customer"))
                 .andExpect(jsonPath("$.managerUsername").value("manager"))
                 .andExpect(jsonPath("$.totalSum").value(100.0))
@@ -83,7 +83,7 @@ public class OrderControllerTest {
     @Order(2)
     public void testFindByCustomerUsername() throws Exception {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId("1");
+        orderDTO.setId(1);
         orderDTO.setDate(new Date());
         orderDTO.setCustomerUsername("customer");
         orderDTO.setManagerUsername("manager");
@@ -97,7 +97,7 @@ public class OrderControllerTest {
         mockMvc.perform(get("/api/orders/find/{username}", "customer")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.customerUsername").value("customer"))
                 .andExpect(jsonPath("$.managerUsername").value("manager"))
                 .andExpect(jsonPath("$.totalSum").value(100.0))
@@ -109,7 +109,7 @@ public class OrderControllerTest {
     public void testCreateOrder() throws Exception {
         AddressDTO addressDTO = new AddressDTO();
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId("1");
+        orderDTO.setId(1);
         orderDTO.setDate(new Date());
         orderDTO.setCustomerUsername("customer");
         orderDTO.setManagerUsername("manager");
@@ -124,7 +124,7 @@ public class OrderControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(addressDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.customerUsername").value("customer"))
                 .andExpect(jsonPath("$.managerUsername").value("manager"))
                 .andExpect(jsonPath("$.totalSum").value(100.0))
@@ -135,7 +135,7 @@ public class OrderControllerTest {
     @Order(4)
     public void testGetOrdersByUsername() throws Exception {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId("1");
+        orderDTO.setId(1);
         orderDTO.setDate(new Date());
         orderDTO.setCustomerUsername("customer");
         orderDTO.setManagerUsername("manager");
@@ -151,7 +151,7 @@ public class OrderControllerTest {
         mockMvc.perform(get("/api/orders/findAll/{username}", "customer")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value("1"))
+                .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].customerUsername").value("customer"))
                 .andExpect(jsonPath("$[0].managerUsername").value("manager"))
                 .andExpect(jsonPath("$[0].totalSum").value(100.0))
@@ -162,7 +162,7 @@ public class OrderControllerTest {
     @Order(5)
     public void testChangeStatus() throws Exception {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId("1");
+        orderDTO.setId(1);
         orderDTO.setDate(new Date());
         orderDTO.setCustomerUsername("customer");
         orderDTO.setManagerUsername("manager");
@@ -171,13 +171,13 @@ public class OrderControllerTest {
         orderDTO.setAddressDTO(new AddressDTO());
         orderDTO.setStatus(Status.COMPLETED);
 
-        when(orderService.changeStatus(anyString(), anyString())).thenReturn(orderDTO);
+        when(orderService.changeStatus(anyString(), Long.parseLong(anyString()))).thenReturn(orderDTO);
 
-        mockMvc.perform(put("/api/orders/changeStatus/{orderId}", "1")
+        mockMvc.perform(put("/api/orders/changeStatus/{orderId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("COMPLETED"))
+                        .content("\"COMPLETED\""))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.customerUsername").value("customer"))
                 .andExpect(jsonPath("$.managerUsername").value("manager"))
                 .andExpect(jsonPath("$.totalSum").value(100.0))

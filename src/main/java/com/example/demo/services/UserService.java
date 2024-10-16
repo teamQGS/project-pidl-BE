@@ -17,9 +17,6 @@ import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,8 +44,6 @@ public class UserService {
     UserMapper userMapper;
     @Autowired
     private UserAuthProvider userAuthProvider;
-    @Autowired
-    MongoTemplate mongoTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -56,7 +51,7 @@ public class UserService {
         return modelMapper.map(userEntity, UserDTO.class);
     }
 
-    public Optional<UserDTO> getUserById(String id) {
+    public Optional<UserDTO> getUserById(long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
         userEntity.ifPresent(user -> logger.info("Retrieved user by id: {}", user.getId()));
         return userEntity.map(UserEntity -> modelMapper.map(userEntity, UserDTO.class));
@@ -140,7 +135,7 @@ public class UserService {
             userRepository.deleteByUsername(username);
             logger.info("User with username: {} was deleted!", username);
         });
-        mongoTemplate.remove(Query.query(Criteria.where("username").is(username)), UserEntity.class);
+        userRepository.deleteByUsername(username);
         cartRepository.deleteCartEntityByUsername(username);
         addressRepository.deleteAddressEntityByUsername(username);
 
