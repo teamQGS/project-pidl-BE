@@ -1,21 +1,24 @@
 package com.example.demo.model.Entities;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Document(collection = "feedback")
+@Table(name = "feedback")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackEntity {
 
-    @Id
-     private String id;
+     @Id
+     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+     private long id;
      private String username ;
      private String subject;
      private String feedbackContent;

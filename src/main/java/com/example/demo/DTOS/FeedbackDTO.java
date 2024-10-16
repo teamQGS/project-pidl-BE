@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class FeedbackDTO {
 
-     String id;
+     long id;
      String username ;
 
      String subject;

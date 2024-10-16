@@ -1,23 +1,25 @@
 package com.example.demo.model.Entities;
 
 import com.example.demo.model.Entities.Enums.ProductsCategory;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.multipart.MultipartFile;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "products")
+@Table(name = "products")
 public class ProductEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
 
     private String name;
 
