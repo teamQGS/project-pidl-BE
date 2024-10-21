@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
 
-import com.example.demo.DTOS.AddressDTO;
+import com.example.demo.dto.AddressDTO;
 import com.example.demo.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

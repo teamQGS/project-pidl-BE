@@ -1,11 +1,9 @@
-package com.example.demo.model.Entities;
+package com.example.demo.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "feedback")

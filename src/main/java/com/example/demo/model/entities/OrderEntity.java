@@ -1,6 +1,6 @@
-package com.example.demo.model.Entities;
+package com.example.demo.model.entities;
 
-import com.example.demo.model.Entities.Enums.Status;
+import com.example.demo.model.entities.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +22,11 @@ public class OrderEntity {
     private Date date;
     private String customerUsername;
     private String managerUsername;
+    @OneToMany
     private List<ProductEntity> products;
     private double totalSum;
+    @ManyToOne
+    @JoinColumn(name = "address_entity_id")
     private AddressEntity addressEntity;
     private Status status;
 }

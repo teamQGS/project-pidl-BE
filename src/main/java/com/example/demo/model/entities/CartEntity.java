@@ -1,4 +1,4 @@
-package com.example.demo.model.Entities;
+package com.example.demo.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,5 +17,6 @@ public class CartEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String username;
+    @OneToMany
     private List<ProductEntity> products;
 }

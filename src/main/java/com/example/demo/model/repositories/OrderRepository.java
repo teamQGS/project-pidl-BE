@@ -1,7 +1,7 @@
-package com.example.demo.model.Repositories;
+package com.example.demo.model.repositories;
 
-import com.example.demo.model.Entities.Enums.Status;
-import com.example.demo.model.Entities.OrderEntity;
+import com.example.demo.model.entities.enums.Status;
+import com.example.demo.model.entities.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

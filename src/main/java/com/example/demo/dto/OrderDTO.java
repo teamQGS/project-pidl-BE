@@ -1,6 +1,6 @@
-package com.example.demo.DTOS;
+package com.example.demo.dto;
 
-import com.example.demo.model.Entities.Enums.Status;
+import com.example.demo.model.entities.enums.Status;
 import lombok.Data;
 
 

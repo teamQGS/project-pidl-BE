@@ -1,5 +1,10 @@
-package com.example.demo.model.Entities.Enums;
+package com.example.demo.model.entities.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
 public enum ProductsCategory {
     FRUITS,
     VEGETABLES,
