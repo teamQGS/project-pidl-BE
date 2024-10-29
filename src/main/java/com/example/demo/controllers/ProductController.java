@@ -43,11 +43,11 @@ public class ProductController {
         return new ResponseEntity<>(productService.findProductsByCategory(category), HttpStatus.OK);
     }
     //TODO fix this code
-//    // FE: Reactive search
-//    @GetMapping("/search")
-//    public List<ProductDTO> searchProductByName(@RequestParam String name){
-//        return productService.findProductByName(name);
-//    }
+    // FE: Reactive search
+    @GetMapping("/search")
+    public List<ProductDTO> searchProductByName(@RequestParam String name) {
+        return productService.findProductByName(name);
+    }
 
     // Get all categories
     @GetMapping("/categories")

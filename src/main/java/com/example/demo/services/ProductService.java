@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.example.demo.model.repositories.CartRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +17,16 @@ import com.example.demo.model.entities.ProductEntity;
 import com.example.demo.model.entities.enums.ProductsCategory;
 import com.example.demo.model.repositories.ProductRepository;
 
+import javax.management.Query;
+
 @Service
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
     @Autowired
      ModelMapper modelMapper;
+    @PersistenceContext
+    private EntityManager entityManager;
     private CartRepository cartRepository;
 
     public List<ProductDTO> getAllProducts(){
@@ -73,16 +80,16 @@ public class ProductService {
         List<ProductEntity> productEntities = productRepository.findAllByProductCategory(productsCategory);
         return productEntities.stream().map(this::convertToDTO).toList();
     }
-//TODO fix this code
-//    // FE: Reactive search
-//    public List<ProductDTO> findProductByName (String name) {
-//        javax.management.Query query = new Query();
-//        query.addCriteria(Criteria.where("name").regex(name, "i"));
-//        List<ProductEntity> productEntities = mongoTemplate.find(query, ProductEntity.class);
-//        return productEntities.stream()
-//                .map(this::convertToDTO)
-//                .collect(Collectors.toList());
-//    }
+    // FE: Reactive search
+    public List<ProductDTO> findProductByName(String name) {
+        String jpql = "SELECT p FROM ProductEntity p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))";
+        TypedQuery<ProductEntity> query = entityManager.createQuery(jpql, ProductEntity.class);
+        query.setParameter("name", name);
+        List<ProductEntity> productEntities = query.getResultList();
+        return productEntities.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
     // Get all categories
     public ProductsCategory[] getCategories(){
