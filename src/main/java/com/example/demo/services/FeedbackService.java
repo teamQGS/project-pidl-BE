@@ -27,7 +27,7 @@ public class FeedbackService {
     }
     public FeedbackDTO createProduct(FeedbackDTO feedbackDTO){
         FeedbackEntity feedbackEntity = modelMapper.map(feedbackDTO, FeedbackEntity.class);
-        FeedbackEntity savedFeedback = feedbackRepository.insert(feedbackEntity);
+        FeedbackEntity savedFeedback = feedbackRepository.save(feedbackEntity);
         return modelMapper.map(savedFeedback, FeedbackDTO.class);
     }
 

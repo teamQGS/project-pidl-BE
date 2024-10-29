@@ -51,7 +51,7 @@ public class FeedbackControllerTest {
     @Order(1)
     public void testGetAllFeedbacks() throws Exception {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
-        feedbackDTO.setId("1");
+        feedbackDTO.setId(1);
         feedbackDTO.setUsername("testUser");
         feedbackDTO.setSubject("Test Subject");
         feedbackDTO.setFeedbackContent("Test Content");
@@ -65,7 +65,7 @@ public class FeedbackControllerTest {
         mockMvc.perform(get("/api/feedback")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value("1"))
+                .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].username").value("testUser"))
                 .andExpect(jsonPath("$[0].subject").value("Test Subject"))
                 .andExpect(jsonPath("$[0].feedbackContent").value("Test Content"))
@@ -77,7 +77,7 @@ public class FeedbackControllerTest {
     @Order(2)
     public void testAddFeedback() throws Exception {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
-        feedbackDTO.setId("1");
+        feedbackDTO.setId(1);
         feedbackDTO.setUsername("testUser");
         feedbackDTO.setSubject("Test Subject");
         feedbackDTO.setFeedbackContent("Test Content");
@@ -90,7 +90,7 @@ public class FeedbackControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(feedbackDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("testUser"))
                 .andExpect(jsonPath("$.subject").value("Test Subject"))
                 .andExpect(jsonPath("$.feedbackContent").value("Test Content"))

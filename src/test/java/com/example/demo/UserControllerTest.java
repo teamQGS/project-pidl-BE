@@ -59,7 +59,7 @@ public class UserControllerTest {
     public void testRegister() throws Exception {
         SignUpDTO signUpDTO = new SignUpDTO("testUser", "testUser", "password".toCharArray());
         UserDTO userDTO = new UserDTO();
-        userDTO.setId("1");
+        userDTO.setId(1);
         userDTO.setUsername("testUser");
 
         when(userService.register(any(SignUpDTO.class))).thenReturn(userDTO);

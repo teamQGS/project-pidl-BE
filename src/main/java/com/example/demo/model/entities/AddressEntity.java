@@ -1,20 +1,18 @@
 package com.example.demo.model.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
+import lombok.*;
 
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "address")
+@Table(name = "address")
 public class AddressEntity {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String username;
     private String country;
     private String city;
@@ -22,4 +20,5 @@ public class AddressEntity {
     private String house;
     private String postcode;
     private String countrycode;
+
 }

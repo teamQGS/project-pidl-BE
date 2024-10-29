@@ -1,29 +1,32 @@
 package com.example.demo.model.entities;
 
-import com.example.demo.model.entities.Enums.Status;
+import com.example.demo.model.entities.enums.Status;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.List;
 
-
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "orders")
+@Table(name = "orders")
 public class OrderEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     private Date date;
     private String customerUsername;
     private String managerUsername;
+    @OneToMany
     private List<ProductEntity> products;
     private double totalSum;
+    @ManyToOne
+    @JoinColumn(name = "address_entity_id")
     private AddressEntity addressEntity;
     private Status status;
 }

@@ -4,7 +4,7 @@ import com.example.demo.dto.AddressDTO;
 import com.example.demo.dto.CartDTO;
 import com.example.demo.dto.OrderDTO;
 import com.example.demo.model.entities.*;
-import com.example.demo.model.entities.Enums.Status;
+import com.example.demo.model.entities.enums.Status;
 import com.example.demo.model.repositories.OrderRepository;
 import com.example.demo.model.repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
@@ -39,7 +39,7 @@ public class OrderService {
                 .toList();
     }
 
-    public OrderDTO changeStatus(String status, String orderId){
+    public OrderDTO changeStatus(String status, long orderId){
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException("Unknown order", HttpStatus.NOT_FOUND));
 
@@ -63,7 +63,7 @@ public class OrderService {
     }
 
 
-    public OrderDTO findOrderById(String id){
+    public OrderDTO findOrderById(long id){
         Optional<OrderEntity> order = orderRepository.findById(id);
         if (order.isEmpty()) {
             throw new AppException("This order doesn't exist!", HttpStatus.NOT_FOUND);

@@ -1,21 +1,22 @@
 package com.example.demo.model.entities;
 
-import com.example.demo.model.entities.Enums.ProductsCategory;
+import com.example.demo.model.entities.enums.ProductsCategory;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "products")
+@Table(name = "products")
 public class ProductEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
 
     private String name;
 
@@ -27,6 +28,7 @@ public class ProductEntity {
 
     private int count;
 
+    @Enumerated(EnumType.STRING)
     private ProductsCategory productCategory;
 
 //    private Binary illustration;

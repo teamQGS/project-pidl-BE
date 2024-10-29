@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-import com.example.demo.model.entities.Enums.Role;
+import com.example.demo.model.entities.enums.Role;
 import lombok.*;
 
 @Data
@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UserDTO {
 
-    String id;
+    long id;
     String username;
     String password;
     String firstName;
