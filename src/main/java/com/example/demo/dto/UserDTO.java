@@ -1,10 +1,7 @@
-package com.example.demo.DTOS;
+package com.example.demo.dto;
 
-import com.example.demo.model.Entities.Enums.Role;
+import com.example.demo.model.entities.enums.Role;
 import lombok.*;
-import org.bson.types.ObjectId;
-
-import java.util.Set;
 
 @Data
 @Builder
@@ -12,7 +9,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserDTO {
 
-    String id;
+    long id;
     String username;
     String password;
     String firstName;

@@ -1,20 +1,22 @@
-package com.example.demo.model.Entities;
+package com.example.demo.model.entities;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection = "cart")
+@Entity
+@Table(name = "cart")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartEntity {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     private String username;
+    @OneToMany
     private List<ProductEntity> products;
 }

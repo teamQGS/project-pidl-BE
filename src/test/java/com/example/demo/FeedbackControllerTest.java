@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.DTOS.FeedbackDTO;
+import com.example.demo.dto.FeedbackDTO;
 import com.example.demo.controllers.FeedbackController;
 import com.example.demo.services.FeedbackService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -53,7 +51,7 @@ public class FeedbackControllerTest {
     @Order(1)
     public void testGetAllFeedbacks() throws Exception {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
-        feedbackDTO.setId("1");
+        feedbackDTO.setId(1);
         feedbackDTO.setUsername("testUser");
         feedbackDTO.setSubject("Test Subject");
         feedbackDTO.setFeedbackContent("Test Content");
@@ -67,7 +65,7 @@ public class FeedbackControllerTest {
         mockMvc.perform(get("/api/feedback")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value("1"))
+                .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].username").value("testUser"))
                 .andExpect(jsonPath("$[0].subject").value("Test Subject"))
                 .andExpect(jsonPath("$[0].feedbackContent").value("Test Content"))
@@ -79,7 +77,7 @@ public class FeedbackControllerTest {
     @Order(2)
     public void testAddFeedback() throws Exception {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
-        feedbackDTO.setId("1");
+        feedbackDTO.setId(1);
         feedbackDTO.setUsername("testUser");
         feedbackDTO.setSubject("Test Subject");
         feedbackDTO.setFeedbackContent("Test Content");
@@ -92,7 +90,7 @@ public class FeedbackControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(feedbackDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("testUser"))
                 .andExpect(jsonPath("$.subject").value("Test Subject"))
                 .andExpect(jsonPath("$.feedbackContent").value("Test Content"))

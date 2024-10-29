@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
 
-import com.example.demo.DTOS.UserDTO;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Optional<UserDTO>> deleteUserByUsername(@PathVariable String id){
+    public ResponseEntity<Optional<UserDTO>> deleteUserByUsername(@PathVariable Long id){
         return new ResponseEntity<>(adminService.deleteUserById(id), HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.DTOS.CartDTO;
+import com.example.demo.dto.CartDTO;
 import com.example.demo.controllers.CartController;
 import com.example.demo.services.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collections;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -50,7 +51,7 @@ public class CartControllerTest {
     @Order(1)
     public void testGetUserCart() throws Exception {
         CartDTO cartDTO = new CartDTO();
-        cartDTO.setId("1");
+        cartDTO.setId(1);
         cartDTO.setUsername("testUser");
         cartDTO.setProducts(Collections.emptyList());
 
@@ -59,7 +60,7 @@ public class CartControllerTest {
         mockMvc.perform(get("/api/cart/{username}", "testUser")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("testUser"));
     }
 
@@ -67,17 +68,17 @@ public class CartControllerTest {
     @Order(2)
     public void testAddToCart() throws Exception {
         CartDTO cartDTO = new CartDTO();
-        cartDTO.setId("1");
+        cartDTO.setId(1);
         cartDTO.setUsername("testUser");
         cartDTO.setProducts(Collections.emptyList());
 
-        when(cartService.addToCart(anyString(), anyString())).thenReturn(cartDTO);
+        when(cartService.addToCart(anyLong(), anyString())).thenReturn(cartDTO);
 
         mockMvc.perform(put("/api/cart/{username}/add", "testUser")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"productId\":\"productId\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("testUser"));
     }
 
@@ -85,17 +86,17 @@ public class CartControllerTest {
     @Order(3)
     public void testRemoveFromCart() throws Exception {
         CartDTO cartDTO = new CartDTO();
-        cartDTO.setId("1");
+        cartDTO.setId(1);
         cartDTO.setUsername("testUser");
         cartDTO.setProducts(Collections.emptyList());
 
-        when(cartService.removeFromCart(anyString(), anyString())).thenReturn(cartDTO);
+        when(cartService.removeFromCart(anyLong(), anyString())).thenReturn(cartDTO);
 
         mockMvc.perform(put("/api/cart/{username}/remove", "testUser")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"productId\":\"productId\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("testUser"));
     }
 
@@ -103,7 +104,7 @@ public class CartControllerTest {
     @Order(4)
     public void testClearCart() throws Exception {
         CartDTO cartDTO = new CartDTO();
-        cartDTO.setId("1");
+        cartDTO.setId(1);
         cartDTO.setUsername("testUser");
         cartDTO.setProducts(Collections.emptyList());
 
@@ -112,7 +113,7 @@ public class CartControllerTest {
         mockMvc.perform(put("/api/cart/{username}/clear", "testUser")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("testUser"));
     }
 
@@ -120,17 +121,17 @@ public class CartControllerTest {
     @Order(5)
     public void testIncreaseQuantity() throws Exception {
         CartDTO cartDTO = new CartDTO();
-        cartDTO.setId("1");
+        cartDTO.setId(1);
         cartDTO.setUsername("testUser");
         cartDTO.setProducts(Collections.emptyList());
 
-        when(cartService.increaseCount(anyString(), anyString())).thenReturn(cartDTO);
+        when(cartService.increaseCount(anyLong(), anyString())).thenReturn(cartDTO);
 
         mockMvc.perform(put("/api/cart/{username}/increase", "testUser")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"productId\":\"productId\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("testUser"));
     }
 
@@ -138,17 +139,17 @@ public class CartControllerTest {
     @Order(6)
     public void testDecreaseQuantity() throws Exception {
         CartDTO cartDTO = new CartDTO();
-        cartDTO.setId("1");
+        cartDTO.setId(1);
         cartDTO.setUsername("testUser");
         cartDTO.setProducts(Collections.emptyList());
 
-        when(cartService.decreaseCount(anyString(), anyString())).thenReturn(cartDTO);
+        when(cartService.decreaseCount(anyLong(), anyString())).thenReturn(cartDTO);
 
         mockMvc.perform(put("/api/cart/{username}/decrease", "testUser")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"productId\":\"productId\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("testUser"));
     }
 }

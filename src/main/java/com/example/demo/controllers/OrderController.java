@@ -1,8 +1,7 @@
 package com.example.demo.controllers;
 
 
-import com.example.demo.DTOS.*;
-import org.springframework.core.annotation.Order;
+import com.example.demo.dto.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,7 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable String id){
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id){
         return new ResponseEntity<>(orderService.findOrderById(id), HttpStatus.OK);
     }
 
@@ -39,7 +38,7 @@ public class OrderController {
     }
 
     @PutMapping("/changeStatus/{orderId}")
-    public ResponseEntity<OrderDTO> changeStatus(@RequestBody String status, @PathVariable String orderId){
+    public ResponseEntity<OrderDTO> changeStatus(@RequestBody String status, @PathVariable Long orderId){
         return new ResponseEntity<>(orderService.changeStatus(status, orderId), HttpStatus.OK);
     }
 }

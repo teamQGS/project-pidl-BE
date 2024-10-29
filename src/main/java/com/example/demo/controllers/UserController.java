@@ -1,10 +1,10 @@
 package com.example.demo.controllers;
 
-import com.example.demo.DTOS.*;
-import com.example.demo.DTOS.records.LoginDTO;
-import com.example.demo.DTOS.records.SignUpDTO;
-import com.example.demo.DTOS.records.UpdatePasswordDTO;
-import com.example.demo.DTOS.records.UpdateUserDTO;
+import com.example.demo.dto.*;
+import com.example.demo.dto.records.LoginDTO;
+import com.example.demo.dto.records.SignUpDTO;
+import com.example.demo.dto.records.UpdatePasswordDTO;
+import com.example.demo.dto.records.UpdateUserDTO;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.services.UserService;
@@ -19,21 +19,22 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController {
+public class
+UserController {
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     @Autowired
     private UserAuthProvider userAuthProvider;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UserDTO>> getUserById(@PathVariable String id){
-        return new ResponseEntity<>(service.getUserById(id), HttpStatus.OK);
+    public ResponseEntity<Optional<UserDTO>> getUserById(@PathVariable long id){
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @GetMapping("/find/{username}")
     public ResponseEntity<Optional<UserDTO>> getUserByUsername(@PathVariable String username){
-        Optional<UserDTO> user = service.getUserByUsername(username);
+        Optional<UserDTO> user = userService.getUserByUsername(username);
         if (user.isPresent()) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
@@ -44,14 +45,14 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO){
-        UserDTO user = service.login(loginDTO);
+        UserDTO user = userService.login(loginDTO);
         return ResponseEntity.ok(user);
     }
 
 
     @PostMapping("/signup")
     public ResponseEntity<UserDTO> register(@RequestBody SignUpDTO singUpDTO){
-        UserDTO user = service.register(singUpDTO);
+        UserDTO user = userService.register(singUpDTO);
         return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
     @PostMapping("/logout")
@@ -60,7 +61,7 @@ public class UserController {
             String[] authArray = authentication.split(" ");
             Authentication auth = userAuthProvider.validateToken(authArray[1]);
             UserDTO userDTO = (UserDTO) auth.getPrincipal();
-            UserDTO dto = service.logout(userDTO);
+            UserDTO dto = userService.logout(userDTO);
             if (dto != null) {
                 return ResponseEntity.ok(dto);
             } else {
@@ -74,17 +75,17 @@ public class UserController {
 
     @DeleteMapping("/delete/{username}")
     public ResponseEntity<Optional<UserDTO>> deleteUserByUsername(@PathVariable String username){
-        return new ResponseEntity<>(service.deleteUserByUsername(username), HttpStatus.OK);
+        return new ResponseEntity<>(userService.deleteUserByUsername(username), HttpStatus.OK);
     }
 
     @PutMapping("/update/{username}")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO, @PathVariable String username){
-        return new ResponseEntity<>(service.updateUser(updateUserDTO, username), HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(updateUserDTO, username), HttpStatus.OK);
     }
 
     @PutMapping("/changePassword/{username}")
     public ResponseEntity<UserDTO> changePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO, @PathVariable String username){
-        return new ResponseEntity<>(service.changePassword(updatePasswordDTO, username), HttpStatus.OK);
+        return new ResponseEntity<>(userService.changePassword(updatePasswordDTO, username), HttpStatus.OK);
     }
     @ExceptionHandler(AppException.class)
     public ResponseEntity<String> handleAppException(AppException exception){

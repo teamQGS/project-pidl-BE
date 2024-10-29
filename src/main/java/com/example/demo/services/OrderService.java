@@ -1,15 +1,12 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOS.AddressDTO;
-import com.example.demo.DTOS.CartDTO;
-import com.example.demo.DTOS.OrderDTO;
-import com.example.demo.DTOS.ProductDTO;
-import com.example.demo.DTOS.UserDTO;
-import com.example.demo.model.Entities.*;
-import com.example.demo.model.Entities.Enums.Role;
-import com.example.demo.model.Entities.Enums.Status;
-import com.example.demo.model.Repositories.OrderRepository;
-import com.example.demo.model.Repositories.ProductRepository;
+import com.example.demo.dto.AddressDTO;
+import com.example.demo.dto.CartDTO;
+import com.example.demo.dto.OrderDTO;
+import com.example.demo.model.entities.*;
+import com.example.demo.model.entities.enums.Status;
+import com.example.demo.model.repositories.OrderRepository;
+import com.example.demo.model.repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +39,7 @@ public class OrderService {
                 .toList();
     }
 
-    public OrderDTO changeStatus(String status, String orderId){
+    public OrderDTO changeStatus(String status, long orderId){
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException("Unknown order", HttpStatus.NOT_FOUND));
 
@@ -66,7 +63,7 @@ public class OrderService {
     }
 
 
-    public OrderDTO findOrderById(String id){
+    public OrderDTO findOrderById(long id){
         Optional<OrderEntity> order = orderRepository.findById(id);
         if (order.isEmpty()) {
             throw new AppException("This order doesn't exist!", HttpStatus.NOT_FOUND);

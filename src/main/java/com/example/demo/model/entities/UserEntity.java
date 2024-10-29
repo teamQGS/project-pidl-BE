@@ -1,26 +1,23 @@
-package com.example.demo.model.Entities;
+package com.example.demo.model.entities;
 
-import com.example.demo.model.Entities.Enums.Role;
+import com.example.demo.model.entities.enums.Role;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
-
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "users")
+@Table(name = "users")
 public class UserEntity implements UserDetails {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
     private String username;
     private String password;
     private Role role;

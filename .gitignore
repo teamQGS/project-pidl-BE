@@ -34,5 +34,7 @@ build/
 .vscode/
 
 ### ENV files ###
-src/main/resources/.env
+*.env
+*.yaml
+*.yml
 

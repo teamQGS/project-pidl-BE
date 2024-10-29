@@ -1,25 +1,22 @@
 package com.example.demo.services;
 
-import com.example.demo.DTOS.*;
-import com.example.demo.DTOS.records.LoginDTO;
-import com.example.demo.DTOS.records.SignUpDTO;
-import com.example.demo.DTOS.records.UpdatePasswordDTO;
-import com.example.demo.DTOS.records.UpdateUserDTO;
+import com.example.demo.dto.*;
+import com.example.demo.dto.records.LoginDTO;
+import com.example.demo.dto.records.SignUpDTO;
+import com.example.demo.dto.records.UpdatePasswordDTO;
+import com.example.demo.dto.records.UpdateUserDTO;
 import com.example.demo.mappers.UserMapper;
-import com.example.demo.model.Entities.AddressEntity;
-import com.example.demo.model.Entities.CartEntity;
-import com.example.demo.model.Entities.Enums.Role;
-import com.example.demo.model.Entities.UserEntity;
-import com.example.demo.model.Repositories.AddressRepository;
-import com.example.demo.model.Repositories.CartRepository;
-import com.example.demo.model.Repositories.UserRepository;
+import com.example.demo.model.entities.AddressEntity;
+import com.example.demo.model.entities.CartEntity;
+import com.example.demo.model.entities.enums.Role;
+import com.example.demo.model.entities.UserEntity;
+import com.example.demo.model.repositories.AddressRepository;
+import com.example.demo.model.repositories.CartRepository;
+import com.example.demo.model.repositories.UserRepository;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,8 +44,6 @@ public class UserService {
     UserMapper userMapper;
     @Autowired
     private UserAuthProvider userAuthProvider;
-    @Autowired
-    MongoTemplate mongoTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -56,7 +51,7 @@ public class UserService {
         return modelMapper.map(userEntity, UserDTO.class);
     }
 
-    public Optional<UserDTO> getUserById(String id) {
+    public Optional<UserDTO> getUserById(long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
         userEntity.ifPresent(user -> logger.info("Retrieved user by id: {}", user.getId()));
         return userEntity.map(UserEntity -> modelMapper.map(userEntity, UserDTO.class));
@@ -113,6 +108,7 @@ public class UserService {
 
         // Создание токена и обновление пользователя с токеном
         String token = userAuthProvider.createToken(savedUser);
+        System.out.println("Token: " + token);
         savedUser.setToken(token);
         UserEntity updatedUser = userRepository.save(savedUser);
 
@@ -140,7 +136,7 @@ public class UserService {
             userRepository.deleteByUsername(username);
             logger.info("User with username: {} was deleted!", username);
         });
-        mongoTemplate.remove(Query.query(Criteria.where("username").is(username)), UserEntity.class);
+        userRepository.deleteByUsername(username);
         cartRepository.deleteCartEntityByUsername(username);
         addressRepository.deleteAddressEntityByUsername(username);
 
