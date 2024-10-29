@@ -1,3 +1,4 @@
+
 package com.example.demo.model.entities.enums;
 
 import lombok.Getter;
