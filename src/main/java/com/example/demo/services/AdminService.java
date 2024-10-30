@@ -1,13 +1,12 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.mappers.UserMapper;
 import com.example.demo.model.entities.enums.Role;
 import com.example.demo.model.entities.UserEntity;
 import com.example.demo.model.repositories.UserRepository;
 import com.example.demo.security.config.AppException;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +16,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AdminService {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private UserMapper userMapper;
-
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     public List<UserDTO> getAllUsers(){
         List<UserEntity> userEntities = userRepository.findAll();
@@ -47,7 +40,7 @@ public class AdminService {
             user.setRole(Role.valueOf(role));
         }
         UserEntity saved = userRepository.save(user);
-        return userMapper.toUserDTO(saved);
+        return modelMapper.map(saved, UserDTO.class);
     }
 
     public Optional<UserDTO> deleteUserById(Long id){

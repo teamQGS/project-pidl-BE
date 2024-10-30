@@ -2,16 +2,18 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.CartDTO;
 import com.example.demo.services.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping("/api/cart")
 public class CartController {
-    @Autowired
-    private CartService cartService;
+
+    private final CartService cartService;
 
     @GetMapping("/{username}")
     public ResponseEntity<CartDTO> getUserCart(@PathVariable String username){

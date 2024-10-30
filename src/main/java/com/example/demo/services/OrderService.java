@@ -8,6 +8,7 @@ import com.example.demo.model.entities.enums.Status;
 import com.example.demo.model.repositories.OrderRepository;
 import com.example.demo.model.repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,16 +18,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private CartService cartService;
+    private final OrderRepository orderRepository;
+
+    private final ProductRepository productRepository;
+
+    private final ModelMapper modelMapper;
+
+    private final CartService cartService;
 
     public OrderDTO convertToDTO(OrderEntity orderEntity) {
         return modelMapper.map(orderEntity, OrderDTO.class);

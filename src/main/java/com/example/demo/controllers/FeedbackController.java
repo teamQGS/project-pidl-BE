@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.FeedbackDTO;
 import com.example.demo.services.FeedbackService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping("/api/feedback")
 public class FeedbackController {
-    @Autowired
-    private FeedbackService feedbackService;
+
+    private final FeedbackService feedbackService;
+
     @GetMapping
     public ResponseEntity<List<FeedbackDTO>> getAllFeedbacks(){
         return new ResponseEntity<>(feedbackService.getAllFeedbacks(), HttpStatus.OK);

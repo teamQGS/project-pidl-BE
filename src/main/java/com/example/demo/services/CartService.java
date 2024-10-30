@@ -6,6 +6,7 @@ import com.example.demo.model.entities.ProductEntity;
 import com.example.demo.model.repositories.CartRepository;
 import com.example.demo.model.repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +20,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CartService {
-    @Autowired
-    private CartRepository cartRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+
+    private final CartRepository cartRepository;
+
+    private final ProductRepository productRepository;
+
+    private final ModelMapper modelMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(CartService.class);
 

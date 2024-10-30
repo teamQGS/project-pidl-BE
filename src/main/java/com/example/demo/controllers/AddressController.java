@@ -3,16 +3,18 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.AddressDTO;
 import com.example.demo.services.AddressService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping("/api/address")
 public class AddressController {
-    @Autowired
-    private AddressService addressService;
+
+    private final AddressService addressService;
 
     @GetMapping("/{username}")
     public ResponseEntity<AddressDTO> getUserAddress(@PathVariable String username){
