@@ -14,7 +14,7 @@ public class FeedbackEntity {
 
      @Id
      @GeneratedValue(strategy = GenerationType.SEQUENCE)
-     private Long id;
+     private long id;
      private String username ;
      private String subject;
      private String feedbackContent;

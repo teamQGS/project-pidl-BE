@@ -12,7 +12,7 @@ import lombok.*;
 public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private String username;
     private String country;
     private String city;

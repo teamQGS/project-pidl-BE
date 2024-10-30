@@ -24,7 +24,7 @@ public class ManagerController {
     }
 
     @PutMapping("order/changeStatus/{orderId}")
-    public ResponseEntity<OrderDTO> changeStatus(@RequestBody String status, @PathVariable Long orderId){
+    public ResponseEntity<OrderDTO> changeStatus(@RequestBody String status, @PathVariable long orderId){
         return new ResponseEntity<>(orderService.changeStatus(status, orderId), HttpStatus.OK);
     }
 }

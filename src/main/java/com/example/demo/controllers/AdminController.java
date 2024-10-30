@@ -28,7 +28,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Optional<UserDTO>> deleteUserByUsername(@PathVariable Long id){
+    public ResponseEntity<Optional<UserDTO>> deleteUserByUsername(@PathVariable long id){
         return new ResponseEntity<>(adminService.deleteUserById(id), HttpStatus.OK);
     }
 }

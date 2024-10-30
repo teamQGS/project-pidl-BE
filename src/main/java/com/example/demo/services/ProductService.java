@@ -71,6 +71,7 @@ public class ProductService {
             productEntity.setPrice(updatedProduct.getPrice());
             productEntity.setDescription(productEntity.getDescription());
             productEntity.setIllustration(updatedProduct.getIllustration());
+            productEntity.setProductCategory(updatedProduct.getProductCategory());
             return productRepository.save(productEntity);
         }else{
             System.out.println("There is no product with ID: " + id);
@@ -85,7 +86,8 @@ public class ProductService {
 
     public List<ProductDTO> findProductByName(String name) {
         String jpql = "SELECT p FROM ProductEntity p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))";
-        TypedQuery<ProductEntity> query = entityManager.createQuery(jpql, ProductEntity.class);    query.setParameter("name", name);
+        TypedQuery<ProductEntity> query = entityManager.createQuery(jpql, ProductEntity.class);
+        query.setParameter("name", name);
         List<ProductEntity> productEntities = query.getResultList();
         return productEntities.stream()
                 .map(this::convertToDTO)

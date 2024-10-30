@@ -43,7 +43,7 @@ public class AdminService {
         return modelMapper.map(saved, UserDTO.class);
     }
 
-    public Optional<UserDTO> deleteUserById(Long id){
+    public Optional<UserDTO> deleteUserById(long id){
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
 
         optionalUserEntity.ifPresent(userEntity -> {

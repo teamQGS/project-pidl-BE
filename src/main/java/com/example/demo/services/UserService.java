@@ -80,29 +80,31 @@ public class UserService {
         }
 
         logger.info("Registering new user: {}", signUpDTO.username());
-        UserEntity userEntity = modelMapper.map(signUpDTO, UserEntity.class);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(signUpDTO.email());
+        userEntity.setUsername(signUpDTO.username());
 
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
-        userEntity.setRole(Role.CUSTOMER);
+        userEntity.setRole(Role.ADMIN);
 
-        UserEntity savedUser = userRepository.save(userEntity);
+        userRepository.save(userEntity);
 
-        logger.info("User registered, creating cart: {}", savedUser.getUsername());
+        logger.info("User registered, creating cart: {}", userEntity.getUsername());
         CartEntity userCart = new CartEntity();
-        userCart.setUsername(savedUser.getUsername());
+        userCart.setUsername(userEntity.getUsername());
         cartRepository.save(userCart);
 
         // Создание адреса для пользователя
-        logger.info("User registered, creating address: {}", savedUser.getUsername());
+        logger.info("User registered, creating address: {}", userEntity.getUsername());
         AddressEntity userAddress = new AddressEntity();
-        userAddress.setUsername(savedUser.getUsername());
+        userAddress.setUsername(userEntity.getUsername());
         addressRepository.save(userAddress);
 
         // Создание токена и обновление пользователя с токеном
-        String token = userAuthProvider.createToken(savedUser);
+        String token = userAuthProvider.createToken(userEntity);
         System.out.println("Token: " + token);
-        savedUser.setToken(token);
-        UserEntity updatedUser = userRepository.save(savedUser);
+        userEntity.setToken(token);
+        UserEntity updatedUser = userRepository.save(userEntity);
 
         logger.info("User registered and token generated: {}", updatedUser.getUsername());
         return modelMapper.map(updatedUser, UserDTO.class);

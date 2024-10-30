@@ -18,7 +18,7 @@ public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private long id;
     private Date date;
     private String customerUsername;
     private String managerUsername;

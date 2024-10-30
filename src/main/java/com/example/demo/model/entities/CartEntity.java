@@ -15,7 +15,7 @@ import java.util.List;
 public class CartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private long id;
     private String username;
     @OneToMany
     private List<ProductEntity> products;

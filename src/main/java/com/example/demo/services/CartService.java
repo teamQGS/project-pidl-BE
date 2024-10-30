@@ -9,6 +9,7 @@ import com.example.demo.security.config.AppException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,7 @@ public class CartService {
         logger.info("Converting CartEntity to CartDTO for cartId: {}", cartEntity.getId());
         return modelMapper.map(cartEntity, CartDTO.class);
     }
-
+    @Cacheable(value = "user_cart",key = "#username", unless = "#result == null")
     public CartDTO getCartByUsername(String username) {
         if (username == null) {
             logger.error("Attempted to retrieve cart with null username");
@@ -61,7 +62,7 @@ public class CartService {
     }
     
 
-    public CartDTO addToCart(Long productId, String username) {
+    public CartDTO addToCart(long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 
@@ -94,7 +95,7 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
-    public CartDTO removeFromCart(Long productId, String username) {
+    public CartDTO removeFromCart(long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 
@@ -114,7 +115,7 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
-    public CartDTO decreaseCount(Long productId, String username) {
+    public CartDTO decreaseCount(long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
         
@@ -143,7 +144,7 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
-    public CartDTO increaseCount(Long productId, String username) {
+    public CartDTO increaseCount(long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 

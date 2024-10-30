@@ -1,6 +1,8 @@
 package com.example.demo.dto;
 
 import com.example.demo.model.entities.enums.ProductsCategory;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 
@@ -12,7 +14,7 @@ public class ProductDTO {
      double price;
      String illustration;
      int count;
-
+     @Enumerated(EnumType.STRING)
      ProductsCategory productCategory;
 //     Binary illustration;
 }
