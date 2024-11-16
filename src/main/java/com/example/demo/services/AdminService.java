@@ -37,13 +37,13 @@ public class AdminService {
             throw new AppException("User already has this role", HttpStatus.CONFLICT);
         }
         else {
-            user.setRole(Role.valueOf(role));
+            user.setRole("ROLE_" + role);
         }
         UserEntity saved = userRepository.save(user);
         return modelMapper.map(saved, UserDTO.class);
     }
 
-    public Optional<UserDTO> deleteUserById(long id){
+    public Optional<UserDTO> deleteUserById(Long id){
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
 
         optionalUserEntity.ifPresent(userEntity -> {

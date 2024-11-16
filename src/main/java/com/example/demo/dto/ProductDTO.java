@@ -8,13 +8,13 @@ import lombok.Data;
 
 @Data
 public class ProductDTO {
-     long id;
+     Long id;
      String name;
      String description;
      double price;
      String illustration;
+     int warehouseCount;
      int count;
      @Enumerated(EnumType.STRING)
      ProductsCategory productCategory;
-//     Binary illustration;
 }

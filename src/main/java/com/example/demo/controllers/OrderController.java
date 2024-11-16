@@ -18,7 +18,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable long id){
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id){
         return new ResponseEntity<>(orderService.findOrderById(id), HttpStatus.OK);
     }
 
@@ -39,7 +39,7 @@ public class OrderController {
     }
 
     @PutMapping("/changeStatus/{orderId}")
-    public ResponseEntity<OrderDTO> changeStatus(@RequestBody String status, @PathVariable long orderId){
+    public ResponseEntity<OrderDTO> changeStatus(@RequestBody String status, @PathVariable Long orderId){
         return new ResponseEntity<>(orderService.changeStatus(status, orderId), HttpStatus.OK);
     }
 }

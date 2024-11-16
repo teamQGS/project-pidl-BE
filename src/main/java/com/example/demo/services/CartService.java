@@ -45,7 +45,7 @@ public class CartService {
         logger.info("Converting CartEntity to CartDTO for cartId: {}", cartEntity.getId());
         return modelMapper.map(cartEntity, CartDTO.class);
     }
-    @Cacheable(value = "user_cart",key = "#username", unless = "#result == null")
+
     public CartDTO getCartByUsername(String username) {
         if (username == null) {
             logger.error("Attempted to retrieve cart with null username");
@@ -58,11 +58,11 @@ public class CartService {
             throw new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND);
         }
         logger.info("Cart found for username: {}, converting to DTO", username);
-        return modelMapper.map(cart.get(), CartDTO.class);
+        return convertToDTO(cart.get());
     }
     
 
-    public CartDTO addToCart(long productId, String username) {
+    public CartDTO addToCart(Long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 
@@ -92,10 +92,10 @@ public class CartService {
 
         cart.setProducts(currentProducts);
         cartRepository.save(cart);
-        return modelMapper.map(cart, CartDTO.class);
+        return convertToDTO(cart);
     }
 
-    public CartDTO removeFromCart(long productId, String username) {
+    public CartDTO removeFromCart(Long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 
@@ -115,7 +115,7 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
-    public CartDTO decreaseCount(long productId, String username) {
+    public CartDTO decreaseCount(Long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
         
@@ -144,7 +144,7 @@ public class CartService {
         return modelMapper.map(cart, CartDTO.class);
     }
 
-    public CartDTO increaseCount(long productId, String username) {
+    public CartDTO increaseCount(Long productId, String username) {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException("Product not found!", HttpStatus.NOT_FOUND));
 

@@ -16,7 +16,7 @@ public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
 
     private String name;
 
@@ -27,6 +27,8 @@ public class ProductEntity {
     private String illustration; //Now it is a link to illustration. TODO create image variable
 
     private int count;
+
+    private int warehouseCount;
 
     @Enumerated(EnumType.STRING)
     private ProductsCategory productCategory;

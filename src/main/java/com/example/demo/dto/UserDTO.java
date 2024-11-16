@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UserDTO {
 
-    long id;
+    Long id;
     String username;
     String password;
     String firstName;
@@ -18,6 +18,6 @@ public class UserDTO {
 //    String image;
     String token;
     String phoneNumber;
-    Role role;
+    String role;
 
 }

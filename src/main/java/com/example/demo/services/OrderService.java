@@ -40,7 +40,7 @@ public class OrderService {
                 .toList();
     }
 
-    public OrderDTO changeStatus(String status, long orderId){
+    public OrderDTO changeStatus(String status, Long orderId){
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException("Unknown order", HttpStatus.NOT_FOUND));
 
@@ -64,7 +64,7 @@ public class OrderService {
     }
 
 
-    public OrderDTO findOrderById(long id){
+    public OrderDTO findOrderById(Long id){
         Optional<OrderEntity> order = orderRepository.findById(id);
         if (order.isEmpty()) {
             throw new AppException("This order doesn't exist!", HttpStatus.NOT_FOUND);
@@ -124,7 +124,7 @@ public class OrderService {
         orderEntity.setProducts(productEntities);
         orderEntity.setTotalSum(calculateTotalSum(productEntities));
         orderEntity.setStatus(Status.CREATED);
-        orderEntity.setAddressEntity(modelMapper.map(addressDTO, AddressEntity.class));
+//        orderEntity.setAddressEntity(modelMapper.map(addressDTO, AddressEntity.class));
         OrderEntity savedOrder = orderRepository.save(orderEntity);
 
         cartService.clearCart(username);

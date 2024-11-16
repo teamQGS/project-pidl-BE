@@ -42,7 +42,7 @@ public class UserService {
         return modelMapper.map(userEntity, UserDTO.class);
     }
 
-    public Optional<UserDTO> getUserById(long id) {
+    public Optional<UserDTO> getUserById(Long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
         userEntity.ifPresent(user -> logger.info("Retrieved user by id: {}", user.getId()));
         return userEntity.map(UserEntity -> modelMapper.map(userEntity, UserDTO.class));
@@ -85,7 +85,7 @@ public class UserService {
         userEntity.setUsername(signUpDTO.username());
 
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
-        userEntity.setRole(Role.ADMIN);
+        userEntity.setRole("ROLE_ADMIN");
 
         userRepository.save(userEntity);
 

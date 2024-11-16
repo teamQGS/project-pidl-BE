@@ -25,11 +25,11 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<ProductDTO>> getProductById(@PathVariable long id){
+    public ResponseEntity<Optional<ProductDTO>> getProductById(@PathVariable Long id){
         return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Optional<ProductDTO>> deleteProductById(@PathVariable long id){
+    public ResponseEntity<Optional<ProductDTO>> deleteProductById(@PathVariable Long id){
         return new ResponseEntity<>(productService.deleteProductById(id), HttpStatus.OK);
     }
     @PostMapping("/add")
@@ -37,7 +37,7 @@ public class ProductController {
         return new ResponseEntity<>(Optional.ofNullable(productService.createProduct(productDTO)), HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProductEntity> updateProduct(@PathVariable long id, @RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductEntity> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO){
         ProductEntity updatedProduct = productService.updateProduct(id, productDTO);
         return ResponseEntity.ok(updatedProduct);
     }

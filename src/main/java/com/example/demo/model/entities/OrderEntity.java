@@ -18,15 +18,16 @@ public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
     private Date date;
     private String customerUsername;
     private String managerUsername;
     @OneToMany
     private List<ProductEntity> products;
     private double totalSum;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_entity_id")
     private AddressEntity addressEntity;
+    @Enumerated(EnumType.STRING)
     private Status status;
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.CartDTO;
+import com.example.demo.model.entities.ProductEntity;
 import com.example.demo.services.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,13 @@ public class CartController {
     }
 
     @PutMapping("/{username}/add")
-    public ResponseEntity<CartDTO> addToCart(@RequestBody long productId, @PathVariable String username) {
+    public ResponseEntity<CartDTO> addToCart(@RequestParam Long productId, @PathVariable String username) {
         CartDTO updatedCart = cartService.addToCart(productId, username);
         return ResponseEntity.ok(updatedCart);
     }
 
     @PutMapping("/{username}/remove")
-    public ResponseEntity<CartDTO> removeFromCart(@RequestBody long productId, @PathVariable String username) {
+    public ResponseEntity<CartDTO> removeFromCart(@RequestParam Long productId, @PathVariable String username) {
         CartDTO updatedCart = cartService.removeFromCart(productId, username);
         return ResponseEntity.ok(updatedCart);
     }
@@ -39,13 +40,13 @@ public class CartController {
     }
 
     @PutMapping("/{username}/increase")
-    public ResponseEntity<CartDTO> increaseQuantity(@RequestBody long productId, @PathVariable String username) {
+    public ResponseEntity<CartDTO> increaseQuantity(@RequestParam Long productId, @PathVariable String username) {
         CartDTO updatedCart = cartService.increaseCount(productId, username);
         return ResponseEntity.ok(updatedCart);
     }
 
     @PutMapping("/{username}/decrease")
-    public ResponseEntity<CartDTO> decreaseQuantity(@RequestBody long productId, @PathVariable String username) {
+    public ResponseEntity<CartDTO> decreaseQuantity(@RequestParam Long productId, @PathVariable String username) {
         CartDTO updatedCart = cartService.decreaseCount(productId, username);
         return ResponseEntity.ok(updatedCart);
     }

@@ -29,10 +29,10 @@ public enum Role {
     CUSTOMER(Collections.emptySet()); // Just registered users with no special permissions
     private final Set<Permission> permissions;
     public List<SimpleGrantedAuthority> getAuthorities(){
-        var authorities =  getPermissions()
+        var authorities = new java.util.ArrayList<>(getPermissions()
                 .stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.name()))
-                .toList();
+                .toList());
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
         return authorities;
     }

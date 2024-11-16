@@ -39,21 +39,19 @@ public class ProductService {
     public ProductDTO convertToDTO(ProductEntity productEntity){
         return modelMapper.map(productEntity, ProductDTO.class);
     }
-    public Optional<ProductDTO> getProductById(long id){
+    public Optional<ProductDTO> getProductById(Long id){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
-        return optionalProductEntity.map(ProductEntity -> modelMapper.map(optionalProductEntity, ProductDTO.class));
+        return Optional.ofNullable(modelMapper.map(optionalProductEntity, ProductDTO.class));
     }
 
 
-    public Optional<ProductDTO> deleteProductById(long id){
+    public Optional<ProductDTO> deleteProductById(Long id){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
 
         optionalProductEntity.ifPresent(productEntity -> {
             productRepository.deleteById(id);
             System.out.println("Product with ID: " + id + " was deleted!");
         });
-
-        productRepository.deleteById(id);
 
         return optionalProductEntity.map(productEntity -> modelMapper.map(productEntity, ProductDTO.class));
     }
@@ -63,7 +61,7 @@ public class ProductService {
         return modelMapper.map(savedProduct, ProductDTO.class);
     }
 
-    public ProductEntity updateProduct(long id, ProductDTO updatedProduct){
+    public ProductEntity updateProduct(Long id, ProductDTO updatedProduct){
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
         if(optionalProductEntity.isPresent()){
             ProductEntity productEntity = optionalProductEntity.get();
