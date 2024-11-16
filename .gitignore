@@ -3,7 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-src/test/resources/.env
+!**/src/test/resources/.env
 
 ### STS ###
 .apt_generated
@@ -34,6 +34,7 @@ build/
 .vscode/
 
 ### ENV files ###
+
 *.env
 *.yaml
 *.yml

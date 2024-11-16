@@ -8,6 +8,7 @@ import com.example.demo.model.repositories.CartRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,12 @@ import com.example.demo.model.entities.ProductEntity;
 import com.example.demo.model.entities.enums.ProductsCategory;
 import com.example.demo.model.repositories.ProductRepository;
 
+import javax.management.Query;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProductService {
+
 
     private final ProductRepository productRepository;
 

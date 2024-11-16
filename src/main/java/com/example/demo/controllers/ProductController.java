@@ -46,9 +46,8 @@ public class ProductController {
         return new ResponseEntity<>(productService.findProductsByCategory(category), HttpStatus.OK);
     }
 
-    // FE: Reactive search
     @GetMapping("/search")
-    public List<ProductDTO> searchProductByName(@RequestParam String name){
+    public List<ProductDTO> searchProductByName(@RequestParam String name) {
         return productService.findProductByName(name);
     }
 
