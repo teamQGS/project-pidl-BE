@@ -3,7 +3,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.UserDTO;
 import com.example.demo.services.AdminService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminController {
-    @Autowired
-    private AdminService adminService;
+    private final AdminService adminService;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers(){

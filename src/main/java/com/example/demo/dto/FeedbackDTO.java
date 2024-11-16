@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FeedbackDTO {
 
-     long id;
+     Long id;
      String username ;
 
      String subject;

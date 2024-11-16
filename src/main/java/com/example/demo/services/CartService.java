@@ -6,8 +6,10 @@ import com.example.demo.model.entities.ProductEntity;
 import com.example.demo.model.repositories.CartRepository;
 import com.example.demo.model.repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +21,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CartService {
-    @Autowired
-    private CartRepository cartRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+
+    private final CartRepository cartRepository;
+
+    private final ProductRepository productRepository;
+
+    private final ModelMapper modelMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(CartService.class);
 
@@ -55,7 +58,7 @@ public class CartService {
             throw new AppException("This cart doesn't exist!", HttpStatus.NOT_FOUND);
         }
         logger.info("Cart found for username: {}, converting to DTO", username);
-        return modelMapper.map(cart.get(), CartDTO.class);
+        return convertToDTO(cart.get());
     }
     
 
@@ -89,7 +92,7 @@ public class CartService {
 
         cart.setProducts(currentProducts);
         cartRepository.save(cart);
-        return modelMapper.map(cart, CartDTO.class);
+        return convertToDTO(cart);
     }
 
     public CartDTO removeFromCart(Long productId, String username) {

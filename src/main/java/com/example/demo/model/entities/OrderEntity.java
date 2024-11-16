@@ -25,8 +25,9 @@ public class OrderEntity {
     @OneToMany
     private List<ProductEntity> products;
     private double totalSum;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_entity_id")
     private AddressEntity addressEntity;
+    @Enumerated(EnumType.STRING)
     private Status status;
 }

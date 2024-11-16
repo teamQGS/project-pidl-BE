@@ -8,6 +8,7 @@ import com.example.demo.model.entities.enums.Status;
 import com.example.demo.model.repositories.OrderRepository;
 import com.example.demo.model.repositories.ProductRepository;
 import com.example.demo.security.config.AppException;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,16 +18,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private CartService cartService;
+    private final OrderRepository orderRepository;
+
+    private final ProductRepository productRepository;
+
+    private final ModelMapper modelMapper;
+
+    private final CartService cartService;
 
     public OrderDTO convertToDTO(OrderEntity orderEntity) {
         return modelMapper.map(orderEntity, OrderDTO.class);
@@ -39,7 +40,7 @@ public class OrderService {
                 .toList();
     }
 
-    public OrderDTO changeStatus(String status, long orderId){
+    public OrderDTO changeStatus(String status, Long orderId){
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException("Unknown order", HttpStatus.NOT_FOUND));
 
@@ -63,7 +64,7 @@ public class OrderService {
     }
 
 
-    public OrderDTO findOrderById(long id){
+    public OrderDTO findOrderById(Long id){
         Optional<OrderEntity> order = orderRepository.findById(id);
         if (order.isEmpty()) {
             throw new AppException("This order doesn't exist!", HttpStatus.NOT_FOUND);
@@ -123,7 +124,7 @@ public class OrderService {
         orderEntity.setProducts(productEntities);
         orderEntity.setTotalSum(calculateTotalSum(productEntities));
         orderEntity.setStatus(Status.CREATED);
-        orderEntity.setAddressEntity(modelMapper.map(addressDTO, AddressEntity.class));
+//        orderEntity.setAddressEntity(modelMapper.map(addressDTO, AddressEntity.class));
         OrderEntity savedOrder = orderRepository.save(orderEntity);
 
         cartService.clearCart(username);

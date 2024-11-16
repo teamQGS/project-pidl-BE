@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 public class OrderDTO {
-     long id;
+     Long id;
      Date date;
      String customerUsername;
      String managerUsername;

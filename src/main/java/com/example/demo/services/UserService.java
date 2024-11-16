@@ -5,7 +5,6 @@ import com.example.demo.dto.records.LoginDTO;
 import com.example.demo.dto.records.SignUpDTO;
 import com.example.demo.dto.records.UpdatePasswordDTO;
 import com.example.demo.dto.records.UpdateUserDTO;
-import com.example.demo.mappers.UserMapper;
 import com.example.demo.model.entities.AddressEntity;
 import com.example.demo.model.entities.CartEntity;
 import com.example.demo.model.entities.enums.Role;
@@ -15,35 +14,27 @@ import com.example.demo.model.repositories.CartRepository;
 import com.example.demo.model.repositories.UserRepository;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    CartRepository cartRepository;
-    @Autowired
-    AddressRepository addressRepository;
-    @Autowired
-    ModelMapper modelMapper;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-    @Autowired
-    UserMapper userMapper;
-    @Autowired
-    private UserAuthProvider userAuthProvider;
+    private final UserRepository userRepository;
+    private final CartRepository cartRepository;
+    private final AddressRepository addressRepository;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final UserAuthProvider userAuthProvider;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -51,7 +42,7 @@ public class UserService {
         return modelMapper.map(userEntity, UserDTO.class);
     }
 
-    public Optional<UserDTO> getUserById(long id) {
+    public Optional<UserDTO> getUserById(Long id) {
         Optional<UserEntity> userEntity = userRepository.findById(id);
         userEntity.ifPresent(user -> logger.info("Retrieved user by id: {}", user.getId()));
         return userEntity.map(UserEntity -> modelMapper.map(userEntity, UserDTO.class));
@@ -65,15 +56,15 @@ public class UserService {
 
     public UserDTO login(LoginDTO loginDTO) {
         logger.info("Attempting to login user: {}", loginDTO.username());
-        UserEntity user = userRepository.findByUsername(loginDTO.username())
+        UserEntity userEntity = userRepository.findByUsername(loginDTO.username())
                 .orElseThrow(() -> new AppException("Invalid credentials", HttpStatus.NOT_FOUND));
 
-        if (passwordEncoder.matches(CharBuffer.wrap(loginDTO.password()), user.getPassword())) {
+        if (passwordEncoder.matches(CharBuffer.wrap(loginDTO.password()), userEntity.getPassword())) {
             logger.info("Login successful, generating token for user: {}", loginDTO.username());
-            String token = userAuthProvider.createToken(user);
-            user.setToken(token);
-            UserEntity saved = userRepository.save(user);
-            return userMapper.toUserDTO(user);
+            String token = userAuthProvider.createToken(userEntity);
+            userEntity.setToken(token);
+            UserEntity saved = userRepository.save(userEntity);
+            return modelMapper.map(saved, UserDTO.class);
         }
         logger.warn("Login failed for user: {}", loginDTO.username());
         throw new AppException("Invalid credentials", HttpStatus.BAD_REQUEST);
@@ -89,31 +80,34 @@ public class UserService {
         }
 
         logger.info("Registering new user: {}", signUpDTO.username());
-        UserEntity userEntity = userMapper.signUpToUser(signUpDTO);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setEmail(signUpDTO.email());
+        userEntity.setUsername(signUpDTO.username());
+
         userEntity.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDTO.password())));
-        userEntity.setRole(Role.CUSTOMER);
+        userEntity.setRole("ROLE_ADMIN");
 
-        UserEntity savedUser = userRepository.save(userEntity);
+        userRepository.save(userEntity);
 
-        logger.info("User registered, creating cart: {}", savedUser.getUsername());
+        logger.info("User registered, creating cart: {}", userEntity.getUsername());
         CartEntity userCart = new CartEntity();
-        userCart.setUsername(savedUser.getUsername());
+        userCart.setUsername(userEntity.getUsername());
         cartRepository.save(userCart);
 
         // Создание адреса для пользователя
-        logger.info("User registered, creating address: {}", savedUser.getUsername());
+        logger.info("User registered, creating address: {}", userEntity.getUsername());
         AddressEntity userAddress = new AddressEntity();
-        userAddress.setUsername(savedUser.getUsername());
+        userAddress.setUsername(userEntity.getUsername());
         addressRepository.save(userAddress);
 
         // Создание токена и обновление пользователя с токеном
-        String token = userAuthProvider.createToken(savedUser);
+        String token = userAuthProvider.createToken(userEntity);
         System.out.println("Token: " + token);
-        savedUser.setToken(token);
-        UserEntity updatedUser = userRepository.save(savedUser);
+        userEntity.setToken(token);
+        UserEntity updatedUser = userRepository.save(userEntity);
 
         logger.info("User registered and token generated: {}", updatedUser.getUsername());
-        return userMapper.toUserDTO(updatedUser);
+        return modelMapper.map(updatedUser, UserDTO.class);
     }
 
     public UserDTO logout(UserDTO dto) {
@@ -134,14 +128,13 @@ public class UserService {
         Optional<UserEntity> user = userRepository.findByUsername(username);
         user.ifPresent(userEntity -> {
             userRepository.deleteByUsername(username);
+            cartRepository.deleteCartEntityByUsername(username);
+            addressRepository.deleteAddressEntityByUsername(username);
             logger.info("User with username: {} was deleted!", username);
         });
-        userRepository.deleteByUsername(username);
-        cartRepository.deleteCartEntityByUsername(username);
-        addressRepository.deleteAddressEntityByUsername(username);
-
         return user.map(userEntity -> modelMapper.map(userEntity, UserDTO.class));
     }
+
 
     public UserDTO updateUser(UpdateUserDTO updateUserDTO, String username) {
         UserEntity user = userRepository.findByUsername(username)
@@ -149,25 +142,31 @@ public class UserService {
 
         logger.info("Updating user profile for username: {}", username);
 
-        if (!Objects.equals(updateUserDTO.firstName(), "")) {
-            user.setFirstName(updateUserDTO.firstName());
-            logger.info("Updated first name to: {}", updateUserDTO.firstName());
-        }
-        if (!Objects.equals(updateUserDTO.lastName(), "")) {
-            user.setLastName(updateUserDTO.lastName());
-            logger.info("Updated last name to: {}", updateUserDTO.lastName());
-        }
-        if (!Objects.equals(updateUserDTO.email(), "")) {
-            user.setEmail(updateUserDTO.email());
-            logger.info("Updated email to: {}", updateUserDTO.email());
-        }
-        if (!Objects.equals(updateUserDTO.phoneNumber(), "")) {
-            user.setPhoneNumber(updateUserDTO.phoneNumber());
-            logger.info("Updated phone number to: {}", updateUserDTO.phoneNumber());
-        }
+        // Update fields if provided
+        Optional.ofNullable(updateUserDTO.firstName()).ifPresent(name -> {
+            user.setFirstName(name);
+            logger.info("Updated first name to: {}", name);
+        });
+
+        Optional.ofNullable(updateUserDTO.lastName()).ifPresent(name -> {
+            user.setLastName(name);
+            logger.info("Updated last name to: {}", name);
+        });
+
+        Optional.ofNullable(updateUserDTO.email()).ifPresent(email -> {
+            user.setEmail(email);
+            logger.info("Updated email to: {}", email);
+        });
+
+        Optional.ofNullable(updateUserDTO.phoneNumber()).ifPresent(phone -> {
+            user.setPhoneNumber(phone);
+            logger.info("Updated phone number to: {}", phone);
+        });
+
         UserEntity saved = userRepository.save(user);
-        return userMapper.toUserDTO(saved);
+        return modelMapper.map(saved, UserDTO.class);
     }
+
 
     public UserDTO changePassword(UpdatePasswordDTO updatePasswordDTO, String username) {
         UserEntity user = userRepository.findByUsername(username)
@@ -176,7 +175,7 @@ public class UserService {
             logger.info("Changing password for user: {}", username);
             user.setPassword(passwordEncoder.encode(CharBuffer.wrap(updatePasswordDTO.newPassword())));
             UserEntity saved = userRepository.save(user);
-            return userMapper.toUserDTO(saved);
+            return modelMapper.map(saved, UserDTO.class);
         }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }

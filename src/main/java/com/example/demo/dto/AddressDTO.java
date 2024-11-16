@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class AddressDTO {
-     private long id;
-     private String username;
-     private String country;
-     private String city;
-     private String street;
-     private String house;
-     private String postcode;
-     private String countrycode;
+      Long id;
+      String username;
+      String country;
+      String city;
+      String street;
+      String house;
+      String postcode;
+      String countrycode;
 }

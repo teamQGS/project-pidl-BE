@@ -8,7 +8,7 @@ import com.example.demo.dto.records.UpdateUserDTO;
 import com.example.demo.security.config.AppException;
 import com.example.demo.security.config.UserAuthProvider;
 import com.example.demo.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,16 +19,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-public class
-UserController {
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserAuthProvider userAuthProvider;
+@RequiredArgsConstructor
+public class UserController {
+    private final UserService userService;
+    private final UserAuthProvider userAuthProvider;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UserDTO>> getUserById(@PathVariable long id){
+    public ResponseEntity<Optional<UserDTO>> getUserById(@PathVariable Long id){
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
@@ -48,7 +45,6 @@ UserController {
         UserDTO user = userService.login(loginDTO);
         return ResponseEntity.ok(user);
     }
-
 
     @PostMapping("/signup")
     public ResponseEntity<UserDTO> register(@RequestBody SignUpDTO singUpDTO){

@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Repository
-public interface CartRepository extends JpaRepository<CartEntity, Locale> {
+public interface CartRepository extends JpaRepository<CartEntity, Long> {
     public Optional<CartEntity> findByUsername(String username);
     public void deleteCartEntityByUsername(String username);
 }

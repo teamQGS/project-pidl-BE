@@ -1,4 +1,4 @@
-package com.example.demo.mappers;
+package com.example.demo.mapper;
 
 import com.example.demo.dto.*;
 import com.example.demo.dto.records.LoginDTO;
@@ -21,6 +21,7 @@ public class MapperConfig {
         modelMapper.createTypeMap(UserEntity.class, UserDTO.class);
         modelMapper.createTypeMap(UserEntity.class, LoginDTO.class);
         modelMapper.createTypeMap(UserEntity.class, SignUpDTO.class);
+        modelMapper.createTypeMap(SignUpDTO.class, UserEntity.class);
         modelMapper.createTypeMap(CartEntity.class, CartDTO.class);
         modelMapper.createTypeMap(OrderEntity.class, OrderDTO.class);
         modelMapper.createTypeMap(AddressEntity.class, AddressDTO.class);

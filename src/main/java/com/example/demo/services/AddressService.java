@@ -4,6 +4,7 @@ import com.example.demo.dto.AddressDTO;
 import com.example.demo.model.entities.AddressEntity;
 import com.example.demo.model.repositories.AddressRepository;
 import com.example.demo.security.config.AppException;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,11 +14,13 @@ import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AddressService {
-    @Autowired
-    private AddressRepository addressRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+
+    private final AddressRepository addressRepository;
+
+    private final ModelMapper modelMapper;
+
     public AddressDTO convertToDTO(AddressEntity addressEntity) {
         return modelMapper.map(addressEntity, AddressDTO.class);
     }

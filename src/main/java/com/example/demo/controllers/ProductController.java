@@ -4,6 +4,7 @@ import com.example.demo.dto.ProductDTO;
 import com.example.demo.model.entities.enums.ProductsCategory;
 import com.example.demo.model.entities.ProductEntity;
 import com.example.demo.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping("/api/products")
 public class ProductController {
-    @Autowired
-    ProductService productService;
+
+    private final ProductService productService;
+
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts(){
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
@@ -42,8 +45,7 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable ProductsCategory category){
         return new ResponseEntity<>(productService.findProductsByCategory(category), HttpStatus.OK);
     }
-    //TODO fix this code
-    // FE: Reactive search
+
     @GetMapping("/search")
     public List<ProductDTO> searchProductByName(@RequestParam String name) {
         return productService.findProductByName(name);
